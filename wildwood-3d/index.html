@@ -12,13 +12,13 @@
 </head>
 <body>
 <div id="hud">
-<header><div><b>✦ WILDWOOD VILLAGE</b><small>FIRST-PERSON STORY ADVENTURE</small></div><small>DAY 1 · THE MEADOW</small></header>
+<header><div><b>✦ WILDWOOD VILLAGE</b><small>FIRST-PERSON STORY ADVENTURE</small></div><small>DAY 1 · WILDWOOD VALLEY</small></header>
 <section id="task" class="glass"><div class="eyebrow">TODAY'S PLAN</div><h3 id="taskTitle">A place to call home</h3><p id="taskText">Explore the village, visit the inn, market, workshop, cottage and town hall, then follow the trails to the lake and orchard.</p></section>
 <div id="status" class="glass">VILLAGE EXPLORER<br>Coins: <span id="coins">8</span><br>Bag: <span id="bag">Empty</span></div>
 <div id="crosshair"></div><div id="prompt" class="glass">WASD to move · Mouse to look · E to interact · Shift to jog · Esc to unlock mouse</div>
 <section id="modal" class="glass" hidden><div class="eyebrow" id="modalTag">VILLAGE</div><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></section>
 </div>
-<div id="start"><article><div class="sub">A SMALL WORLD TO BEGIN</div><h1>Welcome to<br>Wildwood Village</h1><p>Explore a lively village, meet wandering locals, visit the bakery and stables, and follow the lanes to the orchard and lake.</p><p><b>Desktop:</b> click Start, move with WASD, look with your mouse, and press E to interact.<br><b>Phone:</b> use the on-screen movement pad and LOOK drag area.</p><button id="startBtn">Start exploring</button></article></div>
+<div id="start"><article><div class="sub">YOUR VILLAGE AWAITS</div><h1>Welcome to<br>Wildwood Village</h1><p>Explore a lively village, meet wandering locals, visit the bakery and stables, and follow the lanes to the orchard and lake.</p><p><b>Desktop:</b> click Start, move with WASD, look with your mouse, and press E to interact.<br><b>Phone:</b> use the on-screen movement pad and LOOK drag area.</p><button id="startBtn">Start exploring</button></article></div>
 <div class="touch"><div class="dpad"><button data-move="forward">▲</button><button data-move="left">◀</button><button data-move="back">▼</button><button data-move="right">▶</button></div><div class="touchActions"><button id="touchUse">TALK / USE · E</button><button id="touchRun" class="secondary">JOG · SHIFT</button></div></div>
 <script>
 (function(){
@@ -134,7 +134,7 @@ for(let i=0;i<62;i++){
 }
 function flower(x,z,color){cylinder(scene,leaf1,x,.12,z,.035,.05,.24,5);sphere(scene,mat('flower'+color,color),x,.28,z,.12,.09,.12);}
 for(let i=0;i<70;i++){let x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;if(Math.abs(x)<13&&Math.abs(z)<19)continue;flower(x,z,[0xf6d76f,0xf2a4ad,0xe7f0d1][i%3]);}
-for(let i=0;i<34;i++){const x=(Math.random()-.5)*48,z=(Math.random()-.5)*46;if((Math.abs(x)<15&&Math.abs(z)<20)||(x>24&&x<38&&z>-27&&z<-10)||(x>22&&x<38&&z>8&&z<24))continue;const r=.2+Math.random()*.36;mesh(new THREEJS.DodecahedronGeometry(r,0),stone,scene,x,.12,z,1,.65,1);worldObstacles.push({x,z,r:r+.18});}
+for(let i=0;i<34;i++){const x=(Math.random()-.5)*48,z=(Math.random()-.5)*46;if((Math.abs(x)<21&&Math.abs(z)<23)||(x>24&&x<38&&z>-27&&z<-10)||(x>22&&x<38&&z>8&&z<24))continue;const r=.2+Math.random()*.36;mesh(new THREEJS.DodecahedronGeometry(r,0),stone,scene,x,.12,z,1,.65,1);worldObstacles.push({x,z,r:r+.18});}
 // Building maker: five unique buildings around a central village green.
 function makeBuilding(cfg){
  const g=new THREEJS.Group();g.position.set(cfg.x,0,cfg.z);scene.add(g);
@@ -158,8 +158,11 @@ function makeBuilding(cfg){
  sphere(g,gold,doorLeft+.57,1.08,d/2+.43,.045,.055,.045);
  // front windows and sills
  for(const wx of [-w*.31,w*.31]){box(g,darkWood,wx,1.95,d/2+.035,.95,.82,.12);box(g,glass,wx,1.97,d/2+.11,.75,.61,.06);box(g,wood,wx,1.96,d/2+.15,.08,.65,.06);box(g,wood,wx,1.96,d/2+.15,.75,.07,.06);box(g,cream,wx,1.5,d/2+.13,1.05,.12,.2);}
- // sloping roof halves
- const roofMat=cfg.roof;const roofY=h+w*.13;const r1=box(g,roofMat,-w*.25,roofY,0,w*.62,.22,d+1.1);r1.rotation.z=.43;
+ // Triangular gable ends fill the space between the taller walls and the roof ridge.
+ const gableShape=new THREEJS.Shape();gableShape.moveTo(-w/2,h);gableShape.lineTo(0,h+w*.26);gableShape.lineTo(w/2,h);gableShape.closePath();
+ const gableGeo=new THREEJS.ShapeGeometry(gableShape);
+ mesh(gableGeo,cfg.wall,g,0,0,d/2+.015);mesh(gableGeo,cfg.wall,g,0,0,-d/2-.015);
+ // Sloping roof halvesconst roofY=h+w*.13;const r1=box(g,roofMat,-w*.25,roofY,0,w*.62,.22,d+1.1);r1.rotation.z=.43;
  const r2=box(g,roofMat,w*.25,roofY,0,w*.62,.22,d+1.1);r2.rotation.z=-.43;
  box(g,cream,0,h-.27,d/2+.06,w*.35,.16,.13);
  // Chimneys rise above the corrected roof ridge.
