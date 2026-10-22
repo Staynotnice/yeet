@@ -48,8 +48,8 @@ function makePattern(bg,ink,kind){
  else if(kind==='shingle'){for(let y=0;y<128;y+=24){for(let x=(y/24%2)*22-22;x<128;x+=44){cx.fillStyle=ink;cx.globalAlpha=.22;cx.beginPath();cx.roundRect(x+2,y+2,39,20,4);cx.fill();}}cx.globalAlpha=1;}
  const t=new THREEJS.CanvasTexture(cv);t.colorSpace=THREEJS.SRGBColorSpace;t.wrapS=t.wrapT=THREEJS.RepeatWrapping;t.repeat.set(2,2);return t;
 }
-const texWood=makePattern('#9a6b48','#4f3327','wood'),texStucco=makePattern('#e8d2a6','#9c835e','stucco'),texFabric=makePattern('#c6a16b','#fff0c9','fabric'),texRoof=makePattern('#bd7455','#633f37','shingle');
-function mat(name,color,rough){if(!mats[name]){const m=new THREEJS.MeshStandardMaterial({color:color,roughness:rough===undefined?.9:rough,side:THREEJS.DoubleSide});if(/wall|innwall|shopwall|forgewall|homewall|hallwall/.test(name))m.map=texStucco;else if(/roof|hroof|hallroof/.test(name))m.map=texRoof;else if(/wood|door|floor|shelf|sign/.test(name))m.map=texWood;else if(/shirt|fabric|cloth|bed|pillow/.test(name))m.map=texFabric;m.needsUpdate=true;mats[name]=m;}return mats[name];}
+const texWood=makePattern('#9a6b48','#4f3327','wood'),texStucco=makePattern('#e8d2a6','#9c835e','stucco'),texFabric=makePattern('#c6a16b','#fff0c9','fabric'),texRoof=makePattern('#bd7455','#633f37','shingle'),texSkin=makePattern('#d9ad88','#9e6f58','stucco');
+function mat(name,color,rough){if(!mats[name]){const m=new THREEJS.MeshStandardMaterial({color:color,roughness:rough===undefined?.9:rough,side:THREEJS.DoubleSide});if(/wall|innwall|shopwall|forgewall|homewall|hallwall/.test(name))m.map=texStucco;else if(/roof|hroof|hallroof/.test(name))m.map=texRoof;else if(/wood|door|floor|shelf|sign/.test(name))m.map=texWood;else if(/shirt|fabric|cloth|bed|pillow/.test(name))m.map=texFabric;else if(/^skin[ABC]$/.test(name))m.map=texSkin;m.needsUpdate=true;mats[name]=m;}return mats[name];}
 const grass=mat('grass',0x79a95e),pathMat=mat('path',0xd9c18b),wood=mat('wood',0x87583b),darkWood=mat('darkWood',0x543a2e),cream=mat('cream',0xf2dfb1),roofRed=mat('roofRed',0xc76e4d),roofBlue=mat('roofBlue',0x528b9a),roofGreen=mat('roofGreen',0x658c58),stone=mat('stone',0x929b8a),glass= new THREEJS.MeshStandardMaterial({color:0x92d9e8,roughness:.2,metalness:.1,side:THREEJS.DoubleSide}),gold=mat('gold',0xf4c75f),leaf1=mat('leaf1',0x3f7d4b),leaf2=mat('leaf2',0x5b984e),leaf3=mat('leaf3',0x78a953),metal=mat('metal',0x5e7474),fabric=mat('fabric',0xe5a15c),skinA=mat('skinA',0xc9825e),skinB=mat('skinB',0xe5b58a),skinC=mat('skinC',0x8d563e),hair1=mat('hair1',0x4a3028),hair2=mat('hair2',0x8e5a32),hair3=mat('hair3',0x292a32),shirt1=mat('shirt1',0x4c9b8b),shirt2=mat('shirt2',0xd87555),shirt3=mat('shirt3',0x7d78bb),shirt4=mat('shirt4',0xe0b84d),pants=mat('pants',0x4a5960),white=mat('white',0xfff1d6);
 const boxGeo=new THREEJS.BoxGeometry(1,1,1),sphereGeo=new THREEJS.SphereGeometry(1,12,10),cylGeo=new THREEJS.CylinderGeometry(1,1,1,10);
 function mesh(geo,material,parent,x,y,z,sx,sy,sz){const o=new THREEJS.Mesh(geo,material);o.position.set(x,y,z);if(sx!==undefined)o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;(parent||scene).add(o);return o;}
@@ -128,13 +128,29 @@ const characters=[];
 function makePerson(name,x,z,skinMat,shirtMat,hairMat,role){
  const root=new THREEJS.Group();root.position.set(x,0,z);scene.add(root);
  const body=new THREEJS.Group();root.add(body);
- cylinder(body,shirtMat,0,1.13,0,.31,.36,.7,8);
- sphere(body,skinMat,0,1.72,0,.29,.34,.27);
- sphere(body,hairMat,0,1.94,-.035,.3,.18,.29);
- // side hair and ears
- sphere(body,hairMat,-.25,1.75,0,.09,.19,.13);sphere(body,hairMat,.25,1.75,0,.09,.19,.13);
- for(let ex of [-.105,.105]){sphere(body,white,ex,1.75,.24,.065,.07,.035);sphere(body,mat('eye'+name,0x2a2822),ex,1.75,.272,.027,.04,.02);}
- box(body,skinMat,0,1.58,.245,.14,.045,.04);
+ // Soft, toy-like proportions with layered clothing and a lightly textured skin surface.
+ cylinder(body,shirtMat,0,1.13,0,.34,.39,.72,10);
+ sphere(body,shirtMat,0,1.35,-.01,.37,.22,.31);
+ sphere(body,skinMat,0,1.73,0,.3,.34,.28);
+ // Hair cap, side locks, ears, brows and a small rounded nose make faces read clearly at game distance.
+ sphere(body,hairMat,0,1.96,-.035,.31,.19,.3);
+ sphere(body,hairMat,-.255,1.77,0,.095,.2,.14);sphere(body,hairMat,.255,1.77,0,.095,.2,.14);
+ sphere(body,skinMat,-.3,1.73,.005,.055,.075,.055);sphere(body,skinMat,.3,1.73,.005,.055,.075,.055);
+ for(let ex of [-.112,.112]){
+  sphere(body,white,ex,1.765,.247,.069,.073,.035);
+  sphere(body,mat('eye'+name,0x2a2822),ex,1.765,.278,.03,.043,.018);
+  box(body,hairMat,ex,1.86,.235,.12,.035,.045);
+ }
+ sphere(body,skinMat,0,1.69,.285,.055,.07,.055);
+ sphere(body,mat('cheek'+name,0xd9897a),-.18,1.68,.238,.055,.035,.018);
+ sphere(body,mat('cheek2'+name,0xd9897a),.18,1.68,.238,.055,.035,.018);
+ box(body,skinMat,0,1.57,.245,.14,.045,.04);
+ // Collar and belt details
+ cylinder(body,cream,0,1.45,.01,.18,.2,.09,8);
+ box(body,darkWood,0,.99,.005,.59,.09,.48);
+ box(body,gold,.18,.99,.25,.09,.09,.035);
+ // Sleeves extend the shirt silhouette into the animated arms.
+ sphere(body,shirtMat,-.34,1.36,0,.15,.19,.17);sphere(body,shirtMat,.34,1.36,0,.15,.19,.17);
  const armL=new THREEJS.Group();armL.position.set(-.36,1.38,0);body.add(armL);cylinder(armL,skinMat,0,-.23,0,.105,.09,.48,7);armL.rotation.z=-.15;
  const armR=new THREEJS.Group();armR.position.set(.36,1.38,0);body.add(armR);cylinder(armR,skinMat,0,-.23,0,.105,.09,.48,7);armR.rotation.z=.15;
  const legL=new THREEJS.Group();legL.position.set(-.16,.78,0);body.add(legL);cylinder(legL,pants,0,-.28,0,.13,.1,.56,7);box(legL,darkWood,0,-.57,.08,.2,.12,.34);
