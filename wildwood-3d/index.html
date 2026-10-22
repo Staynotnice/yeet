@@ -95,10 +95,10 @@ function mesh(geo,material,parent,x,y,z,sx,sy,sz){const o=new THREEJS.Mesh(geo,m
 function box(parent,material,x,y,z,sx,sy,sz){return mesh(boxGeo,material,parent,x,y,z,sx,sy,sz);}
 function sphere(parent,material,x,y,z,sx,sy,sz){return mesh(sphereGeo,material,parent,x,y,z,sx,sy,sz);}
 function cylinder(parent,material,x,y,z,rt,rb,h,segments){return mesh(new THREEJS.CylinderGeometry(rt,rb,h,segments||10),material,parent,x,y,z);}
-function ground(){grass.map=texGrass;grass.bumpMap=texGrass;grass.bumpScale=.018;grass.map.repeat.set(42,42);const g=mesh(new THREEJS.PlaneGeometry(180,180),grass,scene,0,-.12,0);g.rotation.x=-Math.PI/2;}
+function ground(){grass.map=texGrass;grass.bumpMap=texGrass;grass.bumpScale=.018;grass.map.repeat.set(42,42);grass.needsUpdate=true;const g=mesh(new THREEJS.PlaneGeometry(180,180),grass,scene,0,-.12,0);g.rotation.x=-Math.PI/2;}
 // Stylized low-poly grassland and paths
 ground();
-function path(x,z,w,d){pathMat.map=texPath;pathMat.bumpMap=texPath;pathMat.bumpScale=.025;pathMat.map.repeat.set(Math.max(2,w/3),Math.max(2,d/3));const p=mesh(new THREEJS.PlaneGeometry(w,d),pathMat,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
+function path(x,z,w,d){const pm=pathMat.clone();pm.map=texPath.clone();pm.bumpMap=pm.map;pm.bumpScale=.025;pm.map.repeat.set(Math.max(2,w/3),Math.max(2,d/3));pm.needsUpdate=true;const p=mesh(new THREEJS.PlaneGeometry(w,d),pm,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
 path(0,4,5,58);path(-4,0,34,4);path(0,-11,34,3.2);path(0,15,31,3.2);
 for(let i=0;i<34;i++){let a=i/34*Math.PI*2;let r=31+(i%4)*2;let x=Math.cos(a)*r,z=Math.sin(a)*r;let h=2.6+(i%5)*.42; cylinder(scene,wood,x,.65,z,.24,.35,1.3,7);mesh(new THREEJS.ConeGeometry(1.7,h,7),[leaf1,leaf2,leaf3][i%3],scene,x,1.4+h*.48,z,1,1,1);mesh(new THREEJS.ConeGeometry(1.25,h*.75,7),leaf2,scene,x,2+h*.6,z,1,1,1);}
 function flower(x,z,color){cylinder(scene,leaf1,x,.12,z,.035,.05,.24,5);sphere(scene,mat('flower'+color,color),x,.28,z,.12,.09,.12);}
