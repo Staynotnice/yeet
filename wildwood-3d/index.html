@@ -100,15 +100,15 @@ function ground(){grass.map=texGrass;grass.bumpMap=texGrass;grass.bumpScale=.018
 ground();
 function path(x,z,w,d){const pm=pathMat.clone();pm.map=texPath.clone();pm.bumpMap=pm.map;pm.bumpScale=.025;pm.map.repeat.set(Math.max(2,w/3),Math.max(2,d/3));pm.needsUpdate=true;const p=mesh(new THREEJS.PlaneGeometry(w,d),pm,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
 path(0,4,5,58);path(-4,0,34,4);path(0,-11,34,3.2);path(0,15,31,3.2);
-for(let i=0;i<34;i++){let a=i/34*Math.PI*2;let r=31+(i%4)*2;let x=Math.cos(a)*r,z=Math.sin(a)*r;let h=2.6+(i%5)*.42; cylinder(scene,wood,x,.65,z,.24,.35,1.3,7);mesh(new THREEJS.ConeGeometry(1.7,h,7),[leaf1,leaf2,leaf3][i%3],scene,x,1.4+h*.48,z,1,1,1);mesh(new THREEJS.ConeGeometry(1.25,h*.75,7),leaf2,scene,x,2+h*.6,z,1,1,1);}
+for(let i=0;i<46;i++){let a=i/46*Math.PI*2;let r=43+(i%4)*2.4;let x=Math.cos(a)*r,z=Math.sin(a)*r;let h=2.8+(i%5)*.48; cylinder(scene,wood,x,.65,z,.24,.35,1.3,7);mesh(new THREEJS.ConeGeometry(1.7,h,7),[leaf1,leaf2,leaf3][i%3],scene,x,1.4+h*.48,z,1,1,1);mesh(new THREEJS.ConeGeometry(1.25,h*.75,7),leaf2,scene,x,2+h*.6,z,1,1,1);worldObstacles.push({x,z,r:1.05});}
 function flower(x,z,color){cylinder(scene,leaf1,x,.12,z,.035,.05,.24,5);sphere(scene,mat('flower'+color,color),x,.28,z,.12,.09,.12);}
 for(let i=0;i<70;i++){let x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;if(Math.abs(x)<13&&Math.abs(z)<19)continue;flower(x,z,[0xf6d76f,0xf2a4ad,0xe7f0d1][i%3]);}
 for(let i=0;i<20;i++){const x=(Math.random()-.5)*34,z=(Math.random()-.5)*30;if(Math.abs(x)<14&&Math.abs(z)<17)continue;const r=.2+Math.random()*.35;mesh(new THREEJS.DodecahedronGeometry(r,0),stone,scene,x,.12,z,1,.65,1);}
 // Building maker: five unique buildings around a central village green.
-const buildings=[];
+const buildings=[];const worldObstacles=[];
 function makeBuilding(cfg){
  const g=new THREEJS.Group();g.position.set(cfg.x,0,cfg.z);scene.add(g);
- const w=cfg.w||8,d=cfg.d||7,h=3.8,doorW=1.5,doorX=-.78;
+ const w=(cfg.w||8)*1.22,d=(cfg.d||7)*1.20,h=4.25,doorW=1.85,doorX=-.78;
  // Four wall planes are built as separate sections, leaving the entrance genuinely open.
  // Every material is DoubleSide so inside faces render from the room as well as outside.
  box(g,cfg.wall,0,h/2,-d/2,w,h,.18);
@@ -167,7 +167,7 @@ const characters=[];
 function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine'){
  const feminine=bodyType==='feminine';
  const root=new THREEJS.Group();root.position.set(x,0,z);scene.add(root);
- const body=new THREEJS.Group();root.add(body);
+ const body=new THREEJS.Group();root.add(body);body.scale.set(.76,.98,.78);body.position.y=.035;
  // Build a continuous, human-like dressed torso from a shaped ring profile instead
  // of stacking round primitives. The reference sheets guide shoulder/waist/hip ratios.
  const torsoProfile=feminine
@@ -227,7 +227,7 @@ function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine')
  cylinder(legR,pants,0,-.48,.005,.115,.085,.30,10);
  sphere(legR,pants,0,-.37,.005,.12,.12,.12);
  box(legR,darkWood,0,-.66,.10,.22,.14,.36);
- const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,role,bodyType,skinMat,shirtMat,walking:false,activity:0};
+ const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,targetX:x+(Math.random()-.5)*4,targetZ:z+(Math.random()-.5)*4,nextAt:2+Math.random()*4,role,bodyType,skinMat,shirtMat,walking:false,activity:0};
  characters.push(person);return person;
 }
 const pip=makePerson('Pip the Merchant',9,11,skinB,shirt4,hair2,'shop','masculine');pip.root.rotation.y=Math.PI;
@@ -249,8 +249,8 @@ function showModal(tag,title,text,actions){modalOpen=true;$('modalTag').textCont
 function closeModal(){modalOpen=false;$('modal').hidden=true;}
 function updateStatus(){$('coins').textContent=player.coins;$('bag').textContent=player.bag.length?player.bag.join(', '):'Empty';}
 function setTask(title,text){$('taskTitle').textContent=title;$('taskText').textContent=text;}
-function enterBuilding(b){player.inside=b;player.pos.set(b.x-.78,0,b.z+.65);player.yaw=0;player.pitch=0;updateCamera();closeModal();setTask(b.name,'Look around, use E near furniture or people, and choose the doorway to leave.');}
-function exitBuilding(){const b=player.inside;if(!b)return;player.inside=null;player.pos.set(b.x-.78,0,b.z+b.d/2+2.4);player.yaw=Math.PI;updateCamera();setTask('A place to call home','Visit the five buildings and see what each neighbor is up to.');closeModal();}
+function enterBuilding(b){player.inside=b;player.pos.set(b.x-.78,0,b.z+b.d/2-1.15);player.yaw=0;player.pitch=0;updateCamera();closeModal();setTask(b.name,'Look around, use E near furniture or people, and choose the doorway to leave.');}
+function exitBuilding(){const b=player.inside;if(!b)return;player.inside=null;player.pos.set(b.x-.78,0,b.z+b.d/2+2.2);player.yaw=Math.PI;updateCamera();setTask('A place to call home','Visit the five buildings and see what each neighbor is up to.');closeModal();}
 function useAction(target){
  if(target==='inn'){showModal('THE COZY ACORN INN','A warm place to rest','Tansy keeps the beds fluffy and the stew hot. A short rest makes the village feel like home.',[{label:'Rest for a while',run:()=>{closeModal();setTask('Well rested','You took a peaceful rest at the inn.');showModal('RESTED','Feeling refreshed!','The sun is shining and you are ready to explore again.',[{label:'Thanks!',run:closeModal}]);}},{label:'Ask about work',run:()=>{player.quest=Math.max(player.quest,1);setTask('A small favor','Tansy mentioned that Pip at the market could use a hand.');showModal('TANSY','Could you help Pip?','The market has been busy. Ask Pip if there is anything you can do.',[{label:'I will help',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
  else if(target==='shop'){showModal('PIP’S MARKET','Bright little things for sale','Pip sells apples for a quick snack and a lucky charm to carry on your travels.',[{label:'Buy apple · 3 coins',run:()=>{if(player.coins>=3){player.coins-=3;player.bag.push('Apple');updateStatus();showModal('PURCHASED','A fresh red apple','Pip gives you a shiny apple. Nice and crisp!',[{label:'Thanks, Pip',run:closeModal}]);}else showModal('NOT ENOUGH COINS','Your purse is light','Come back after helping a neighbor.',[{label:'Okay',run:closeModal}]);}},{label:'Buy lucky charm · 5 coins',run:()=>{if(player.coins>=5){player.coins-=5;player.bag.push('Lucky charm');updateStatus();showModal('PURCHASED','A tiny lucky charm','It glimmers in the sunlight. Pip says it brings good luck.',[{label:'Lovely',run:closeModal}]);}else showModal('NOT ENOUGH COINS','Your purse is light','You need five coins for the charm.',[{label:'Okay',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
@@ -276,9 +276,19 @@ function interact(){if(modalOpen){closeModal();return;}const n=getNearest();if(!
  else if(n.type==='furniture'){if(n.item==='bed')useAction(n.obj.short==='INN'?'inn':'home');else if(n.item==='journal')useAction('home');else if(n.item==='notice board')useAction('hall');else if(n.item==='anvil')useAction('forge');else useAction('shop');}
 }
 function updatePrompt(){const n=getNearest();if(modalOpen){$('prompt').textContent='';return;}if(!n){$('prompt').textContent='WASD to move · Mouse to look · E to interact · Shift to jog';return;}if(n.type==='door')$('prompt').textContent='E · Enter '+n.obj.name;else if(n.type==='exit')$('prompt').textContent='E · Leave building';else if(n.type==='person')$('prompt').textContent='E · Talk to '+n.obj.name;else $('prompt').textContent='E · Use '+n.item;}
-function canMoveTo(x,z){if(Math.abs(x)>43||Math.abs(z)>43)return false;
+function canMoveTo(x,z){if(Math.abs(x)>58||Math.abs(z)>58)return false;
  // Building solid collision, with a doorway gap at the front wall.
- for(const b of buildings){if(player.inside===b)continue;const w=b.w||6,d=b.d||5.4;const inX=Math.abs(x-b.x)<w/2+.25,inZ=Math.abs(z-b.z)<d/2+.25;if(inX&&inZ){const doorGap=Math.abs(x-(b.x-.78))<.82&&z>b.z+d/2-.5;if(!doorGap)return false;}}
+ for(const b of buildings){
+  if(player.inside===b)continue;
+  const inX=Math.abs(x-b.x)<b.w/2+.34,inZ=Math.abs(z-b.z)<b.d/2+.34;
+  if(inX&&inZ){
+   const doorGap=Math.abs(x-(b.x-.78))<1.0&&z>b.z+b.d/2-.7;
+   if(!doorGap)return false;
+  }
+ }
+ // Solid tree trunks, rocks, and villagers stop the player instead of letting them ghost through.
+ for(const o of worldObstacles){if(Math.hypot(x-o.x,z-o.z)<o.r+.28)return false;}
+ for(const p of characters){if(Math.hypot(x-p.root.position.x,z-p.root.position.z)<.62)return false;}
  return true;
 }
 function move(dt){if(modalOpen)return;let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const mag=Math.hypot(forward,side);if(mag>0){forward/=mag;side/=mag;}const speed=(keys.ShiftLeft||keys.ShiftRight||jog?7.1:4.5)*dt;const dx=(-Math.sin(player.yaw)*forward+Math.cos(player.yaw)*side)*speed;const dz=(-Math.cos(player.yaw)*forward-Math.sin(player.yaw)*side)*speed;
@@ -286,7 +296,7 @@ function move(dt){if(modalOpen)return;let forward=(keys.KeyW||keys.ArrowUp||touc
  player.walkTime+=dt* (mag?9:2);
  if(mag){for(const p of characters){const d=Math.hypot(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);if(d<2.2){p.root.rotation.y=Math.atan2(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);}}}
 }
-function animatePeople(t){for(const p of characters){const moving=Math.abs(p.root.position.x-p.homeX)>.02||Math.abs(p.root.position.z-p.homeZ)>.02;p.phase+=.018+(moving?.04:0);const swing=Math.sin(t*5+p.phase)*.06;p.armL.rotation.x=Math.sin(t*4+p.phase)*.16;p.armR.rotation.x=-Math.sin(t*4+p.phase)*.16;p.legL.rotation.x=Math.sin(t*5+p.phase)*.08;p.legR.rotation.x=-Math.sin(t*5+p.phase)*.08;p.body.position.y=Math.sin(t*2+p.phase)*.025;}}
+function animatePeople(t,dt){for(let i=0;i<characters.length;i++){const p=characters[i];p.phase+=dt; if(!p.nextAt)p.nextAt=t+2+i*1.1; if(t>p.nextAt){p.nextAt=t+3+Math.random()*5;p.targetX=p.homeX+(Math.random()-.5)*7;p.targetZ=p.homeZ+(Math.random()-.5)*7;} let dx=(p.targetX??p.homeX)-p.root.position.x,dz=(p.targetZ??p.homeZ)-p.root.position.z; const d=Math.hypot(dx,dz);let walking=d>.22; if(walking){const step=Math.min(d,dt*.72);const nx=p.root.position.x+dx/d*step,nz=p.root.position.z+dz/d*step;let blocked=buildings.some(b=>Math.abs(nx-b.x)<b.w/2+.5&&Math.abs(nz-b.z)<b.d/2+.5);blocked=blocked||worldObstacles.some(o=>Math.hypot(nx-o.x,nz-o.z)<o.r+.35);if(!blocked){p.root.position.x=nx;p.root.position.z=nz;p.root.rotation.y=Math.atan2(dx,dz);}else{p.targetX=p.homeX+(Math.random()-.5)*4;p.targetZ=p.homeZ+(Math.random()-.5)*4;p.nextAt=t+1;}}const swing=walking?Math.sin(t*7+p.phase)*.42:Math.sin(t*2+p.phase)*.025;p.armL.rotation.x=swing;p.armR.rotation.x=-swing;p.legL.rotation.x=-swing*.75;p.legR.rotation.x=swing*.75;p.body.position.y=.035+(walking?Math.abs(Math.sin(t*7+p.phase))*.025:0);}}
 function look(dx,dy){player.yaw-=dx*.003;player.pitch-=dy*.0025;player.pitch=Math.max(-1.2,Math.min(1.2,player.pitch));updateCamera();}
 renderer.domElement.addEventListener('click',()=>{if(!modalOpen&&!('ontouchstart'in window)&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();});
 document.addEventListener('pointerlockchange',()=>{pointerLocked=document.pointerLockElement===renderer.domElement;});
@@ -300,7 +310,7 @@ $('startBtn').onclick=()=>{$('start').hidden=true;if(innerWidth>680&&renderer.do
 $('touchUse').onclick=interact;$('touchRun').addEventListener('touchstart',e=>{e.preventDefault();jog=true;},{passive:false});$('touchRun').addEventListener('touchend',()=>jog=false);$('touchRun').addEventListener('click',()=>{jog=!jog;});
 document.querySelectorAll('[data-move]').forEach(btn=>{const k=btn.dataset.move;const down=e=>{e.preventDefault();touch[k]=true;};const up=e=>{e.preventDefault();touch[k]=false;};btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointerleave',up);btn.addEventListener('pointercancel',up);});
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
-function loop(now){requestAnimationFrame(loop);const dt=Math.min(.045,(now-previousTime)/1000||0);previousTime=now;move(dt);updateCamera();animatePeople(now/1000);updatePrompt();renderer.render(scene,camera);}
+function loop(now){requestAnimationFrame(loop);const dt=Math.min(.045,(now-previousTime)/1000||0);previousTime=now;move(dt);updateCamera();animatePeople(now/1000,dt);updatePrompt();renderer.render(scene,camera);}
 setTask('A place to call home','Explore the village. Visit the inn, market, workshop, cottage and town hall.');updateStatus();requestAnimationFrame(loop);
 })();
 </script>
