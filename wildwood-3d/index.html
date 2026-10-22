@@ -18,7 +18,7 @@
 <div id="crosshair"></div><div id="prompt" class="glass">WASD to move · Mouse to look · E to interact · Shift to jog · Esc to unlock mouse</div>
 <section id="modal" class="glass" hidden><div class="eyebrow" id="modalTag">VILLAGE</div><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></section>
 </div>
-<div id="start"><article><div class="sub">A SMALL WORLD TO BEGIN</div><h1>Welcome to<br>Wildwood Village</h1><p>Explore a bigger village, meet wandering locals, visit the lakeside orchard, and discover five buildings with things to do inside.</p><p><b>Desktop:</b> click Start, move with WASD, look with your mouse, and press E to interact.<br><b>Phone:</b> use the on-screen movement pad and LOOK drag area.</p><button id="startBtn">Start exploring</button></article></div>
+<div id="start"><article><div class="sub">A SMALL WORLD TO BEGIN</div><h1>Welcome to<br>Wildwood Village</h1><p>Explore a lively village, meet wandering locals, visit the bakery and stables, and follow the lanes to the orchard and lake.</p><p><b>Desktop:</b> click Start, move with WASD, look with your mouse, and press E to interact.<br><b>Phone:</b> use the on-screen movement pad and LOOK drag area.</p><button id="startBtn">Start exploring</button></article></div>
 <div class="touch"><div class="dpad"><button data-move="forward">▲</button><button data-move="left">◀</button><button data-move="back">▼</button><button data-move="right">▶</button></div><div class="touchActions"><button id="touchUse">TALK / USE · E</button><button id="touchRun" class="secondary">JOG · SHIFT</button></div></div>
 <script>
 (function(){
@@ -69,28 +69,41 @@ function makePattern(bg,ink,kind){
    cx.strokeStyle=ink;cx.globalAlpha=.28;cx.lineWidth=1;cx.strokeRect(x+1,y+1,57,25);
   }}cx.globalAlpha=1;
  }else if(kind==='grass'){
-  for(let i=0;i<1700;i++){cx.strokeStyle=Math.random()>.5?ink:'#d8e7a0';cx.globalAlpha=.12+Math.random()*.25;cx.lineWidth=1;let x=Math.random()*256,y=Math.random()*256;cx.beginPath();cx.moveTo(x,y);cx.lineTo(x+Math.random()*3-1,y-2-Math.random()*5);cx.stroke();}
-  cx.globalAlpha=1;
+  for(let i=0;i<3200;i++){const x=Math.random()*256,y=Math.random()*256;cx.strokeStyle=Math.random()>.52?ink:'#d8e7a0';cx.globalAlpha=.08+Math.random()*.22;cx.lineWidth=.65+Math.random()*.65;cx.beginPath();cx.moveTo(x,y);cx.lineTo(x+Math.random()*4-2,y-2-Math.random()*7);cx.stroke();}
+  for(let i=0;i<180;i++){const x=Math.random()*256,y=Math.random()*256,r=1+Math.random()*2.5;cx.fillStyle=i%3?'#a8c77a':'#6f9e51';cx.globalAlpha=.14+Math.random()*.16;cx.beginPath();cx.arc(x,y,r,0,Math.PI*2);cx.fill();}
+  for(let i=0;i<28;i++){const x=Math.random()*256,y=Math.random()*256;cx.strokeStyle='#e4edb5';cx.globalAlpha=.18;cx.lineWidth=1.1;cx.beginPath();cx.moveTo(x-2,y);cx.lineTo(x+2,y+1);cx.moveTo(x,y-2);cx.lineTo(x+1,y+2);cx.stroke();}cx.globalAlpha=1;
+ }else if(kind==='cobble'){
+  for(let y=-6,row=0;y<270;y+=34,row++)for(let x=((row%2)*16)-16;x<270;x+=44){const ox=x+(Math.random()-.5)*4,oy=y+(Math.random()-.5)*3,w=36+Math.random()*5,h=25+Math.random()*5;cx.fillStyle='rgba(54,55,48,.24)';cx.beginPath();cx.roundRect(ox+2,oy+3,w,h,6);cx.fill();cx.fillStyle=['#aaa996','#929686','#c0baa2','#a9b5a0'][Math.floor(Math.random()*4)];cx.globalAlpha=.65+Math.random()*.3;cx.beginPath();cx.roundRect(ox,oy,w,h,6);cx.fill();cx.strokeStyle='#e2ddc5';cx.globalAlpha=.28;cx.lineWidth=1;cx.stroke();for(let k=0;k<5;k++){cx.fillStyle=ink;cx.globalAlpha=.14;cx.fillRect(ox+Math.random()*w,oy+Math.random()*h,1,1);}}cx.globalAlpha=1;
+ }else if(kind==='earth'){
+  for(let i=0;i<2500;i++){cx.fillStyle=Math.random()>.55?'#5f4936':'#c2a77e';cx.globalAlpha=.05+Math.random()*.18;const x=Math.random()*256,y=Math.random()*256;cx.fillRect(x,y,.7+Math.random()*2.2,.7+Math.random()*2);}
+  for(let i=0;i<80;i++){const x=Math.random()*256,y=Math.random()*256;cx.strokeStyle=i%2?'#4e6c3b':'#e1c18d';cx.globalAlpha=.22;cx.lineWidth=.8;cx.beginPath();cx.moveTo(x,y);cx.lineTo(x+2+Math.random()*5,y-1-Math.random()*3);cx.stroke();}cx.globalAlpha=1;
+ }else if(kind==='bark'){
+  for(let x=0;x<256;x+=11){cx.strokeStyle=x%3?ink:'#c39a67';cx.globalAlpha=.14+Math.random()*.12;cx.lineWidth=.8+Math.random()*1.6;cx.beginPath();cx.moveTo(x,0);cx.bezierCurveTo(x-4,80,x+5,160,x+Math.random()*3,256);cx.stroke();}
+  for(let i=0;i<30;i++){const x=Math.random()*256,y=Math.random()*256;cx.strokeStyle=ink;cx.globalAlpha=.25;cx.beginPath();cx.ellipse(x,y,2+Math.random()*4,1.5,0,0,Math.PI*2);cx.stroke();}cx.globalAlpha=1;
  }else if(kind==='path'){
   for(let y=0;y<256;y+=32)for(let x=0;x<256;x+=48){let ox=(y/32%2)*24;cx.fillStyle='rgba(92,71,47,.18)';cx.beginPath();cx.roundRect(x+ox+2,y+3,43,25,5);cx.fill();cx.fillStyle=bg;cx.globalAlpha=.65;cx.beginPath();cx.roundRect(x+ox,y,43,24,5);cx.fill();cx.strokeStyle=ink;cx.globalAlpha=.25;cx.stroke();}
   cx.globalAlpha=1;
  }
  const t=new THREEJS.CanvasTexture(cv);t.colorSpace=THREEJS.SRGBColorSpace;t.wrapS=t.wrapT=THREEJS.RepeatWrapping;t.repeat.set(2,2);t.anisotropy=8;return t;
 }
-const texWood=makePattern('#a87951','#51372a','wood'),texStucco=makePattern('#e8d7b5','#9c835e','stucco'),texFabric=makePattern('#c6a16b','#fff0c9','fabric'),texRoof=makePattern('#bd7455','#633f37','shingle'),texSkin=makePattern('#d9ad88','#9e6f58','stucco'),texGrass=makePattern('#79a95e','#477d43','grass'),texPath=makePattern('#d9c18b','#8f7757','path');
+const texWood=makePattern('#a87951','#51372a','wood'),texStucco=makePattern('#e8d7b5','#9c835e','stucco'),texFabric=makePattern('#c6a16b','#fff0c9','fabric'),texRoof=makePattern('#bd7455','#633f37','shingle'),texSkin=makePattern('#d9ad88','#9e6f58','stucco'),texGrass=makePattern('#79a95e','#477d43','grass'),texPath=makePattern('#d9c18b','#8f7757','path'),texCobble=makePattern('#a9aa97','#66715d','cobble'),texEarth=makePattern('#8c6d47','#4f4935','earth'),texBark=makePattern('#795236','#332a22','bark');
 function mat(name,color,rough){
  if(!mats[name]){
   const m=new THREEJS.MeshStandardMaterial({color:color,roughness:rough===undefined?.88:rough,side:THREEJS.DoubleSide});
   if(/wall|innwall|shopwall|forgewall|homewall|hallwall/.test(name))m.map=texStucco;
   else if(/roof|hroof|hallroof/.test(name))m.map=texRoof;
   else if(/wood|door|floor|shelf|sign/.test(name))m.map=texWood;
+  else if(/stone|rock|cobble|well/.test(name))m.map=texCobble;
+  else if(/earth|soil|farm/.test(name))m.map=texEarth;
+  else if(/bark|trunk/.test(name))m.map=texBark;
   else if(/shirt|fabric|cloth|bed|pillow/.test(name))m.map=texFabric;
   else if(/^skin[ABC]$/.test(name))m.map=texSkin;
   if(m.map){m.bumpMap=m.map;m.bumpScale=/wall/.test(name)?.035:.025;}
   m.needsUpdate=true;mats[name]=m;
  }return mats[name];
 }
-const grass=mat('grass',0x79a95e),pathMat=mat('path',0xd9c18b),wood=mat('wood',0x87583b),darkWood=mat('darkWood',0x543a2e),cream=mat('cream',0xf2dfb1),roofRed=mat('roofRed',0xc76e4d),roofBlue=mat('roofBlue',0x528b9a),roofGreen=mat('roofGreen',0x658c58),stone=mat('stone',0x929b8a),glass= new THREEJS.MeshStandardMaterial({color:0x92d9e8,roughness:.2,metalness:.1,side:THREEJS.DoubleSide}),gold=mat('gold',0xf4c75f),leaf1=mat('leaf1',0x3f7d4b),leaf2=mat('leaf2',0x5b984e),leaf3=mat('leaf3',0x78a953),metal=mat('metal',0x5e7474),fabric=mat('fabric',0xe5a15c),skinA=mat('skinA',0xc9825e),skinB=mat('skinB',0xe5b58a),skinC=mat('skinC',0x8d563e),hair1=mat('hair1',0x4a3028),hair2=mat('hair2',0x8e5a32),hair3=mat('hair3',0x292a32),shirt1=mat('shirt1',0x4c9b8b),shirt2=mat('shirt2',0xd87555),shirt3=mat('shirt3',0x7d78bb),shirt4=mat('shirt4',0xe0b84d),pants=mat('pants',0x4a5960),white=mat('white',0xfff1d6);
+const grass=mat('grass',0x79a95e),pathMat=mat('path',0xd9c18b),wood=mat('wood',0x87583b),darkWood=mat('darkWood',0x543a2e),cream=mat('cream',0xf2dfb1),roofRed=mat('roofRed',0xc76e4d),roofBlue=mat('roofBlue',0x528b9a),roofGreen=mat('roofGreen',0x658c58),stone=mat('stone',0x929b8a),soil=mat('farmsoil',0x8c6d47),glass= new THREEJS.MeshStandardMaterial({color:0x92d9e8,roughness:.2,metalness:.1,side:THREEJS.DoubleSide}),gold=mat('gold',0xf4c75f),leaf1=mat('leaf1',0x3f7d4b),leaf2=mat('leaf2',0x5b984e),leaf3=mat('leaf3',0x78a953),metal=mat('metal',0x5e7474),fabric=mat('fabric',0xe5a15c),skinA=mat('skinA',0xc9825e),skinB=mat('skinB',0xe5b58a),skinC=mat('skinC',0x8d563e),hair1=mat('hair1',0x4a3028),hair2=mat('hair2',0x8e5a32),hair3=mat('hair3',0x292a32),shirt1=mat('shirt1',0x4c9b8b),shirt2=mat('shirt2',0xd87555),shirt3=mat('shirt3',0x7d78bb),shirt4=mat('shirt4',0xe0b84d),pants=mat('pants',0x4a5960),white=mat('white',0xfff1d6);
+stone.map=texCobble;stone.bumpMap=texCobble;stone.bumpScale=.055;stone.map.repeat.set(2,2);stone.needsUpdate=true;wood.bumpMap=texWood;wood.bumpScale=.035;wood.needsUpdate=true;
 const boxGeo=new THREEJS.BoxGeometry(1,1,1),sphereGeo=new THREEJS.SphereGeometry(1,12,10),cylGeo=new THREEJS.CylinderGeometry(1,1,1,10);
 function mesh(geo,material,parent,x,y,z,sx,sy,sz){const o=new THREEJS.Mesh(geo,material);o.position.set(x,y,z);if(sx!==undefined)o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;(parent||scene).add(o);return o;}
 function box(parent,material,x,y,z,sx,sy,sz){return mesh(boxGeo,material,parent,x,y,z,sx,sy,sz);}
@@ -100,7 +113,7 @@ function ground(){grass.map=texGrass;grass.bumpMap=texGrass;grass.bumpScale=.018
 // Stylized low-poly grassland and paths
 ground();
 function path(x,z,w,d){const pm=pathMat.clone();pm.map=texPath.clone();pm.bumpMap=pm.map;pm.bumpScale=.025;pm.map.repeat.set(Math.max(2,w/3),Math.max(2,d/3));pm.needsUpdate=true;const p=mesh(new THREEJS.PlaneGeometry(w,d),pm,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
-const worldObstacles=[];const buildings=[];
+const worldObstacles=[];const buildings=[];const animatedFoliage=[];const animatedClouds=[];const animatedRings=[];const animatedFireflies=[];
 path(0,7,5.4,72);path(-4,0,38,4.2);path(0,-11,38,3.8);path(0,15,36,3.8);
 path(22,-15,34,3.8);path(39,-19,3.8,12);path(22,15,30,3.8);
 function makeTree(x,z,scale=1){
@@ -108,14 +121,14 @@ function makeTree(x,z,scale=1){
  cylinder(scene,wood,x,.72*scale,z,.22*scale,.31*scale,1.44*scale,7);
  const canopy=[leaf1,leaf2,leaf3][Math.floor(Math.random()*3)];
  const low=mesh(new THREEJS.ConeGeometry(1.75*scale,h*.62,7),canopy,scene,x,1.25*scale+h*.28,z,1,1,1);low.rotation.y=Math.random()*1.5;
- const high=mesh(new THREEJS.ConeGeometry(1.28*scale,h*.55,7),leaf2,scene,x,1.8*scale+h*.55,z,1,1,1);high.rotation.y=Math.random()*1.5;
+ const high=mesh(new THREEJS.ConeGeometry(1.28*scale,h*.55,7),leaf2,scene,x,1.8*scale+h*.55,z,1,1,1);high.rotation.y=Math.random()*1.5;animatedFoliage.push({mesh:low,phase:Math.random()*6,base:low.rotation.z,amount:.018},{mesh:high,phase:Math.random()*6,base:high.rotation.z,amount:.024});
  worldObstacles.push({x,z,r:.82*scale});
 }
 for(let i=0;i<68;i++){const a=i/68*Math.PI*2,r=65+(i%5)*2.3;makeTree(Math.cos(a)*r,Math.sin(a)*r,.9+(i%3)*.12);}
 for(let i=0;i<62;i++){
  let x=0,z=0,tries=0;
  do{x=(Math.random()-.5)*116;z=(Math.random()-.5)*116;tries++;}
- while(tries<24&&((Math.abs(x)<19&&Math.abs(z)<29)||(x>19&&x<42&&z>-28&&z<-8)||(x>19&&x<40&&z>7&&z<26)));
+ while(tries<24&&((Math.abs(x)<19&&Math.abs(z)<29)||(x>19&&x<42&&z>-28&&z<-8)||(x>19&&x<40&&z>7&&z<35)));
  if(Math.abs(x)>55||Math.abs(z)>55)continue;
  makeTree(x,z,.65+Math.random()*.38);
 }
@@ -146,12 +159,25 @@ function makeBuilding(cfg){
  // front windows and sills
  for(const wx of [-w*.31,w*.31]){box(g,darkWood,wx,1.95,d/2+.035,.95,.82,.12);box(g,glass,wx,1.97,d/2+.11,.75,.61,.06);box(g,wood,wx,1.96,d/2+.15,.08,.65,.06);box(g,wood,wx,1.96,d/2+.15,.75,.07,.06);box(g,cream,wx,1.5,d/2+.13,1.05,.12,.2);}
  // sloping roof halves
- const roofMat=cfg.roof;const r1=box(g,roofMat,-w*.25,h+.4,0,w*.62,.22,d+1.1);r1.rotation.z=-.43;
- const r2=box(g,roofMat,w*.25,h+.4,0,w*.62,.22,d+1.1);r2.rotation.z=.43;
- box(g,cream,0,3.62,d/2+.06,w*.35,.16,.13);
- // chimney
- box(g,stone,w*.28,4.0,-d*.18,.48,1.25,.48);
+ const roofMat=cfg.roof;const roofY=h+w*.13;const r1=box(g,roofMat,-w*.25,roofY,0,w*.62,.22,d+1.1);r1.rotation.z=.43;
+ const r2=box(g,roofMat,w*.25,roofY,0,w*.62,.22,d+1.1);r2.rotation.z=-.43;
+ box(g,cream,0,h-.27,d/2+.06,w*.35,.16,.13);
+ // Chimneys rise above the corrected roof ridge.
+ box(g,stone,w*.28,h+.55,-d*.18,.52,2.0,.52);box(g,darkWood,w*.28,h+1.60,-d*.18,.66,.12,.66);
  // signboard with icon/color
+ // Stone footings, exposed beams, shutters and window planters create a more crafted facade.
+ for(const wz of [-d/2,d/2]){
+  box(g,stone,0,.18,wz,w,.28,.24);
+  box(g,darkWood,-w/2+.12,h/2,wz,.20,h,.22);box(g,darkWood,w/2-.12,h/2,wz,.20,h,.22);
+  box(g,wood,0,h-.17,wz,w,.19,.22);
+ }
+ for(const wx of [-w/2,w/2]){box(g,stone,wx,.18,0,.24,.28,d,.24);box(g,darkWood,wx,h/2,0,.20,h,.22);}
+ for(const wx of [-w*.31,w*.31]){
+  box(g,darkWood,wx-.53,1.96,d/2+.19,.13,.78,.10);box(g,darkWood,wx+.53,1.96,d/2+.19,.13,.78,.10);
+  box(g,wood,wx,1.43,d/2+.24,1.10,.14,.42);box(g,wood,wx,1.52,d/2+.05,1.03,.08,.10);
+  for(let f=0;f<3;f++){sphere(g,[leaf1,leaf2,leaf3][f],wx-.31+f*.30,1.59,d/2+.25,.10,.11,.10);sphere(g,[mat('petalCream',0xf0e5bd),mat('petalRose',0xe49a9c),gold][f],wx-.31+f*.30,1.70,d/2+.25,.045,.045,.045);}
+ }
+
  box(g,darkWood,0,2.25,d/2+.65,1.55,.62,.12);box(g,cfg.sign,0,2.25,d/2+.73,1.36,.43,.04);
  const signText=makeText(cfg.short);signText.position.set(0,2.25,d/2+.77);g.add(signText);
  // interior floor, back wall furniture is visible through door and can be entered
@@ -170,6 +196,11 @@ const shop=makeBuilding({name:'Pip’s Market',short:'SHOP',x:9,z:7,w:8.0,d:7.1,
 const forge=makeBuilding({name:'Bramble & Bolt Workshop',short:'FORGE',x:-9,z:-5,w:8.2,d:7.1,wall:mat('forgewall',0xc8a47c),roof:roofGreen,sign:mat('forgesign',0x4b6444),furnish:(g,w,d)=>{box(g,stone,0,.65,-1.5,2.2,.9,.8);box(g,metal,0,1.17,-1.5,1.6,.18,.6);cylinder(g,metal,.3,1.48,-1.5,.22,.22,.5,8).rotation.z=Math.PI/2;table(g,1.5,.7);for(let i=0;i<3;i++)box(g,wood,-1.6+i*.55,.85,.6,.22,.5,.22);}});
 const cottage=makeBuilding({name:'Mossbell Cottage',short:'HOME',x:9,z:-5,w:8.0,d:7.1,wall:mat('homewall',0xb4d1a0),roof:mat('hroof',0x9b7565),sign:mat('homesign',0x52784b),furnish:(g,w,d)=>{bed(g,-1.45,-.8);table(g,.9,.5);chair(g,1.9,.4,shirt1);box(g,cream,-1.6,1.35,-2.1,1.4,.7,.2);shelf(g,1.55,1.25,-1.8);}});
 const hall=makeBuilding({name:'Town Hall & Notice Board',short:'HALL',x:0,z:-17,w:9.2,d:7.8,wall:mat('hallwall',0xe5d9b5),roof:mat('hallroof',0x7c8197),sign:mat('hallsign',0x4b6477),furnish:(g,w,d)=>{table(g,0,.4);chair(g,-1.3,.3,shirt4);chair(g,1.3,.3,shirt4);box(g,cream,0,1.6,-2.4,3.2,1,.16);box(g,gold,0,1.7,-2.28,.22,.75,.1);for(let i=0;i<3;i++)box(g,wood,-2+i*2,1.1,-1.6,.5,.9,.4);}});
+path(-15,22,3.8,12);path(18,22,3.8,12);
+const bakery=makeBuilding({name:'Clovercrumb Bakery',short:'BAKE',x:-15,z:17,w:7.5,d:6.8,wall:mat('bakeWall',0xe7c49b),roof:roofRed,sign:mat('bakeSign',0x8c5544),furnish:(g,w,d)=>{box(g,stone,-1,.66,-1.45,1.7,.9,.86);box(g,darkWood,-1,1.16,-1.45,1.32,.14,.66);table(g,.25,.82);shelf(g,1.65,1.0,-1.65);for(let i=0;i<3;i++)sphere(g,gold,-1.4+i*.36,1.36,-1.45,.14,.08,.11);}});
+const farmhome=makeBuilding({name:'Meadowridge Farmhouse',short:'FARM',x:18,z:17,w:7.5,d:7.1,wall:mat('farmWall',0xd7d5a2),roof:roofGreen,sign:mat('farmSign',0x527547),furnish:(g,w,d)=>{table(g,0,.6);chair(g,-1.1,.45,shirt1);shelf(g,1.65,1.05,-1.7);box(g,cream,-1.8,1.22,-1.7,.9,.9,.25);}});
+const stable=makeBuilding({name:'Willowbend Stables',short:'STABLE',x:14,z:-17,w:7.5,d:7.1,wall:mat('stableWall',0xc4ae8b),roof:mat('stableRoof',0x806b58),sign:mat('stableSign',0x536d4b),furnish:(g,w,d)=>{box(g,wood,-1.25,.42,-1.15,1.65,.55,1.8);for(let i=0;i<4;i++)box(g,gold,-1.65+(i%2)*.42,.82,-1.5+Math.floor(i/2)*.42,.28,.32,.25);box(g,stone,1.3,.36,-.8,1.4,.25,.5);}});
+const woodHut=makeBuilding({name:'Pinecone Woodcutter Hut',short:'HUT',x:-14,z:-17,w:7.2,d:7.0,wall:mat('hutWall',0xcaa47e),roof:mat('hutRoof',0x8f6751),sign:mat('hutSign',0x574735),furnish:(g,w,d)=>{table(g,0,.55);for(let i=0;i<5;i++)cylinder(g,wood,-1.5+(i%3)*.32,.48,-1.65+Math.floor(i/3)*.38,.12,.12,.72,7).rotation.x=Math.PI/2;shelf(g,1.65,1.05,-1.7);}});
 function addOutdoorDecor(){
  // Signpost and central well have solid collision footprints.
  cylinder(scene,wood,0,.9,1,.12,.17,1.8,8);worldObstacles.push({x:0,z:1,r:.3});
@@ -205,10 +236,53 @@ function addLakeAndOrchard(){
   cylinder(scene,darkWood,x,1.12,z,.075,.09,2.2,8);box(scene,darkWood,x,2.18,z,.34,.10,.34);sphere(scene,glow,x,2.0,z,.15,.18,.15);worldObstacles.push({x,z,r:.24});
  }
  for(let i=0;i<15;i++){const a=i/15*Math.PI*2,r=96+(i%3)*6,x=Math.cos(a)*r,z=Math.sin(a)*r;const hill=mesh(new THREEJS.ConeGeometry(13+(i%4)*2,18+(i%5)*3,7),[leaf1,leaf2,leaf3][i%3],scene,x,5,z,1,1,.78);hill.rotation.y=a*.2;}
+ for(let i=0;i<3;i++){const ring=new THREEJS.Mesh(new THREEJS.RingGeometry(.35,.44,32),new THREEJS.MeshBasicMaterial({color:0xc9f8ee,transparent:true,opacity:.24,side:THREEJS.DoubleSide,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.set(30.0+i*.8,.055,-20.0+i*.45);scene.add(ring);animatedRings.push({mesh:ring,phase:i*2.1});}
+ const fireflyMat=new THREEJS.MeshBasicMaterial({color:0xf7e9a0});
+ for(let i=0;i<18;i++){const f=mesh(new THREEJS.SphereGeometry(.045,6,5),fireflyMat,scene,25+Math.random()*12,.35+Math.random()*1.8,-24+Math.random()*8,.75,1,.75);f.castShadow=false;animatedFireflies.push({mesh:f,phase:Math.random()*6,baseX:f.position.x,baseY:f.position.y,baseZ:f.position.z});}
  const cloudMat=new THREEJS.MeshStandardMaterial({color:0xf2f5e8,roughness:1,transparent:true,opacity:.82});
- for(let i=0;i<7;i++){const g=new THREEJS.Group();g.position.set(-42+i*14,21+(i%3)*2,-34+(i%4)*23);scene.add(g);for(let j=0;j<4;j++){const c=mesh(sphereGeo,cloudMat,g,(j-1.5)*.75,(j%2)*.28,0,1.15,.42,.62);c.castShadow=false;c.receiveShadow=false;}}
+ for(let i=0;i<7;i++){const g=new THREEJS.Group();g.position.set(-42+i*14,21+(i%3)*2,-34+(i%4)*23);scene.add(g);for(let j=0;j<4;j++){const c=mesh(sphereGeo,cloudMat,g,(j-1.5)*.75,(j%2)*.28,0,1.15,.42,.62);c.castShadow=false;c.receiveShadow=false;}animatedClouds.push(g);}
 }
 addLakeAndOrchard();
+function addVillageGroundwork(){
+ const plazaMat=stone.clone();plazaMat.map=texCobble.clone();plazaMat.map.repeat.set(4,4);plazaMat.bumpMap=plazaMat.map;plazaMat.bumpScale=.045;plazaMat.needsUpdate=true;
+ const plaza=mesh(new THREEJS.CircleGeometry(7.5,48),plazaMat,scene,0,-.065,-1);plaza.rotation.x=-Math.PI/2;
+ const cart=new THREEJS.Group();cart.position.set(-7.2,0,19.2);scene.add(cart);
+ box(cart,wood,0,.72,0,1.9,.20,1.25);box(cart,darkWood,0,.52,0,1.75,.18,1.12);
+ for(const dx of [-.83,.83])for(const dz of [-.43,.43])box(cart,wood,dx,1.0,dz,.10,.48,.10);
+ for(const dx of [-.92,.92]){const wheel=cylinder(cart,darkWood,dx,.42,.10,.34,.34,.16,12);wheel.rotation.z=Math.PI/2;}
+ box(cart,wood,0,.9,-.95,1.0,.12,.85);worldObstacles.push({x:-7.2,z:19.2,r:1.35});
+ for(const [x,z] of [[-13.9,-3.1],[-12.9,-3.1],[13.6,11.9],[15.0,11.9]]){
+  cylinder(scene,wood,x,.42,z,.30,.34,.84,10);for(let y of [.18,.45,.72])cylinder(scene,darkWood,x,y,z,.32,.32,.045,10);worldObstacles.push({x,z,r:.40});
+ }
+ for(let i=0;i<3;i++){const x=-17.5+i*.55;box(scene,wood,x,.26,-4.2,.48,.5,.45);box(scene,darkWood,x,.52,-4.2,.49,.045,.46);worldObstacles.push({x,z:-4.2,r:.34});}
+ const field=mesh(new THREEJS.PlaneGeometry(12,9),soil,scene,29,.005,29);field.rotation.x=-Math.PI/2;
+ for(let row=0;row<6;row++)for(let col=0;col<9;col++){
+  const x=24.2+col*1.12,z=25.7+row*1.05;cylinder(scene,leaf1,x,.17,z,.025,.035,.34,5);sphere(scene,leaf2,x-.10,.26,z,.13,.10,.08);sphere(scene,leaf3,x+.10,.26,z-.03,.13,.10,.08);
+  if((row+col)%3===0)sphere(scene,mat('cropGold',0xe0b957),x,.30,z+.07,.07,.07,.07);
+ }
+ for(let x=23.4;x<=34.2;x+=1.4){mesh(new THREEJS.DodecahedronGeometry(.16,0),stone,scene,x,.08,24.9);mesh(new THREEJS.DodecahedronGeometry(.16,0),stone,scene,x,.08,32.1);}
+ const horse=new THREEJS.Group();horse.position.set(14.5,0,-17.25);scene.add(horse);
+ sphere(horse,mat('horseCoat',0x80543b),0,1.02,0,.58,.39,.86);sphere(horse,mat('horseShoulder',0x8e6345),-.04,1.18,-.40,.38,.43,.40);
+ cylinder(horse,mat('horseCoat',0x80543b),0,1.48,-.48,.20,.27,.82,9).rotation.x=-.55;
+ sphere(horse,mat('horseHead',0x80543b),0,1.82,-.75,.22,.29,.27);sphere(horse,mat('horseMuzzle',0xd2ad91),0,1.70,-.96,.15,.13,.15);
+ const horseLegs=[];for(const [x,z] of [[-.36,-.55],[.36,-.55],[-.35,.52],[.35,.52]])horseLegs.push(cylinder(horse,mat('horseLeg',0x4d382b),x,.48,z,.09,.07,.80,7));
+ sphere(horse,mat('horseMane',0x3e2b24),0,1.89,-.55,.21,.30,.25);
+ const horseTail=sphere(horse,mat('horseTail',0x3e2b24),0,1.15,.77,.12,.31,.14);
+ for(const x of [-.11,.11])sphere(horse,white,x,1.84,-.97,.035,.04,.025);
+ horse.userData.phase=Math.random()*7;horse.userData.tail=horseTail;horse.userData.legs=horseLegs;worldObstacles.push({x:14.5,z:-17.25,r:1.15});
+ animatedFoliage.push({mesh:horse,phase:horse.userData.phase,amount:.01,horse:true});
+}
+addVillageGroundwork();
+function addGroundCover(){
+ const dummy=new THREEJS.Object3D();
+ const isRoad=(x,z)=>(Math.abs(x)<3&&z>-31&&z<45)||(Math.abs(z)<2.5&&x>-25&&x<16)||(Math.abs(z+11)<2.35&&x>-25&&x<25)||(Math.abs(z-15)<2.35&&x>-20&&x<39)||(Math.abs(z+15)<2.35&&x>4&&x<40)||(Math.abs(x-22)<2.35&&z>-18&&z<17)||(Math.abs(x-39)<2.25&&z>-26&&z<-12)||(Math.abs(z-22)<2.15&&((x>-18&&x<-12)||(x>15&&x<22)))||(Math.hypot(x,z+1)<7.5)||(x>22&&x<36&&z>8&&z<35)||(x>22&&x<36&&z>-25&&z<-12);
+ const inHouse=(x,z)=>buildings.some(b=>Math.abs(x-b.x)<b.w/2+1.2&&Math.abs(z-b.z)<b.d/2+1.2);
+ const grassGeo=new THREEJS.ConeGeometry(.038,.24,4),inst=new THREEJS.InstancedMesh(grassGeo,leaf3,3400);inst.castShadow=false;inst.receiveShadow=true;inst.frustumCulled=false;
+ let count=0,tries=0;while(count<3400&&tries<25000){tries++;const x=(Math.random()-.5)*142,z=(Math.random()-.5)*142;if(isRoad(x,z)||inHouse(x,z)||Math.abs(x)>70||Math.abs(z)>70)continue;if(worldObstacles.some(o=>Math.hypot(x-o.x,z-o.z)<o.r+.65))continue;dummy.position.set(x,-.005+Math.random()*.012,z);dummy.rotation.set((Math.random()-.5)*.15,Math.random()*Math.PI*2,0);const scale=.5+Math.random()*1.25;dummy.scale.set(scale,scale,scale);dummy.updateMatrix();inst.setMatrixAt(count++,dummy.matrix);}
+ inst.count=count;inst.instanceMatrix.needsUpdate=true;scene.add(inst);
+ for(let i=0,placed=0;i<1600&&placed<115;i++){const x=(Math.random()-.5)*130,z=(Math.random()-.5)*130;if(Math.abs(x)>64||Math.abs(z)>64||isRoad(x,z)||inHouse(x,z)||Math.hypot(x,z+1)<8||Math.hypot(x-31,z+20)<7)continue;if(worldObstacles.some(o=>Math.hypot(x-o.x,z-o.z)<o.r+1))continue;if(Math.random()<.42)continue;flower(x,z,[0xf6d76f,0xf2a4ad,0xe7f0d1][placed%3]);placed++;}
+}
+addGroundCover();
 // Character rigs: soft colors, skin tones, hair, eyes, moving arms and legs.
 const characters=[];
 function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine'){
@@ -280,9 +354,13 @@ function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine')
 const pip=makePerson('Pip the Merchant',8.22,13.0,skinB,shirt4,hair2,'shop','masculine');pip.root.rotation.y=Math.PI;
 const bram=makePerson('Bram the Maker',-9.78,1.0,skinC,shirt2,hair3,'forge','masculine');bram.root.rotation.y=Math.PI;
 const mila=makePerson('Mila',8.22,1.0,skinA,shirt1,hair1,'home','feminine');mila.root.rotation.y=Math.PI;
-const elder=makePerson('Mayor Alder',-.78,-10.6,skinB,shirt3,hair2,'hall','masculine');elder.root.rotation.y=0;
+const elder=makePerson('Mayor Alder',-.78,-10.6,skinB,shirt3,hair2,'hall','masculine');elder.root.rotation.y=Math.PI;
 const innkeeper=makePerson('Tansy the Innkeeper',-9.78,13.0,skinC,shirt1,hair1,'inn','feminine');innkeeper.root.rotation.y=Math.PI;
 const guide=makePerson('Juniper',0,4,skinA,shirt3,hair3,'guide','feminine');guide.root.rotation.y=Math.PI;
+const ivy=makePerson('Ivy the Baker',-15.78,22.8,skinB,shirt2,hair2,'bakery','feminine');ivy.root.rotation.y=Math.PI;
+const rowan=makePerson('Rowan the Farmer',17.22,23.0,skinC,shirt1,hair1,'farm','masculine');rowan.root.rotation.y=Math.PI;
+const ollie=makePerson('Ollie the Stablehand',13.22,-10.7,skinB,shirt4,hair3,'stable','masculine');ollie.root.rotation.y=Math.PI;
+const sage=makePerson('Sage the Woodcutter',-14.78,-10.6,skinA,shirt3,hair1,'hut','feminine');sage.root.rotation.y=Math.PI;
 function labelSprite(text){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='rgba(34,54,42,.85)';ctx.roundRect(5,5,502,118,22);ctx.fill();ctx.fillStyle='#fff1cb';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64);const t=new THREEJS.CanvasTexture(c);t.colorSpace=THREEJS.SRGBColorSpace;const s=new THREEJS.Sprite(new THREEJS.SpriteMaterial({map:t,transparent:true,depthTest:false}));s.scale.set(3.0,.75,1);return s;}
 for(const p of characters){const l=labelSprite(p.name);l.position.set(0,2.55,0);p.root.add(l);p.label=l;}
 function makeBench(x,z){box(scene,wood,x,.55,z,2,.18,.55);for(let dx of [-.8,.8])box(scene,darkWood,x+dx,.27,z,.14,.5,.55);box(scene,wood,x,.92,z-.2,2,.65,.14);worldObstacles.push({x,z,r:1.02});}
@@ -304,6 +382,10 @@ function useAction(target){
  else if(target==='forge'){showModal('BRAMBLE & BOLT WORKSHOP','Tools, toys and tinkering','Bram can make you a simple wooden practice sword from scraps. It is more for fun than fighting.',[{label:'Craft wooden sword · 2 coins',run:()=>{if(player.coins>=2&&!player.bag.includes('Wooden sword')){player.coins-=2;player.bag.push('Wooden sword');updateStatus();showModal('CRAFTED','A wooden practice sword','Bram sands the handle smooth and hands it over. Try it outside!',[{label:'Thanks, Bram',run:closeModal}]);}else showModal('WORKSHOP','No crafting needed','Either you already have one or you need two coins.',[{label:'Okay',run:closeModal}]);}},{label:'Ask Bram to teach you',run:()=>{player.coins+=2;updateStatus();showModal('A LITTLE LESSON','You helped at the workbench','Bram shows you how to sand a plank and gives you two coins for the help.',[{label:'Nice!',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
  else if(target==='home'){showModal('MOSSBELL COTTAGE','A cozy little home','Mila keeps a journal, a soft bed, and a shelf of curious things she has found around the meadow.',[{label:'Read the journal',run:()=>{showModal('MILA’S JOURNAL','Notes from the meadow','“The village is small, but every day something new happens. I saw blue butterflies by the creek and heard music near the old trees.”', [{label:'Close journal',run:closeModal}]);}},{label:'Ask Mila about the village',run:()=>{player.coins+=1;updateStatus();showModal('MILA','A welcome gift','Mila gives you one coin for helping water her garden. Thank you, she says!',[{label:'You’re welcome',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
  else if(target==='hall'){showModal('TOWN HALL','The village notice board','Mayor Alder has pinned a simple first-day task: meet the neighbors and try one activity in each building.',[{label:'Accept village task',run:()=>{player.quest=2;setTask('Village helper','Try an activity at the inn, market, workshop, cottage and town hall. You have started already!');player.coins+=3;updateStatus();showModal('TASK ACCEPTED','Three coins for getting started','Mayor Alder gives you a few coins to help you settle in.',[{label:'Let’s do it',run:closeModal}]);}},{label:'Read the notice board',run:()=>{showModal('NOTICE BOARD','Today in Wildwood','• Fresh bread at the inn\n• New trinkets at the market\n• Workshop open until sundown\n• Lost cat spotted near the trees', [{label:'Close',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='bakery'){showModal('CLOVERCRUMB BAKERY','Fresh from the oven','Ivy bakes honey oat loaves at sunrise and keeps a few warm for travelers.',[{label:'Buy bread · 2 coins',run:()=>{if(player.coins>=2){player.coins-=2;player.bag.push('Bread');updateStatus();showModal('FRESH BREAD','A warm loaf','Ivy wraps a still-warm loaf in a clean cloth.',[{label:'Thank you',run:closeModal}]);}else showModal('LOW ON COINS','Bread costs two coins','Earn a few coins by helping another neighbor.',[{label:'Okay',run:closeModal}]);}},{label:'Help at the bakery',run:()=>{player.coins+=2;updateStatus();showModal('BAKERY HELPER','You packed the morning order','Ivy pays you two coins for bundling bread for the market.',[{label:'Glad to help',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='farm'){showModal('MEADOWRIDGE FARM','Fresh produce and field work','Rowan grows carrots, greens and apples in the sunny field beside the orchard.',[{label:'Help harvest · earn 2 coins',run:()=>{player.coins+=2;player.bag.push('Carrots');updateStatus();showModal('HARVEST COMPLETE','A good basket of carrots','Rowan gives you a few coins and a bundle of fresh carrots.',[{label:'Nice!',run:closeModal}]);}},{label:'Ask about the orchard',run:()=>{showModal('THE ORCHARD','A little growing season','Apples ripen first near the lake; the garden path connects back to the main square.',[{label:'Thanks',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='stable'){showModal('WILLOWBEND STABLES','A quiet place for the village horse','Ollie keeps the stall clean and the water trough full. The horse likes a gentle hello.',[{label:'Brush the horse',run:()=>{player.coins+=1;updateStatus();showModal('GOOD HORSE','A shiny coat and a happy snort','Ollie thanks you for helping care for the horse and gives you one coin.',[{label:'Anytime',run:closeModal}]);}},{label:'Ask about deliveries',run:()=>{showModal('VILLAGE DELIVERIES','Along the old road','Ollie says the bakery and market share a delivery route across the green.',[{label:'Got it',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='hut'){showModal('PINECONE WOODCUTTER HUT','Logs, planks and kindling','Sage prepares firewood for the inn and repairs the old fences around the village.',[{label:'Bundle firewood · earn 2 coins',run:()=>{player.coins+=2;player.bag.push('Firewood');updateStatus();showModal('WOOD BUNDLE','Ready for the inn','Sage thanks you for helping stack kindling by the door.',[{label:'Happy to help',run:closeModal}]);}},{label:'Ask for a tip',run:()=>{showModal('A WOODCUTTER’S TIP','Follow the grain','Sage says to look for the small trail lanterns when you are not sure where to go.',[{label:'Thanks',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
  else if(target==='guide'){showModal('JUNIPER','Welcome to Wildwood!','This is a little starter village. The colorful buildings each have an activity. Walk up to a door or neighbor and press E. The sign above a door tells you where it leads.',[{label:'How do I move?',run:()=>{showModal('CONTROLS','Easy as a stroll','Desktop: WASD to walk, mouse to look, E to use, Shift to jog. Phone: drag the open view to look, use the pad to walk, and tap Talk / Use.',[{label:'Got it',run:closeModal}]);}},{label:'Thanks!',run:closeModal}]);}
 }
 function getNearest(){
@@ -311,16 +393,16 @@ function getNearest(){
  for(const b of buildings){if(player.inside===b)continue;let dx=player.pos.x-b.doorX,dz=player.pos.z-b.doorZ;let d=Math.hypot(dx,dz);if(d<bestD){best={type:'door',obj:b,d};bestD=d;}}
  for(const p of characters){const d=Math.hypot(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);if(d<2.45&&d<bestD){best={type:'person',obj:p,d};bestD=d;}}
  if(player.inside){const b=player.inside;const d=Math.hypot(player.pos.x-(b.x-.78),player.pos.z-(b.z+b.d/2+.7));if(d<2.6&&d<bestD){best={type:'exit',obj:b,d};bestD=d;}
- const furniture={inn:[['bed',-1.55,-.8],['bed',1.45,-.8],['table',0,1.15]],shop:[['counter',0,.6]],forge:[['anvil',0,-1.5]],home:[['journal',-1.6,1.35],['bed',-1.45,-.8]],hall:[['notice board',0,1.6],['table',0,.4]]}[b.short.toLowerCase()]||[];
+ const furniture={inn:[['bed',-1.55,-.8],['bed',1.45,-.8],['table',0,1.15]],shop:[['counter',0,.6]],forge:[['anvil',0,-1.5]],home:[['journal',-1.6,1.35],['bed',-1.45,-.8]],hall:[['notice board',0,1.6],['table',0,.4]],bake:[['oven',-1,-1.45],['counter',0,.82]],farm:[['table',0,.6],['shelf',1.65,-1.7]],stable:[['hay',-1.25,-1.15],['trough',1.3,-.8]],hut:[['workbench',0,.55],['logs',-1.5,-1.65]]}[b.short.toLowerCase()]||[];
  for(const f of furniture){const d=Math.hypot(player.pos.x-(b.x+f[1]),player.pos.z-(b.z+f[2]));if(d<1.7&&d<bestD){best={type:'furniture',obj:b,item:f[0],d};bestD=d;}}
  }
  return best;
 }
 function interact(){if(modalOpen){closeModal();return;}const n=getNearest();if(!n){showModal('WILDERNESS','Nothing nearby','Walk toward a villager, building entrance or useful object, then try again.',[{label:'Okay',run:closeModal}]);return;}
- if(n.type==='person'){const p=n.obj;if(p.role==='shop')useAction('shop');else if(p.role==='forge')useAction('forge');else if(p.role==='home')useAction('home');else if(p.role==='hall')useAction('hall');else if(p.role==='inn')useAction('inn');else useAction('guide');}
+ if(n.type==='person'){const p=n.obj;if(p.role==='shop')useAction('shop');else if(p.role==='forge')useAction('forge');else if(p.role==='home')useAction('home');else if(p.role==='hall')useAction('hall');else if(p.role==='inn')useAction('inn');else if(p.role==='bakery')useAction('bakery');else if(p.role==='farm')useAction('farm');else if(p.role==='stable')useAction('stable');else if(p.role==='hut')useAction('hut');else useAction('guide');}
  else if(n.type==='door'){enterBuilding(n.obj);}
  else if(n.type==='exit'){exitBuilding();}
- else if(n.type==='furniture'){if(n.item==='bed')useAction(n.obj.short==='INN'?'inn':'home');else if(n.item==='journal')useAction('home');else if(n.item==='notice board')useAction('hall');else if(n.item==='anvil')useAction('forge');else useAction('shop');}
+ else if(n.type==='furniture'){if(n.item==='bed')useAction(n.obj.short==='INN'?'inn':'home');else if(n.item==='journal')useAction('home');else if(n.item==='notice board')useAction('hall');else if(n.item==='anvil')useAction('forge');else if(n.item==='oven'||(n.item==='counter'&&n.obj.short==='BAKE'))useAction('bakery');else if(n.item==='hay'||n.item==='trough')useAction('stable');else if(n.item==='produce'||(n.item==='shelf'&&n.obj.short==='FARM'))useAction('farm');else if(n.item==='workbench'||n.item==='logs')useAction('hut');else useAction('shop');}
 }
 function updatePrompt(){const n=getNearest();if(modalOpen){$('prompt').textContent='';return;}if(!n){$('prompt').textContent='WASD to move · Mouse to look · E to interact · Shift to jog';return;}if(n.type==='door')$('prompt').textContent='E · Enter '+n.obj.name;else if(n.type==='exit')$('prompt').textContent='E · Leave building';else if(n.type==='person')$('prompt').textContent='E · Talk to '+n.obj.name;else $('prompt').textContent='E · Use '+n.item;}
 function insideFurnitureBlocks(b,x,z){
@@ -409,8 +491,14 @@ $('startBtn').onclick=()=>{$('start').hidden=true;if(innerWidth>680&&renderer.do
 $('touchUse').onclick=interact;$('touchRun').addEventListener('touchstart',e=>{e.preventDefault();jog=true;},{passive:false});$('touchRun').addEventListener('touchend',()=>jog=false);$('touchRun').addEventListener('click',()=>{jog=!jog;});
 document.querySelectorAll('[data-move]').forEach(btn=>{const k=btn.dataset.move;const down=e=>{e.preventDefault();touch[k]=true;};const up=e=>{e.preventDefault();touch[k]=false;};btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointerleave',up);btn.addEventListener('pointercancel',up);});
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
-function loop(now){requestAnimationFrame(loop);const dt=Math.min(.045,(now-previousTime)/1000||0);previousTime=now;move(dt);updateCamera();animatePeople(now/1000,dt);updatePrompt();renderer.render(scene,camera);}
-setTask('A place to call home','Explore the village. Visit the inn, market, workshop, cottage and town hall.');updateStatus();requestAnimationFrame(loop);
+function animateWorld(t,dt){
+ for(const f of animatedFoliage){if(f.horse){f.mesh.rotation.y=Math.sin(t*.9+f.phase)*.045;f.mesh.userData.tail.rotation.x=Math.sin(t*2+f.phase)*.20;f.mesh.userData.legs.forEach((leg,i)=>{leg.rotation.x=Math.sin(t*1.6+f.phase+i)*.025;});continue;}f.mesh.rotation.z=f.base+Math.sin(t*.72+f.phase)*f.amount;}
+ for(let i=0;i<animatedClouds.length;i++){const c=animatedClouds[i];c.position.x+=dt*(.12+(i%3)*.035);if(c.position.x>76)c.position.x=-76;}
+ for(const r of animatedRings){const k=(Math.sin(t*.8+r.phase)+1)/2;r.mesh.scale.setScalar(.72+k*.75);r.mesh.material.opacity=.08+k*.13;}
+ for(const f of animatedFireflies){f.mesh.position.x=f.baseX+Math.sin(t*.8+f.phase)*.42;f.mesh.position.y=f.baseY+Math.sin(t*1.4+f.phase)*.20;f.mesh.position.z=f.baseZ+Math.cos(t*.7+f.phase)*.42;f.mesh.visible=Math.sin(t*.75+f.phase)>.05;}
+}
+function loop(now){requestAnimationFrame(loop);const dt=Math.min(.04,(now-previousTime)/1000||0);previousTime=now;move(dt);updateCamera();animatePeople(now/1000,dt);animateWorld(now/1000,dt);updatePrompt();renderer.render(scene,camera);}
+setTask('A place to call home','Explore the village green, meet the neighbors, visit the bakery and stables, then follow the trails to the orchard and lake.');updateStatus();requestAnimationFrame(loop);
 })();
 </script>
 </body>
