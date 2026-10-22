@@ -168,48 +168,67 @@ function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine')
  const feminine=bodyType==='feminine';
  const root=new THREEJS.Group();root.position.set(x,0,z);scene.add(root);
  const body=new THREEJS.Group();root.add(body);
- // Silhouette proportions guided by the user's front/side/back anatomy reference sheets,
- // translated into a friendly, fully clothed low-poly game style rather than realistic nude meshes.
+ // Build a continuous, human-like dressed torso from a shaped ring profile instead
+ // of stacking round primitives. The reference sheets guide shoulder/waist/hip ratios.
+ const torsoProfile=feminine
+  ? [[.19,0],[.27,.12],[.29,.30],[.225,.52],[.25,.70],[.31,.88],[.30,.96],[.20,1.02]]
+  : [[.25,0],[.32,.12],[.30,.31],[.245,.52],[.28,.72],[.38,.91],[.39,.98],[.22,1.04]];
+ const torsoGeo=new THREEJS.LatheGeometry(torsoProfile.map(p=>new THREEJS.Vector2(p[0],p[1])),14);
+ torsoGeo.scale(1,1,.78);
+ const torso=new THREEJS.Mesh(torsoGeo,shirtMat);torso.position.set(0,.63,0);torso.castShadow=true;torso.receiveShadow=true;body.add(torso);
+ // Subtle hip volume connects the waist to the legs and keeps a believable silhouette.
+ const pelvisGeo=new THREEJS.LatheGeometry((feminine?[[.22,0],[.32,.08],[.34,.22],[.27,.34],[.18,.38]]:[[.24,0],[.30,.08],[.29,.23],[.25,.34],[.18,.38]]).map(p=>new THREEJS.Vector2(p[0],p[1])),12);
+ pelvisGeo.scale(1,1,.82);const pelvis=new THREEJS.Mesh(pelvisGeo,shirtMat);pelvis.position.y=.53;pelvis.castShadow=true;body.add(pelvis);
+ // Neck and head sit naturally above the shoulders.
+ cylinder(body,skinMat,0,1.60,0,.105,.12,.24,10);
+ sphere(body,skinMat,0,1.82,0,feminine?.255:.275,.32,.245);
+ // Hair cap and back hair: silhouettes vary by character, without changing the anatomy.
+ sphere(body,hairMat,0,2.035,-.035,feminine?.275:.29,.17,.26);
+ sphere(body,hairMat,-.235,1.88,0,.075,.17,.12);sphere(body,hairMat,.235,1.88,0,.075,.17,.12);
  if(feminine){
-  // Make the difference readable in gameplay: narrower shoulders, defined waist,
-  // wider hip line, and a flared outer garment rather than a tiny radius adjustment.
-  cylinder(body,shirtMat,0,1.16,0,.245,.34,.68,10);
-  sphere(body,shirtMat,0,1.40,-.01,.315,.21,.29);
-  cylinder(body,shirtMat,0,.78,0,.235,.35,.46,10); // fitted tunic over the hips
-  const skirt=new THREEJS.Mesh(new THREEJS.CylinderGeometry(.22,.40,.56,12,1,false),shirtMat);
-  skirt.position.set(0,.70,0);skirt.castShadow=true;skirt.receiveShadow=true;body.add(skirt);
-  // Long back hair and side locks create a visibly different head silhouette.
-  sphere(body,hairMat,0,1.72,-.205,.245,.31,.13);
-  sphere(body,hairMat,-.265,1.68,-.015,.075,.28,.12);
-  sphere(body,hairMat,.265,1.68,-.015,.075,.28,.12);
- }else{
-  cylinder(body,shirtMat,0,1.13,0,.34,.39,.72,10);
-  sphere(body,shirtMat,0,1.35,-.01,.41,.25,.33); // clearly broader shoulders and chest
+  sphere(body,hairMat,0,1.79,-.17,.22,.30,.12);
+  sphere(body,hairMat,-.245,1.78,-.04,.065,.24,.10);sphere(body,hairMat,.245,1.78,-.04,.065,.24,.10);
  }
- sphere(body,skinMat,0,1.73,0,feminine?.285:.3,.34,.28);
- // Hair cap, side locks, ears, brows and a small rounded nose make faces read clearly at game distance.
- sphere(body,hairMat,0,1.96,-.035,feminine?.30:.31,.19,.3);
- sphere(body,hairMat,-.255,1.77,0,.095,.2,.14);sphere(body,hairMat,.255,1.77,0,.095,.2,.14);
- sphere(body,skinMat,-.3,1.73,.005,.055,.075,.055);sphere(body,skinMat,.3,1.73,.005,.055,.075,.055);
- for(let ex of [-.112,.112]){
-  sphere(body,white,ex,1.765,.247,.069,.073,.035);
-  sphere(body,mat('eye'+name,0x2a2822),ex,1.765,.278,.03,.043,.018);
-  box(body,hairMat,ex,1.86,.235,.12,.035,.045);
+ sphere(body,skinMat,-.27,1.82,.005,.05,.065,.05);sphere(body,skinMat,.27,1.82,.005,.05,.065,.05);
+ for(const ex of [-.102,.102]){
+  sphere(body,white,ex,1.845,.215,.061,.066,.032);
+  sphere(body,mat('eye'+name,0x29251f),ex,1.845,.244,.027,.039,.017);
+  box(body,hairMat,ex,1.925,.207,.105,.025,.035);
  }
- sphere(body,skinMat,0,1.69,.285,.055,.07,.055);
- sphere(body,mat('cheek'+name,0xd9897a),-.18,1.68,.238,.055,.035,.018);
- sphere(body,mat('cheek2'+name,0xd9897a),.18,1.68,.238,.055,.035,.018);
- box(body,skinMat,0,1.57,.245,.14,.045,.04);
- // Collar and belt details
- cylinder(body,cream,0,1.45,.01,.18,.2,.09,8);
- if(!feminine){box(body,darkWood,0,.99,.005,.59,.09,.48);box(body,gold,.18,.99,.25,.09,.09,.035);}
- // Sleeves extend the shirt silhouette into the animated arms.
- sphere(body,shirtMat,feminine?-.29:-.37,1.36,0,feminine?.13:.16,.19,.17);sphere(body,shirtMat,feminine?.29:.37,1.36,0,feminine?.13:.16,.19,.17);
- const armL=new THREEJS.Group();armL.position.set(feminine?-.30:-.39,1.38,0);body.add(armL);cylinder(armL,skinMat,0,-.23,0,.105,.09,.48,7);armL.rotation.z=-.15;
- const armR=new THREEJS.Group();armR.position.set(feminine?.30:.39,1.38,0);body.add(armR);cylinder(armR,skinMat,0,-.23,0,.105,.09,.48,7);armR.rotation.z=.15;
- const legL=new THREEJS.Group();legL.position.set(-.16,.78,0);body.add(legL);cylinder(legL,pants,0,-.28,0,.13,.1,.56,7);box(legL,darkWood,0,-.57,.08,.2,.12,.34);
- const legR=new THREEJS.Group();legR.position.set(.16,.78,0);body.add(legR);cylinder(legR,pants,0,-.28,0,.13,.1,.56,7);box(legR,darkWood,0,-.57,.08,.2,.12,.34);
- const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,role,bodyType,skinMat,shirtMat,walking:false,activity:0};characters.push(person);return person;
+ sphere(body,skinMat,0,1.785,.25,.045,.06,.05);
+ sphere(body,mat('cheek'+name,0xd9897a),-.155,1.77,.205,.045,.028,.014);
+ sphere(body,mat('cheek2'+name,0xd9897a),.155,1.77,.205,.045,.028,.014);
+ // Collar, cuffs, and a belt tailored to the character's waist.
+ cylinder(body,cream,0,1.53,.01,.145,.16,.08,8);
+ if(!feminine){box(body,darkWood,0,1.00,.005,.49,.075,.42);box(body,gold,.15,1.00,.22,.07,.075,.03);}
+ else {box(body,darkWood,0,1.00,.005,.43,.055,.37);}
+ // Arms use articulated shoulder pivots and tapered sleeves/forearms.
+ const shoulderX=feminine?.30:.37;
+ sphere(body,shirtMat,-shoulderX,1.49,0,feminine?.145:.17,.19,.16);
+ sphere(body,shirtMat,shoulderX,1.49,0,feminine?.145:.17,.19,.16);
+ const armL=new THREEJS.Group();armL.position.set(-shoulderX,1.48,0);body.add(armL);
+ cylinder(armL,shirtMat,0,-.13,0,.125,.105,.30,9);
+ cylinder(armL,skinMat,0,-.39,.005,.09,.075,.28,9);
+ sphere(armL,skinMat,0,-.54,.025,.09,.105,.065);
+ armL.rotation.z=-.08;
+ const armR=new THREEJS.Group();armR.position.set(shoulderX,1.48,0);body.add(armR);
+ cylinder(armR,shirtMat,0,-.13,0,.125,.105,.30,9);
+ cylinder(armR,skinMat,0,-.39,.005,.09,.075,.28,9);
+ sphere(armR,skinMat,0,-.54,.025,.09,.105,.065);
+ armR.rotation.z=.08;
+ // Longer tapered trouser legs, knees, ankles, and shaped boots.
+ const legL=new THREEJS.Group();legL.position.set(-.16,.70,0);body.add(legL);
+ cylinder(legL,pants,0,-.22,0,.145,.115,.43,10);
+ cylinder(legL,pants,0,-.48,.005,.115,.085,.30,10);
+ sphere(legL,pants,0,-.37,.005,.12,.12,.12);
+ box(legL,darkWood,0,-.66,.10,.22,.14,.36);
+ const legR=new THREEJS.Group();legR.position.set(.16,.70,0);body.add(legR);
+ cylinder(legR,pants,0,-.22,0,.145,.115,.43,10);
+ cylinder(legR,pants,0,-.48,.005,.115,.085,.30,10);
+ sphere(legR,pants,0,-.37,.005,.12,.12,.12);
+ box(legR,darkWood,0,-.66,.10,.22,.14,.36);
+ const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,role,bodyType,skinMat,shirtMat,walking:false,activity:0};
+ characters.push(person);return person;
 }
 const pip=makePerson('Pip the Merchant',9,11,skinB,shirt4,hair2,'shop','masculine');pip.root.rotation.y=Math.PI;
 const bram=makePerson('Bram the Maker',-9,-1,skinC,shirt2,hair3,'forge','masculine');bram.root.rotation.y=Math.PI;
