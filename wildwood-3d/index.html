@@ -140,10 +140,9 @@ function makeBuilding(cfg){
  box(g,darkWood,doorLeft-.06,1.15,d/2+.06,.14,2.3,.22);
  box(g,darkWood,doorRight+.06,1.15,d/2+.06,.14,2.3,.22);
  box(g,wood,doorX,2.32,d/2+.06,doorW+.25,.16,.22);
- box(g,darkWood,doorX,1.12,d/2+.025,doorW-.1,2.18,.1);
- box(g,wood,doorX,1.12,d/2+.105,doorW-.27,1.96,.07);
- box(g,mat(cfg.name+'doorInside',0x3d3028),doorX,1.12,d/2+.15,doorW-.45,1.78,.04);
- sphere(g,gold,doorX+.28,1.08,d/2+.19,.07,.07,.07);
+ // Leave the entry visibly open; the door leaf is swung onto the left jamb.
+ const openLeaf=box(g,wood,doorLeft+.36,1.12,d/2+.28,.58,2.05,.10);openLeaf.rotation.y=-.72;
+ sphere(g,gold,doorLeft+.57,1.08,d/2+.43,.045,.055,.045);
  // front windows and sills
  for(const wx of [-w*.31,w*.31]){box(g,darkWood,wx,1.95,d/2+.035,.95,.82,.12);box(g,glass,wx,1.97,d/2+.11,.75,.61,.06);box(g,wood,wx,1.96,d/2+.15,.08,.65,.06);box(g,wood,wx,1.96,d/2+.15,.75,.07,.06);box(g,cream,wx,1.5,d/2+.13,1.05,.12,.2);}
  // sloping roof halves
