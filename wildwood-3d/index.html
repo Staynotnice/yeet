@@ -33,7 +33,7 @@ scene.background=new THREEJS.Color(0xb7dce0);
 scene.fog=new THREEJS.Fog(0xb7dce0,82,178);
 const camera=new THREEJS.PerspectiveCamera(70,innerWidth/innerHeight,.08,260);
 const renderer=new THREEJS.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
-renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.75));
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREEJS.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=true;
 renderer.outputColorSpace=THREEJS.SRGBColorSpace;renderer.toneMapping=THREEJS.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
 document.body.appendChild(renderer.domElement);
@@ -195,8 +195,8 @@ function addLakeAndOrchard(){
   for(let a=0;a<3;a++){const angle=a/3*Math.PI*2;sphere(scene,mat('orchardFruit'+(row+col+a)%3,[0xc95547,0xe3b54d,0x7caa55][(row+col+a)%3]),x+Math.cos(angle)*.48,1.45+(a%2)*.25,z+Math.sin(angle)*.38,.11,.12,.11);}
   worldObstacles.push({x,z,r:.58});
  }
- for(let x=24;x<=36;x+=2){box(scene,darkWood,x,.48,9.5,.10,.8,.10);box(scene,darkWood,x,.48,20.0,.10,.8,.10);}
- for(let z=10.5;z<=19.5;z+=2){box(scene,darkWood,23.8,.48,z,.10,.8,.10);box(scene,darkWood,36.2,.48,z,.10,.8,.10);}
+ for(let x=24;x<=36;x+=2){box(scene,darkWood,x,.48,9.5,.10,.8,.10);box(scene,darkWood,x,.48,20.0,.10,.8,.10);worldObstacles.push({x,z:9.5,r:.28},{x,z:20,r:.28});}
+ for(let z=10.5;z<=19.5;z+=1.5){if(!(z>13.2&&z<16.8))box(scene,darkWood,23.8,.48,z,.10,.8,.10);box(scene,darkWood,36.2,.48,z,.10,.8,.10);if(!(z>13.2&&z<16.8))worldObstacles.push({x:23.8,z,r:.28});worldObstacles.push({x:36.2,z,r:.28});}
  for(let z of [9.5,20])box(scene,wood,30,.55,z,12.5,.11,.12);
  const glow=new THREEJS.MeshStandardMaterial({color:0xffdf93,emissive:0xffb64d,emissiveIntensity:1.2,roughness:.35});
  for(const [x,z] of [[-5,7],[5,7],[-5,-8],[5,-8],[0,18],[19,-15],[36,-17]]){
@@ -332,8 +332,17 @@ function insideFurnitureBlocks(b,x,z){
  }[b.short]||[];
  return blocks.some(o=>Math.abs(lx-o[0])<o[2]&&Math.abs(lz-o[1])<o[3]);
 }
+function hitsOrchardFence(x,z){
+ if(x>=23.25&&x<=36.75&&(Math.abs(z-9.5)<.26||Math.abs(z-20)<.26))return true;
+ if((Math.abs(x-23.8)<.26||Math.abs(x-36.2)<.26)&&z>9.6&&z<19.9){
+  if(Math.abs(x-23.8)<.26&&z>13.2&&z<16.8)return false;
+  return true;
+ }
+ return false;
+}
 function canMoveTo(x,z){
  if(Math.abs(x)>82||Math.abs(z)>82)return false;
+ if(hitsOrchardFence(x,z))return false;
  for(const b of buildings){
   const lx=x-b.x,lz=z-b.z;
   if(player.inside===b){
