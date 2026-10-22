@@ -128,7 +128,7 @@ for(let i=0;i<68;i++){const a=i/68*Math.PI*2,r=65+(i%5)*2.3;makeTree(Math.cos(a)
 for(let i=0;i<62;i++){
  let x=0,z=0,tries=0;
  do{x=(Math.random()-.5)*116;z=(Math.random()-.5)*116;tries++;}
- while(tries<24&&((Math.abs(x)<19&&Math.abs(z)<29)||(x>19&&x<42&&z>-28&&z<-8)||(x>19&&x<42&&z>7&&z<35)||(Math.abs(x+14)<8&&Math.abs(z-25)<7)||(Math.abs(x-17)<8&&Math.abs(z-31)<8)||(Math.abs(x-51)<10&&Math.abs(z-29)<8)));
+ while(tries<24&&((Math.abs(x)<19&&Math.abs(z)<29)||(x>19&&x<42&&z>-28&&z<-8)||(x>19&&x<42&&z>7&&z<35)||(Math.abs(x+21)<8&&Math.abs(z-25)<7)||(Math.abs(x-17)<8&&Math.abs(z-31)<8)||(Math.abs(x-51)<10&&Math.abs(z-29)<8)));
  if(Math.abs(x)>55||Math.abs(z)>55)continue;
  makeTree(x,z,.65+Math.random()*.38);
 }
@@ -196,8 +196,8 @@ const shop=makeBuilding({name:'Pip’s Market',short:'SHOP',x:9,z:7,w:8.0,d:7.1,
 const forge=makeBuilding({name:'Bramble & Bolt Workshop',short:'FORGE',x:-9,z:-5,w:8.2,d:7.1,wall:mat('forgewall',0xc8a47c),roof:roofGreen,sign:mat('forgesign',0x4b6444),furnish:(g,w,d)=>{box(g,stone,0,.65,-1.5,2.2,.9,.8);box(g,metal,0,1.17,-1.5,1.6,.18,.6);cylinder(g,metal,.3,1.48,-1.5,.22,.22,.5,8).rotation.z=Math.PI/2;table(g,1.5,.7);for(let i=0;i<3;i++)box(g,wood,-1.6+i*.55,.85,.6,.22,.5,.22);}});
 const cottage=makeBuilding({name:'Mossbell Cottage',short:'HOME',x:9,z:-5,w:8.0,d:7.1,wall:mat('homewall',0xb4d1a0),roof:mat('hroof',0x9b7565),sign:mat('homesign',0x52784b),furnish:(g,w,d)=>{bed(g,-1.45,-.8);table(g,.9,.5);chair(g,1.9,.4,shirt1);box(g,cream,-1.6,1.35,-2.1,1.4,.7,.2);shelf(g,1.55,1.25,-1.8);}});
 const hall=makeBuilding({name:'Town Hall & Notice Board',short:'HALL',x:0,z:-17,w:9.2,d:7.8,wall:mat('hallwall',0xe5d9b5),roof:mat('hallroof',0x7c8197),sign:mat('hallsign',0x4b6477),furnish:(g,w,d)=>{table(g,0,.4);chair(g,-1.3,.3,shirt4);chair(g,1.3,.3,shirt4);box(g,cream,0,1.6,-2.4,3.2,1,.16);box(g,gold,0,1.7,-2.28,.22,.75,.1);for(let i=0;i<3;i++)box(g,wood,-2+i*2,1.1,-1.6,.5,.9,.4);}});
-path(-21,24,3.6,18);path(-15,32,14,3.6);path(39,28,3.8,30);path(28.5,38,25,3.8);
-const bakery=makeBuilding({name:'Clovercrumb Bakery',short:'BAKE',x:-15,z:25,w:7.5,d:6.8,wall:mat('bakeWall',0xe7c49b),roof:roofRed,sign:mat('bakeSign',0x8c5544),furnish:(g,w,d)=>{box(g,stone,-1,.66,-1.45,1.7,.9,.86);box(g,darkWood,-1,1.16,-1.45,1.32,.14,.66);table(g,.25,.82);shelf(g,1.65,1.0,-1.65);for(let i=0;i<3;i++)sphere(g,gold,-1.4+i*.36,1.36,-1.45,.14,.08,.11);}});
+path(-22,15,12,3.8);path(-28,24,3.6,18);path(-21,32,14,3.6);path(39,28,5,30);path(28.5,38,25,3.8);
+const bakery=makeBuilding({name:'Clovercrumb Bakery',short:'BAKE',x:-21,z:25,w:7.5,d:6.8,wall:mat('bakeWall',0xe7c49b),roof:roofRed,sign:mat('bakeSign',0x8c5544),furnish:(g,w,d)=>{box(g,stone,-1,.66,-1.45,1.7,.9,.86);box(g,darkWood,-1,1.16,-1.45,1.32,.14,.66);table(g,.25,.82);shelf(g,1.65,1.0,-1.65);for(let i=0;i<3;i++)sphere(g,gold,-1.4+i*.36,1.36,-1.45,.14,.08,.11);}});
 const farmhome=makeBuilding({name:'Meadowridge Farmhouse',short:'FARM',x:17,z:31,w:7.5,d:7.1,wall:mat('farmWall',0xd7d5a2),roof:roofGreen,sign:mat('farmSign',0x527547),furnish:(g,w,d)=>{table(g,0,.6);chair(g,-1.1,.45,shirt1);shelf(g,1.65,1.05,-1.7);box(g,cream,-1.8,1.22,-1.7,.9,.9,.25);}});
 const stable=makeBuilding({name:'Willowbend Stables',short:'STABLE',x:14,z:-17,w:7.5,d:7.1,wall:mat('stableWall',0xc4ae8b),roof:mat('stableRoof',0x806b58),sign:mat('stableSign',0x536d4b),furnish:(g,w,d)=>{box(g,wood,-1.25,.42,-1.15,1.65,.55,1.8);for(let i=0;i<4;i++)box(g,gold,-1.65+(i%2)*.42,.82,-1.5+Math.floor(i/2)*.42,.28,.32,.25);box(g,stone,1.3,.36,-.8,1.4,.25,.5);}});
 const woodHut=makeBuilding({name:'Pinecone Woodcutter Hut',short:'HUT',x:-14,z:-17,w:7.2,d:7.0,wall:mat('hutWall',0xcaa47e),roof:mat('hutRoof',0x8f6751),sign:mat('hutSign',0x574735),furnish:(g,w,d)=>{table(g,0,.55);for(let i=0;i<5;i++)cylinder(g,wood,-1.5+(i%3)*.32,.48,-1.65+Math.floor(i/3)*.38,.12,.12,.72,7).rotation.x=Math.PI/2;shelf(g,1.65,1.05,-1.7);}});
@@ -226,11 +226,11 @@ function addLakeAndOrchard(){
   worldObstacles.push({x,z,r:.58});
  }
  for(let x=24;x<=36;x+=2){box(scene,darkWood,x,.48,9.5,.10,.8,.10);box(scene,darkWood,x,.48,20.0,.10,.8,.10);worldObstacles.push({x,z:9.5,r:.28},{x,z:20,r:.28});}
- for(let z=10.5;z<=19.5;z+=1.5){if(!(z>14.2&&z<15.8))box(scene,darkWood,23.8,.48,z,.10,.8,.10);box(scene,darkWood,36.2,.48,z,.10,.8,.10);if(!(z>14.2&&z<15.8))worldObstacles.push({x:23.8,z,r:.28});worldObstacles.push({x:36.2,z,r:.28});}
+ for(let z=10.5;z<=19.5;z+=1.5){if(!(z>14.2&&z<15.8)){box(scene,darkWood,23.8,.48,z,.10,.8,.10);box(scene,darkWood,36.2,.48,z,.10,.8,.10);worldObstacles.push({x:23.8,z,r:.28},{x:36.2,z,r:.28});}}
  for(let z of [9.5,20])box(scene,wood,30,.55,z,12.5,.11,.12);
  // Side rails match the blocking boundary; the west-side gate remains clear.
  box(scene,wood,23.8,.55,12.4,.12,.11,2.2);box(scene,wood,23.8,.55,17.7,.12,.11,2.7);
- box(scene,wood,36.2,.55,15.0,.12,.11,9.6);
+ box(scene,wood,36.2,.55,12.0,.12,.11,3.8);box(scene,wood,36.2,.55,18.0,.12,.11,3.8);
  const glow=new THREEJS.MeshStandardMaterial({color:0xffdf93,emissive:0xffb64d,emissiveIntensity:1.2,roughness:.35});
  for(const [x,z] of [[-5,7],[5,7],[-5,-8],[5,-8],[0,18],[19,-15],[36,-17]]){
   cylinder(scene,darkWood,x,1.12,z,.075,.09,2.2,8);box(scene,darkWood,x,2.18,z,.34,.10,.34);sphere(scene,glow,x,2.0,z,.15,.18,.15);worldObstacles.push({x,z,r:.24});
@@ -275,7 +275,7 @@ function addVillageGroundwork(){
 addVillageGroundwork();
 function addGroundCover(){
  const dummy=new THREEJS.Object3D();
- const isRoad=(x,z)=>(Math.abs(x)<3&&z>-31&&z<45)||(Math.abs(z)<2.5&&x>-25&&x<16)||(Math.abs(z+11)<2.35&&x>-25&&x<25)||(Math.abs(z-15)<2.35&&x>-20&&x<39)||(Math.abs(z+15)<2.35&&x>4&&x<40)||(Math.abs(x-22)<2.35&&z>-18&&z<17)||(Math.abs(x-39)<2.25&&z>-26&&z<-12)||(Math.abs(z-22)<2.15&&((x>-18&&x<-12)||(x>15&&x<22)))||(Math.abs(x+21)<2.2&&z>14&&z<34)||(Math.abs(z-32)<2.15&&x>-23&&x<-7)||(Math.abs(x-39)<2.25&&z>12&&z<44)||(Math.abs(z-38)<2.15&&x>15&&x<42)||(Math.hypot(x,z+1)<7.5)||(x>22&&x<36&&z>8&&z<35)||(x>22&&x<36&&z>-25&&z<-12);
+ const isRoad=(x,z)=>(Math.abs(x)<3&&z>-31&&z<45)||(Math.abs(z)<2.5&&x>-25&&x<16)||(Math.abs(z+11)<2.35&&x>-25&&x<25)||(Math.abs(z-15)<2.35&&x>-20&&x<39)||(Math.abs(z+15)<2.35&&x>4&&x<40)||(Math.abs(x-22)<2.35&&z>-18&&z<17)||(Math.abs(x-39)<2.25&&z>-26&&z<-12)||(Math.abs(z-22)<2.15&&((x>-18&&x<-12)||(x>15&&x<22)))||(Math.abs(x+28)<2.2&&z>14&&z<34)||(Math.abs(z-32)<2.15&&x>-29&&x<-13)||(Math.abs(x-39)<2.75&&z>12&&z<44)||(Math.abs(z-38)<2.15&&x>15&&x<42)||(Math.hypot(x,z+1)<7.5)||(x>22&&x<36&&z>8&&z<35)||(x>22&&x<36&&z>-25&&z<-12);
  const inHouse=(x,z)=>buildings.some(b=>Math.abs(x-b.x)<b.w/2+1.2&&Math.abs(z-b.z)<b.d/2+1.2);
  const grassGeo=new THREEJS.ConeGeometry(.038,.24,4),inst=new THREEJS.InstancedMesh(grassGeo,leaf3,3400);inst.castShadow=false;inst.receiveShadow=true;inst.frustumCulled=false;
  let count=0,tries=0;while(count<3400&&tries<25000){tries++;const x=(Math.random()-.5)*142,z=(Math.random()-.5)*142;if(isRoad(x,z)||inHouse(x,z)||Math.abs(x)>70||Math.abs(z)>70)continue;if(worldObstacles.some(o=>Math.hypot(x-o.x,z-o.z)<o.r+.65))continue;dummy.position.set(x,-.005+Math.random()*.012,z);dummy.rotation.set((Math.random()-.5)*.15,Math.random()*Math.PI*2,0);const scale=.5+Math.random()*1.25;dummy.scale.set(scale,scale,scale);dummy.updateMatrix();inst.setMatrixAt(count++,dummy.matrix);}
@@ -357,7 +357,7 @@ const mila=makePerson('Mila',8.22,1.0,skinA,shirt1,hair1,'home','feminine');mila
 const elder=makePerson('Mayor Alder',-.78,-10.6,skinB,shirt3,hair2,'hall','masculine');elder.root.rotation.y=Math.PI;
 const innkeeper=makePerson('Tansy the Innkeeper',-9.78,13.0,skinC,shirt1,hair1,'inn','feminine');innkeeper.root.rotation.y=Math.PI;
 const guide=makePerson('Juniper',0,4,skinA,shirt3,hair3,'guide','feminine');guide.root.rotation.y=Math.PI;
-const ivy=makePerson('Ivy the Baker',-15.78,30.8,skinB,shirt2,hair2,'bakery','feminine');ivy.root.rotation.y=Math.PI;
+const ivy=makePerson('Ivy the Baker',-21.78,30.8,skinB,shirt2,hair2,'bakery','feminine');ivy.root.rotation.y=Math.PI;
 const rowan=makePerson('Rowan the Farmer',16.22,37.0,skinC,shirt1,hair1,'farm','masculine');rowan.root.rotation.y=Math.PI;
 const ollie=makePerson('Ollie the Stablehand',13.22,-10.7,skinB,shirt4,hair3,'stable','masculine');ollie.root.rotation.y=Math.PI;
 const sage=makePerson('Sage the Woodcutter',-14.78,-10.6,skinA,shirt3,hair1,'hut','feminine');sage.root.rotation.y=Math.PI;
@@ -419,7 +419,7 @@ function insideFurnitureBlocks(b,x,z){
 function hitsOrchardFence(x,z){
  if(x>=23.25&&x<=36.75&&(Math.abs(z-9.5)<.26||Math.abs(z-20)<.26))return true;
  if((Math.abs(x-23.8)<.26||Math.abs(x-36.2)<.26)&&z>9.6&&z<19.9){
-  if(Math.abs(x-23.8)<.26&&z>13.2&&z<16.8)return false;
+  if(z>14.2&&z<15.8)return false;
   return true;
  }
  return false;
