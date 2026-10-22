@@ -139,7 +139,7 @@ function showModal(tag,title,text,actions){modalOpen=true;$('modalTag').textCont
 function closeModal(){modalOpen=false;$('modal').hidden=true;}
 function updateStatus(){$('coins').textContent=player.coins;$('bag').textContent=player.bag.length?player.bag.join(', '):'Empty';}
 function setTask(title,text){$('taskTitle').textContent=title;$('taskText').textContent=text;}
-function enterBuilding(b){player.inside=b;player.pos.set(b.x-.78,0,b.z+.65);player.yaw=Math.PI;player.pitch=0;updateCamera();closeModal();setTask(b.name,'Look around, use E near furniture or people, and choose the doorway to leave.');}
+function enterBuilding(b){player.inside=b;player.pos.set(b.x-.78,0,b.z+.65);player.yaw=0;player.pitch=0;updateCamera();closeModal();setTask(b.name,'Look around, use E near furniture or people, and choose the doorway to leave.');}
 function exitBuilding(){const b=player.inside;if(!b)return;player.inside=null;player.pos.set(b.x-.78,0,b.z+b.d/2+2.4);player.yaw=Math.PI;updateCamera();setTask('A place to call home','Visit the five buildings and see what each neighbor is up to.');closeModal();}
 function useAction(target){
  if(target==='inn'){showModal('THE COZY ACORN INN','A warm place to rest','Tansy keeps the beds fluffy and the stew hot. A short rest makes the village feel like home.',[{label:'Rest for a while',run:()=>{closeModal();setTask('Well rested','You took a peaceful rest at the inn.');showModal('RESTED','Feeling refreshed!','The sun is shining and you are ready to explore again.',[{label:'Thanks!',run:closeModal}]);}},{label:'Ask about work',run:()=>{player.quest=Math.max(player.quest,1);setTask('A small favor','Tansy mentioned that Pip at the market could use a hand.');showModal('TANSY','Could you help Pip?','The market has been busy. Ask Pip if there is anything you can do.',[{label:'I will help',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
@@ -151,7 +151,7 @@ function useAction(target){
 }
 function getNearest(){
  let best=null,bestD=2.5;
- for(const b of buildings){let dx=player.pos.x-b.doorX,dz=player.pos.z-b.doorZ;let d=Math.hypot(dx,dz);if(d<bestD){best={type:'door',obj:b,d};bestD=d;}}
+ for(const b of buildings){if(player.inside===b)continue;let dx=player.pos.x-b.doorX,dz=player.pos.z-b.doorZ;let d=Math.hypot(dx,dz);if(d<bestD){best={type:'door',obj:b,d};bestD=d;}}
  for(const p of characters){const d=Math.hypot(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);if(d<2.45&&d<bestD){best={type:'person',obj:p,d};bestD=d;}}
  if(player.inside){const b=player.inside;const d=Math.hypot(player.pos.x-(b.x-.78),player.pos.z-(b.z+b.d/2+.7));if(d<2.6&&d<bestD){best={type:'exit',obj:b,d};bestD=d;}
  const furniture={inn:[['bed',-1.55,-.8],['bed',1.45,-.8],['table',0,1.15]],shop:[['counter',0,.6]],forge:[['anvil',0,-1.5]],home:[['journal',-1.6,1.35],['bed',-1.45,-.8]],hall:[['notice board',0,1.6],['table',0,.4]]}[b.short.toLowerCase()]||[];
