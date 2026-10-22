@@ -102,7 +102,7 @@ ground();
 function path(x,z,w,d){const pm=pathMat.clone();pm.map=texPath.clone();pm.bumpMap=pm.map;pm.bumpScale=.025;pm.map.repeat.set(Math.max(2,w/3),Math.max(2,d/3));pm.needsUpdate=true;const p=mesh(new THREEJS.PlaneGeometry(w,d),pm,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
 const worldObstacles=[];const buildings=[];
 path(0,7,5.4,72);path(-4,0,38,4.2);path(0,-11,38,3.8);path(0,15,36,3.8);
-path(22,-15,30,3.8);path(22,15,30,3.8);
+path(22,-15,34,3.8);path(39,-19,3.8,12);path(22,15,30,3.8);
 function makeTree(x,z,scale=1){
  const h=(3.0+Math.random()*1.2)*scale;
  cylinder(scene,wood,x,.72*scale,z,.22*scale,.31*scale,1.44*scale,7);
@@ -196,8 +196,11 @@ function addLakeAndOrchard(){
   worldObstacles.push({x,z,r:.58});
  }
  for(let x=24;x<=36;x+=2){box(scene,darkWood,x,.48,9.5,.10,.8,.10);box(scene,darkWood,x,.48,20.0,.10,.8,.10);worldObstacles.push({x,z:9.5,r:.28},{x,z:20,r:.28});}
- for(let z=10.5;z<=19.5;z+=1.5){if(!(z>13.2&&z<16.8))box(scene,darkWood,23.8,.48,z,.10,.8,.10);box(scene,darkWood,36.2,.48,z,.10,.8,.10);if(!(z>13.2&&z<16.8))worldObstacles.push({x:23.8,z,r:.28});worldObstacles.push({x:36.2,z,r:.28});}
+ for(let z=10.5;z<=19.5;z+=1.5){if(!(z>14.2&&z<15.8))box(scene,darkWood,23.8,.48,z,.10,.8,.10);box(scene,darkWood,36.2,.48,z,.10,.8,.10);if(!(z>14.2&&z<15.8))worldObstacles.push({x:23.8,z,r:.28});worldObstacles.push({x:36.2,z,r:.28});}
  for(let z of [9.5,20])box(scene,wood,30,.55,z,12.5,.11,.12);
+ // Side rails match the blocking boundary; the west-side gate remains clear.
+ box(scene,wood,23.8,.55,12.4,.12,.11,2.2);box(scene,wood,23.8,.55,17.7,.12,.11,2.7);
+ box(scene,wood,36.2,.55,15.0,.12,.11,9.6);
  const glow=new THREEJS.MeshStandardMaterial({color:0xffdf93,emissive:0xffb64d,emissiveIntensity:1.2,roughness:.35});
  for(const [x,z] of [[-5,7],[5,7],[-5,-8],[5,-8],[0,18],[19,-15],[36,-17]]){
   cylinder(scene,darkWood,x,1.12,z,.075,.09,2.2,8);box(scene,darkWood,x,2.18,z,.34,.10,.34);sphere(scene,glow,x,2.0,z,.15,.18,.15);
