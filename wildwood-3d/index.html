@@ -164,15 +164,23 @@ function addOutdoorDecor(){
 addOutdoorDecor();
 // Character rigs: soft colors, skin tones, hair, eyes, moving arms and legs.
 const characters=[];
-function makePerson(name,x,z,skinMat,shirtMat,hairMat,role){
+function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine'){
+ const feminine=bodyType==='feminine';
  const root=new THREEJS.Group();root.position.set(x,0,z);scene.add(root);
  const body=new THREEJS.Group();root.add(body);
- // Soft, toy-like proportions with layered clothing and a lightly textured skin surface.
- cylinder(body,shirtMat,0,1.13,0,.34,.39,.72,10);
- sphere(body,shirtMat,0,1.35,-.01,.37,.22,.31);
- sphere(body,skinMat,0,1.73,0,.3,.34,.28);
+ // Silhouette proportions guided by the user's front/side/back anatomy reference sheets,
+ // translated into a friendly, fully clothed low-poly game style rather than realistic nude meshes.
+ if(feminine){
+  cylinder(body,shirtMat,0,1.12,0,.285,.37,.7,10); // tapered waist and fuller hips
+  sphere(body,shirtMat,0,1.38,-.01,.355,.23,.30); // softer shoulder/chest silhouette
+  sphere(body,shirtMat,0,.78,0,.36,.22,.30); // clothing gives the hip line a natural transition
+ }else{
+  cylinder(body,shirtMat,0,1.13,0,.34,.39,.72,10);
+  sphere(body,shirtMat,0,1.35,-.01,.39,.23,.32); // broader shoulders and torso
+ }
+ sphere(body,skinMat,0,1.73,0,feminine?.285:.3,.34,.28);
  // Hair cap, side locks, ears, brows and a small rounded nose make faces read clearly at game distance.
- sphere(body,hairMat,0,1.96,-.035,.31,.19,.3);
+ sphere(body,hairMat,0,1.96,-.035,feminine?.30:.31,.19,.3);
  sphere(body,hairMat,-.255,1.77,0,.095,.2,.14);sphere(body,hairMat,.255,1.77,0,.095,.2,.14);
  sphere(body,skinMat,-.3,1.73,.005,.055,.075,.055);sphere(body,skinMat,.3,1.73,.005,.055,.075,.055);
  for(let ex of [-.112,.112]){
@@ -194,14 +202,14 @@ function makePerson(name,x,z,skinMat,shirtMat,hairMat,role){
  const armR=new THREEJS.Group();armR.position.set(.36,1.38,0);body.add(armR);cylinder(armR,skinMat,0,-.23,0,.105,.09,.48,7);armR.rotation.z=.15;
  const legL=new THREEJS.Group();legL.position.set(-.16,.78,0);body.add(legL);cylinder(legL,pants,0,-.28,0,.13,.1,.56,7);box(legL,darkWood,0,-.57,.08,.2,.12,.34);
  const legR=new THREEJS.Group();legR.position.set(.16,.78,0);body.add(legR);cylinder(legR,pants,0,-.28,0,.13,.1,.56,7);box(legR,darkWood,0,-.57,.08,.2,.12,.34);
- const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,role,skinMat,shirtMat,walking:false,activity:0};characters.push(person);return person;
+ const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,role,bodyType,skinMat,shirtMat,walking:false,activity:0};characters.push(person);return person;
 }
-const pip=makePerson('Pip the Merchant',9,11,skinB,shirt4,hair2,'shop');pip.root.rotation.y=Math.PI;
-const bram=makePerson('Bram the Maker',-9,-1,skinC,shirt2,hair3,'forge');bram.root.rotation.y=Math.PI;
-const mila=makePerson('Mila',9,-1,skinA,shirt1,hair1,'home');mila.root.rotation.y=Math.PI;
-const elder=makePerson('Mayor Alder',0,-13,skinB,shirt3,hair2,'hall');elder.root.rotation.y=Math.PI;
-const innkeeper=makePerson('Tansy the Innkeeper',-9,11,skinC,shirt1,hair1,'inn');innkeeper.root.rotation.y=0;
-const guide=makePerson('Juniper',0,4,skinA,shirt3,hair3,'guide');guide.root.rotation.y=Math.PI;
+const pip=makePerson('Pip the Merchant',9,11,skinB,shirt4,hair2,'shop','masculine');pip.root.rotation.y=Math.PI;
+const bram=makePerson('Bram the Maker',-9,-1,skinC,shirt2,hair3,'forge','masculine');bram.root.rotation.y=Math.PI;
+const mila=makePerson('Mila',9,-1,skinA,shirt1,hair1,'home','feminine');mila.root.rotation.y=Math.PI;
+const elder=makePerson('Mayor Alder',0,-13,skinB,shirt3,hair2,'hall','masculine');elder.root.rotation.y=Math.PI;
+const innkeeper=makePerson('Tansy the Innkeeper',-9,11,skinC,shirt1,hair1,'inn','feminine');innkeeper.root.rotation.y=0;
+const guide=makePerson('Juniper',0,4,skinA,shirt3,hair3,'guide','feminine');guide.root.rotation.y=Math.PI;
 function labelSprite(text){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='rgba(34,54,42,.85)';ctx.roundRect(5,5,502,118,22);ctx.fill();ctx.fillStyle='#fff1cb';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64);const t=new THREEJS.CanvasTexture(c);t.colorSpace=THREEJS.SRGBColorSpace;const s=new THREEJS.Sprite(new THREEJS.SpriteMaterial({map:t,transparent:true,depthTest:false}));s.scale.set(3.0,.75,1);return s;}
 for(const p of characters){const l=labelSprite(p.name);l.position.set(0,2.55,0);p.root.add(l);p.label=l;}
 function makeBench(x,z){box(scene,wood,x,.55,z,2,.18,.55);for(let dx of [-.8,.8])box(scene,darkWood,x+dx,.27,z,.14,.5,.55);box(scene,wood,x,.92,z-.2,2,.65,.14);}
