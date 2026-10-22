@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#101c2a">
+  <title>Wildwood — Open World Adventure</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game-shell" aria-label="Wildwood open world adventure game">
+    <canvas id="game" aria-label="Game world"></canvas>
+
+    <header class="topbar">
+      <div class="brand"><span class="brand-mark">✦</span><div><strong>WILDWOOD</strong><small>THE LOST FRONTIER</small></div></div>
+      <div class="world-pill"><span class="pulse"></span><span id="world-time">DAY 01 · 08:00</span></div>
+    </header>
+
+    <section class="hud-left panel">
+      <div class="player-row"><div class="avatar">✧</div><div class="player-meta"><strong>Wanderer</strong><small>FRONTIER EXPLORER</small></div></div>
+      <div class="stat-label"><span>VITALITY</span><span id="health-text">100 / 100</span></div>
+      <div class="bar"><i id="health-bar"></i></div>
+      <div class="stat-label"><span>STAMINA</span><span id="stamina-text">100 / 100</span></div>
+      <div class="bar stamina"><i id="stamina-bar"></i></div>
+      <div class="inventory-line"><span>✦ SHARDS</span><strong id="shard-count">0 / 8</strong></div>
+    </section>
+
+    <section class="quest panel">
+      <div class="quest-kicker">CURRENT JOURNEY</div>
+      <h1 id="quest-title">A Light in the Woods</h1>
+      <p id="quest-desc">Find 8 ancient light shards hidden across Wildwood.</p>
+      <div class="quest-progress"><i id="quest-progress"></i></div>
+      <div class="quest-foot"><span id="quest-progress-text">0 OF 8 DISCOVERED</span><span>MAIN QUEST</span></div>
+    </section>
+
+    <section class="compass panel" aria-label="Compass">
+      <div class="compass-ring"><span class="north">N</span><span class="east">E</span><span class="south">S</span><span class="west">W</span><div class="needle"></div><div class="compass-dot"></div></div>
+      <div class="compass-label">WILDERNESS<br><b id="region-name">Mossvale</b></div>
+    </section>
+
+    <section class="toast" id="toast" role="status"></section>
+    <section class="center-message" id="center-message" hidden>
+      <div class="win-card"><div class="win-symbol">✦</div><p class="eyebrow">JOURNEY COMPLETE</p><h2>The woods remember you.</h2><p>You found every ancient shard. Wildwood's light is restored.</p><button id="continue-btn">KEEP EXPLORING</button></div>
+    </section>
+
+    <footer class="bottom-hud">
+      <div class="controls panel">
+        <div class="key-group"><kbd>W</kbd><div><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div></div>
+        <span>MOVE</span><i class="control-divider"></i><kbd>SHIFT</kbd><span>SPRINT</span><i class="control-divider"></i><kbd>E</kbd><span>INTERACT</span>
+      </div>
+      <div class="mini-note"><span class="tiny-dot"></span> AN OPEN WORLD AWAITS</div>
+    </footer>
+
+    <div class="mobile-controls" aria-label="Touch controls">
+      <div class="dpad">
+        <button data-move="up" aria-label="Move up">▲</button>
+        <div><button data-move="left" aria-label="Move left">◀</button><button data-move="down" aria-label="Move down">▼</button><button data-move="right" aria-label="Move right">▶</button></div>
+      </div>
+      <button id="sprint-touch" class="touch-action">SPRINT</button>
+    </div>
+    <div class="interaction-hint" id="interaction-hint" hidden>Press <kbd>E</kbd> to interact</div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
