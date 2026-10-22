@@ -167,7 +167,12 @@ function makeBuilding(cfg){
  // signboard with icon/color
  // Stone footings, exposed beams, shutters and window planters create a more crafted facade.
  for(const wz of [-d/2,d/2]){
-  box(g,stone,0,.18,wz,w,.28,.24);
+  if(wz<0)box(g,stone,0,.18,wz,w,.28,.24);
+  else{
+   const plinthLeft=doorLeft+w/2,plinthRight=w/2-doorRight;
+   if(plinthLeft>0)box(g,stone,(-w/2+doorLeft)/2,.18,wz,plinthLeft,.28,.24);
+   if(plinthRight>0)box(g,stone,(doorRight+w/2)/2,.18,wz,plinthRight,.28,.24);
+  }
   box(g,darkWood,-w/2+.12,h/2,wz,.20,h,.22);box(g,darkWood,w/2-.12,h/2,wz,.20,h,.22);
   box(g,wood,0,h-.17,wz,w,.19,.22);
  }
