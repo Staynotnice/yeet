@@ -23,25 +23,29 @@
 <script>
 (function(){
 const $=id=>document.getElementById(id);
+// Keep the entry screen responsive even if the 3D engine or world setup fails.
+let gameReady=false;
+const startButton=$('startBtn');
+if(startButton)startButton.addEventListener('click',()=>{
+ const start=$('start');
+ if(start)start.hidden=true;
+ if(gameReady&&innerWidth>680){
+  const canvas=document.querySelector('canvas');
+  if(canvas&&canvas.requestPointerLock)canvas.requestPointerLock();
+ }
+});
+window.addEventListener('error',e=>{
+ const start=$('start');
+ if(start&&!start.hidden){
+  start.innerHTML='<article><div class="sub">WILDWOOD VILLAGE</div><h1>Could not start</h1><p>The game ran into a loading problem. Reload the page and try again. If it keeps happening, the 3D engine may be blocked by your browser or connection.</p><button id="retryGame">Reload game</button></article>';
+  const retry=$('retryGame');if(retry)retry.onclick=()=>location.reload();
+ }
+});
 if(!window.THREE){
 $('start').innerHTML='<article><h1>Almost there!</h1><p>The 3D engine could not load. Please check your internet connection and reload this page.</p><button onclick="location.reload()">Reload game</button></article>';
 return;
 }
 const THREEJS=window.THREE;
-// Wire the entry button before building the world so it always responds, including on mobile Safari.
-const startButton=$('startBtn');
-if(startButton)startButton.addEventListener('click',()=>{
- $('start').hidden=true;
- if(innerWidth>680&&rendererPointerLockAvailable())renderer.domElement.requestPointerLock();
-});
-function rendererPointerLockAvailable(){return !!(window.innerWidth>680&&document.pointerLockElement!==undefined);}
-window.addEventListener('error',e=>{
- const start=$('start');
- if(start&&!start.hidden){
-  start.innerHTML='<article><div class="sub">WILDWOOD VILLAGE</div><h1>Almost ready</h1><p>The village hit a loading error. Reload the game and try again.</p><button id="retryGame">Reload game</button></article>';
-  const retry=$('retryGame');if(retry)retry.onclick=()=>location.reload();
- }
-});
 const scene=new THREEJS.Scene();
 scene.background=new THREEJS.Color(0xb7dce0);
 scene.fog=new THREEJS.Fog(0xb7dce0,82,178);
@@ -51,6 +55,7 @@ renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(deviceP
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREEJS.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=true;
 renderer.outputColorSpace=THREEJS.SRGBColorSpace;renderer.toneMapping=THREEJS.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
 document.body.appendChild(renderer.domElement);
+gameReady=true;
 scene.add(new THREEJS.HemisphereLight(0xeafaff,0x566447,2.25));
 const fillLight=new THREEJS.DirectionalLight(0xfff1dc,.72);fillLight.position.set(24,14,-26);scene.add(fillLight);
 const sun=new THREEJS.DirectionalLight(0xffe0a3,2.6);sun.position.set(-18,30,16);sun.castShadow=true;sun.shadow.mapSize.set(1536,1536);sun.shadow.bias=-0.00025;sun.shadow.normalBias=.025;sun.shadow.camera.left=-72;sun.shadow.camera.right=72;sun.shadow.camera.top=72;sun.shadow.camera.bottom=-72;scene.add(sun);
