@@ -1,5 +1,12 @@
 # Wildwood — Open World Adventure
 
+## New: Wildwood: The Last Ember (3D story adventure)
+A separate, third-person 3D browser adventure is available in [`wildwood-3d/`](wildwood-3d/). It includes a generated low-poly forest, an NPC story introduction, three collectible embers, mobile controls, and two possible endings. It loads Three.js from a CDN, so an internet connection is needed.
+
+When GitHub Pages is enabled for this repository using the `main` branch and `/(root)` folder, play it at: https://Staynotnice.github.io/yeet/wildwood-3d/
+
+## Existing game
+
 A single-player, browser-playable 2.5D open-world exploration game built with plain HTML, CSS, and JavaScript. No build step or package manager is required.
 
 ## Play locally
@@ -31,12 +38,12 @@ These steps add the game without deleting or replacing existing files.
 
 If Pages is already configured for a different branch or folder, preserve that existing setup unless you intentionally want to change it. A repository-level custom domain or organization policy may affect the final URL.
 
-## Project files
-- `index.html` — game canvas and HUD
-- `style.css` — responsive interface and touch controls
-- `game.js` — world generation, movement, landmarks, shards, minimap, and quest logic
+## Existing project files
+- `index.html` — original game canvas and HUD
+- `style.css` — original responsive interface and touch controls
+- `game.js` — original world generation, movement, landmarks, shards, minimap, and quest logic
+- `wildwood-3d/index.html` — standalone 3D story adventure
 
 ## Notes
-- The game is a stylized 2.5D forest adventure drawn on a canvas; it does not use an external game engine.
-- The interface imports Google Fonts as a visual enhancement, but the game itself does not depend on them to run.
-- This package has not been pushed to your GitHub account. Upload the files yourself, or connect an authorized GitHub integration if available.
+- The original game is a stylized 2.5D forest adventure drawn on a canvas.
+- The new 3D adventure uses Three.js from a CDN. It needs internet access to load the 3D library.
