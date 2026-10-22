@@ -28,6 +28,20 @@ $('start').innerHTML='<article><h1>Almost there!</h1><p>The 3D engine could not 
 return;
 }
 const THREEJS=window.THREE;
+// Wire the entry button before building the world so it always responds, including on mobile Safari.
+const startButton=$('startBtn');
+if(startButton)startButton.addEventListener('click',()=>{
+ $('start').hidden=true;
+ if(innerWidth>680&&rendererPointerLockAvailable())renderer.domElement.requestPointerLock();
+});
+function rendererPointerLockAvailable(){return !!(window.innerWidth>680&&document.pointerLockElement!==undefined);}
+window.addEventListener('error',e=>{
+ const start=$('start');
+ if(start&&!start.hidden){
+  start.innerHTML='<article><div class="sub">WILDWOOD VILLAGE</div><h1>Almost ready</h1><p>The village hit a loading error. Reload the game and try again.</p><button id="retryGame">Reload game</button></article>';
+  const retry=$('retryGame');if(retry)retry.onclick=()=>location.reload();
+ }
+});
 const scene=new THREEJS.Scene();
 scene.background=new THREEJS.Color(0xb7dce0);
 scene.fog=new THREEJS.Fog(0xb7dce0,82,178);
@@ -495,7 +509,7 @@ renderer.domElement.addEventListener('touchmove',e=>{if(touchLook&&e.touches.len
 renderer.domElement.addEventListener('touchend',()=>touchLook=false);
 document.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='KeyE'&&!e.repeat){e.preventDefault();interact();}if(e.code==='Escape'&&modalOpen)closeModal();});
 document.addEventListener('keyup',e=>{keys[e.code]=false;});
-$('startBtn').onclick=()=>{$('start').hidden=true;if(innerWidth>680&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();};
+// Start button is wired above before world construction.
 $('touchUse').onclick=interact;$('touchRun').addEventListener('touchstart',e=>{e.preventDefault();jog=true;},{passive:false});$('touchRun').addEventListener('touchend',()=>jog=false);$('touchRun').addEventListener('click',()=>{jog=!jog;});
 document.querySelectorAll('[data-move]').forEach(btn=>{const k=btn.dataset.move;const down=e=>{e.preventDefault();touch[k]=true;};const up=e=>{e.preventDefault();touch[k]=false;};btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointerleave',up);btn.addEventListener('pointercancel',up);});
 window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
