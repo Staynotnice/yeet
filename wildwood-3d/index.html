@@ -102,7 +102,7 @@ ground();
 function path(x,z,w,d){const pm=pathMat.clone();pm.map=texPath.clone();pm.bumpMap=pm.map;pm.bumpScale=.025;pm.map.repeat.set(Math.max(2,w/3),Math.max(2,d/3));pm.needsUpdate=true;const p=mesh(new THREEJS.PlaneGeometry(w,d),pm,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
 const worldObstacles=[];const buildings=[];
 path(0,7,5.4,72);path(-4,0,38,4.2);path(0,-11,38,3.8);path(0,15,36,3.8);
-path(22,-15,30,3.8);path(22,15,30,3.8);path(29,-21,3.8,12);
+path(22,-15,30,3.8);path(22,15,30,3.8);
 function makeTree(x,z,scale=1){
  const h=(3.0+Math.random()*1.2)*scale;
  cylinder(scene,wood,x,.72*scale,z,.22*scale,.31*scale,1.44*scale,7);
@@ -183,11 +183,12 @@ function addLakeAndOrchard(){
  const shoreMat=new THREEJS.MeshStandardMaterial({color:0x8cae8a,roughness:1,side:THREEJS.DoubleSide});
  const waterMat=new THREEJS.MeshStandardMaterial({color:0x61b8c8,roughness:.23,metalness:.08,transparent:true,opacity:.9,side:THREEJS.DoubleSide});
  const shore=mesh(new THREEJS.CircleGeometry(5.8,40),shoreMat,scene,31,.005,-20,1,.74,1);shore.rotation.x=-Math.PI/2;
- const water=mesh(new THREEJS.CircleGeometry(4.9,40),waterMat,scene,31,.025,-20,1,.72,1);water.rotation.x=-Math.PI/2;
+ const water=mesh(new THREEJS.CircleGeometry(4.9,40),waterMat,scene,31,.025,-20,1,.72,1);water.rotation.x=-Math.PI/2;worldObstacles.push({x:31,z:-20,r:4.15,water:true});
  const sand=mat('lakeSand',0xc4b78b);
  for(let i=0;i<22;i++){const a=i/22*Math.PI*2,r=5.15+(i%3)*.2,x=31+Math.cos(a)*r,z=-20+Math.sin(a)*r*.72;const peb=.15+(i%4)*.035;mesh(new THREEJS.DodecahedronGeometry(peb,0),i%3?sand:stone,scene,x,.12,z,1,.7,1);worldObstacles.push({x,z,r:.28});if(i%3===0)cylinder(scene,leaf2,x+.16,.35,z,.025,.035,.55,5);}
- for(let i=0;i<7;i++)box(scene,wood,36.2,.19,-22.25+i*.72,1.8,.13,.58);
- for(let x of [35.35,37.05])for(let z of [-22.55,-17.95])box(scene,darkWood,x,.37,z,.12,.45,.12);
+ for(let i=0;i<12;i++)box(scene,wood,26.35+i*.82,.19,-20,.82,.13,.95);
+ for(let x of [26.2,36.2])for(let z of [-20.52,-19.48])box(scene,darkWood,x,.37,z,.12,.45,.12);
+ box(scene,wood,31.2,.52,-20.53,10.0,.10,.10);box(scene,wood,31.2,.52,-19.47,10.0,.10,.10);
  for(let row=0;row<3;row++)for(let col=0;col<4;col++){
   const x=25+col*2.8,z=11+row*2.7;cylinder(scene,wood,x,.65,z,.10,.15,1.3,7);
   sphere(scene,[leaf1,leaf2,leaf3][(row+col)%3],x,1.48,z,.75,.8,.72);
@@ -271,7 +272,7 @@ function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine')
  cylinder(legR,pants,0,-.48,.005,.115,.085,.30,10);
  sphere(legR,pants,0,-.37,.005,.12,.12,.12);
  box(legR,darkWood,0,-.66,.10,.22,.14,.36);
- const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,targetX:x+(Math.random()-.5)*4,targetZ:z+(Math.random()-.5)*4,nextAt:2+Math.random()*4,role,bodyType,skinMat,shirtMat,walking:false,activity:0};
+ const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,targetX:undefined,targetZ:undefined,nextAt:0,role,bodyType,skinMat,shirtMat,walking:false,activity:0};
  characters.push(person);return person;
 }
 const pip=makePerson('Pip the Merchant',8.22,13.0,skinB,shirt4,hair2,'shop','masculine');pip.root.rotation.y=Math.PI;
@@ -285,7 +286,7 @@ for(const p of characters){const l=labelSprite(p.name);l.position.set(0,2.55,0);
 function makeBench(x,z){box(scene,wood,x,.55,z,2,.18,.55);for(let dx of [-.8,.8])box(scene,darkWood,x+dx,.27,z,.14,.5,.55);box(scene,wood,x,.92,z-.2,2,.65,.14);}
 makeBench(-3,10);makeBench(3,10);makeBench(-3,-7);makeBench(3,-7);
 // First-person controller; the camera is the player's eyes, not a chase camera.
-const player={pos:new THREEJS.Vector3(0,0,19),yaw:Math.PI,pitch:0,inside:null,coins:8,bag:[],quest:0,walkTime:0};
+const player={pos:new THREEJS.Vector3(0,0,23),yaw:0,pitch:0,inside:null,coins:8,bag:[],quest:0,walkTime:0};
 camera.position.set(player.pos.x,1.68,player.pos.z);camera.rotation.order='YXZ';
 const keys={};const touch={forward:false,back:false,left:false,right:false};let pointerLocked=false,dragging=false,lastX=0,lastY=0,moveSpeed=4.6,jog=false,modalOpen=false,previousTime=0;
 function updateCamera(){camera.position.set(player.pos.x,player.pos.y+1.68,player.pos.z);camera.rotation.order='YXZ';camera.rotation.y=player.yaw;camera.rotation.x=player.pitch;}
@@ -344,7 +345,7 @@ function canMoveTo(x,z){
   const inX=Math.abs(lx)<b.w/2+.34,inZ=Math.abs(lz)<b.d/2+.34;
   if(inX&&inZ){const doorGap=Math.abs(x-(b.x-.78))<1.14&&lz>b.d/2-.82;if(!doorGap)return false;}
  }
- for(const o of worldObstacles){if(Math.hypot(x-o.x,z-o.z)<o.r+.34)return false;}
+ for(const o of worldObstacles){if(o.water&&x>25.5&&x<36.8&&Math.abs(z+20)<.95)continue;if(Math.hypot(x-o.x,z-o.z)<o.r+.34)return false;}
  for(const p of characters){if(Math.hypot(x-p.root.position.x,z-p.root.position.z)<.68)return false;}
  return true;
 }
@@ -360,24 +361,28 @@ function npcCanMove(x,z,p){
  for(const q of characters){if(q!==p&&Math.hypot(x-q.root.position.x,z-q.root.position.z)<.78)return false;}
  return true;
 }
-function chooseNpcTarget(p){
- for(let i=0;i<18;i++){const x=p.homeX+(Math.random()-.5)*6.5,z=p.homeZ+(Math.random()-.5)*5.5;if(npcCanMove(x,z,p)){p.targetX=x;p.targetZ=z;p.nextAt=0;return;}}
- p.targetX=p.homeX;p.targetZ=p.homeZ;p.nextAt=0;
+function chooseNpcTarget(p,t){
+ for(let i=0;i<18;i++){
+  const x=p.homeX+(Math.random()-.5)*6.5,z=p.homeZ+(Math.random()-.5)*5.5;
+  if(npcCanMove(x,z,p)){p.targetX=x;p.targetZ=z;p.nextAt=t+2+Math.random()*3;return;}
+ }
+ p.targetX=p.root.position.x;p.targetZ=p.root.position.z;p.nextAt=t+1.5;
 }
 function animatePeople(t,dt){
  for(const p of characters){
-  if(!p.nextAt)chooseNpcTarget(p);
-  if(t>p.nextAt)chooseNpcTarget(p);
-  const dx=p.targetX-p.root.position.x,dz=p.targetZ-p.root.position.z,d=Math.hypot(dx,dz);
-  const walking=d>.16;let moved=false;
+  if(p.targetX===undefined||p.targetZ===undefined)chooseNpcTarget(p,t);
+  let dx=p.targetX-p.root.position.x,dz=p.targetZ-p.root.position.z,d=Math.hypot(dx,dz);
+  if(d<.20&&t>p.nextAt){chooseNpcTarget(p,t);dx=p.targetX-p.root.position.x;dz=p.targetZ-p.root.position.z;d=Math.hypot(dx,dz);}
+  const walking=d>.20;let moved=false;
   if(walking){
-   const step=Math.min(d,dt*.78),nx=p.root.position.x+dx/d*step,nz=p.root.position.z+dz/d*step;
+   const step=Math.min(d,dt*.68),nx=p.root.position.x+dx/d*step,nz=p.root.position.z+dz/d*step;
    if(npcCanMove(nx,nz,p)){p.root.position.x=nx;p.root.position.z=nz;p.root.rotation.y=Math.atan2(dx,dz);moved=true;}
-   else chooseNpcTarget(p);
-  }else if(!p.nextAt)p.nextAt=t+1+Math.random()*2;
-  const swing=moved?Math.sin(t*8+p.phase)*.42:Math.sin(t*1.6+p.phase)*.025;
-  p.phase+=dt;p.armL.rotation.x=swing;p.armR.rotation.x=-swing;p.legL.rotation.x=-swing*.82;p.legR.rotation.x=swing*.82;
-  p.body.position.y=.035+(moved?Math.abs(Math.sin(t*8+p.phase))*.018:0);
+   else chooseNpcTarget(p,t);
+  }
+  const swing=moved?Math.sin(t*8+p.phase)*.38:Math.sin(t*1.5+p.phase)*.018;
+  p.phase+=dt;p.armL.rotation.x=swing;p.armR.rotation.x=-swing;
+  p.legL.rotation.x=-swing*.82;p.legR.rotation.x=swing*.82;
+  p.body.position.y=.035+(moved?Math.abs(Math.sin(t*8+p.phase))*.014:0);
  }
 }
 function look(dx,dy){player.yaw-=dx*.003;player.pitch-=dy*.0025;player.pitch=Math.max(-1.2,Math.min(1.2,player.pitch));updateCamera();}
