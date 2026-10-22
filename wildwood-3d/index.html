@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#78a9b0">
 <title>Wildwood Village — First Person Adventure</title>
 <style>
-:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#9ac7d0;color:#fff8e9;font:14px system-ui,-apple-system,sans-serif}canvas{display:block;touch-action:none}#hud{position:fixed;inset:0;pointer-events:none;text-shadow:0 2px 5px #27352b}header{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:start;gap:10px}header b{letter-spacing:.15em;font-size:14px}header small{display:block;color:#f1e5c5;font-size:10px;letter-spacing:.12em;margin-top:3px}.glass{background:#263d32d9;border:1px solid #fff0c45c;border-radius:12px;box-shadow:0 5px 22px #24362d30;backdrop-filter:blur(7px)}#task{position:absolute;top:68px;left:16px;width:255px;padding:12px 14px}#task .eyebrow,#modal .eyebrow{font-size:10px;letter-spacing:.14em;color:#f4d994}#task h3{font-size:15px;margin:6px 0}#task p{font-size:12px;line-height:1.5;margin:0;color:#f1eee0}#status{position:absolute;top:68px;right:16px;padding:10px 12px;font-size:11px;text-align:right;max-width:165px}#crosshair{position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%)}#crosshair:before,#crosshair:after{content:"";position:absolute;background:#fff5db;border-radius:2px;box-shadow:0 0 3px #17251c}#crosshair:before{width:2px;height:10px;left:4px}#crosshair:after{height:2px;width:10px;top:4px}#prompt{position:absolute;bottom:82px;left:50%;transform:translateX(-50%);padding:10px 14px;white-space:nowrap;font-size:12px;max-width:90vw;text-align:center}#modal{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:min(510px,calc(100vw - 24px));padding:16px;pointer-events:auto;text-shadow:none}#modal[hidden]{display:none}#modal h2{font-size:18px;margin:6px 0}#modal p{font-size:13px;line-height:1.55;color:#e5e8d8;margin:6px 0 12px}button{pointer-events:auto;border:1px solid #f0d38a;background:#f0d38a;color:#2a392e;padding:9px 12px;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;margin:3px}button.secondary{background:#ffffff12;color:#fff4d7;border-color:#ffffff65}#modalActions{display:flex;flex-wrap:wrap;gap:4px}#start{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(#31544799,#1e392bbd);z-index:5;padding:20px;text-align:center}#start[hidden]{display:none}#start article{max-width:470px;padding:25px;border-radius:18px;background:#263d32f2;border:1px solid #f0d38a88;box-shadow:0 15px 50px #15281e66}#start h1{font-size:clamp(25px,5vw,38px);margin:6px 0 8px}#start p{color:#e6e8d8;line-height:1.6}#start .sub{font-size:10px;letter-spacing:.16em;color:#f0d38a}.touch{display:none;position:absolute;bottom:12px;left:12px;right:12px;justify-content:space-between;align-items:end;pointer-events:none}.touch button{pointer-events:auto;width:44px;height:44px;padding:0;margin:2px;border-radius:50%;background:#263d32d9;border-color:#ffffff80;color:white;font-size:15px}.dpad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:2px}.dpad button:nth-child(1){grid-column:2}.dpad button:nth-child(2){grid-column:1;grid-row:2}.dpad button:nth-child(3){grid-column:2;grid-row:2}.dpad button:nth-child(4){grid-column:3;grid-row:2}.touchActions{display:flex;flex-direction:column;align-items:end}.touchActions button{width:auto;min-width:88px;border-radius:12px;font-size:11px}@media(max-width:680px){#task{top:64px;left:10px;width:min(230px,65vw);padding:9px 10px}#task h3{font-size:13px}#task p{font-size:11px}#status{top:64px;right:10px;font-size:10px;max-width:110px;padding:8px}#prompt{display:none}.touch{display:flex}#modal{bottom:8px;padding:12px}#modal p{font-size:12px}header{top:10px;left:10px;right:10px}}@media(pointer:coarse){.touch{display:flex}}
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#b7dce0;color:#fff8e9;font:14px system-ui,-apple-system,sans-serif}canvas{display:block;touch-action:none}#hud{position:fixed;inset:0;pointer-events:none;text-shadow:0 2px 5px #27352b}header{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:start;gap:10px}header b{letter-spacing:.15em;font-size:14px}header small{display:block;color:#f1e5c5;font-size:10px;letter-spacing:.12em;margin-top:3px}.glass{background:linear-gradient(145deg,#263d32ed,#20362edb);border:1px solid #f6e4bd70;border-radius:14px;box-shadow:0 9px 28px #1c302a55,inset 0 1px #ffffff12;backdrop-filter:blur(9px)}#task{position:absolute;top:68px;left:16px;width:255px;padding:12px 14px}#task .eyebrow,#modal .eyebrow{font-size:10px;letter-spacing:.14em;color:#f4d994}#task h3{font-size:15px;margin:6px 0}#task p{font-size:12px;line-height:1.5;margin:0;color:#f1eee0}#status{position:absolute;top:68px;right:16px;padding:10px 12px;font-size:11px;text-align:right;max-width:165px}#crosshair{position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%)}#crosshair:before,#crosshair:after{content:"";position:absolute;background:#fff5db;border-radius:2px;box-shadow:0 0 3px #17251c}#crosshair:before{width:2px;height:10px;left:4px}#crosshair:after{height:2px;width:10px;top:4px}#prompt{position:absolute;bottom:82px;left:50%;transform:translateX(-50%);padding:10px 14px;white-space:nowrap;font-size:12px;max-width:90vw;text-align:center}#modal{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:min(510px,calc(100vw - 24px));padding:16px;pointer-events:auto;text-shadow:none}#modal[hidden]{display:none}#modal h2{font-size:18px;margin:6px 0}#modal p{font-size:13px;line-height:1.55;color:#e5e8d8;margin:6px 0 12px}button{pointer-events:auto;border:1px solid #f0d38a;background:linear-gradient(135deg,#ffe39b,#e9bd62);color:#29392f;padding:10px 14px;border-radius:10px;font-weight:750;font-size:12px;cursor:pointer;margin:3px;box-shadow:0 4px 12px #121f1830;transition:transform .14s ease,filter .14s ease}button:hover{filter:brightness(1.08);transform:translateY(-1px)}button:active{transform:translateY(1px)}button.secondary{background:#ffffff12;color:#fff4d7;border-color:#ffffff65}#modalActions{display:flex;flex-wrap:wrap;gap:4px}#start{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(#31544799,#1e392bbd);z-index:5;padding:20px;text-align:center}#start[hidden]{display:none}#start article{max-width:470px;padding:25px;border-radius:18px;background:#263d32f2;border:1px solid #f0d38a88;box-shadow:0 15px 50px #15281e66}#start h1{font-size:clamp(25px,5vw,38px);margin:6px 0 8px}#start p{color:#e6e8d8;line-height:1.6}#start .sub{font-size:10px;letter-spacing:.16em;color:#f0d38a}.touch{display:none;position:absolute;bottom:12px;left:12px;right:12px;justify-content:space-between;align-items:end;pointer-events:none}.touch button{pointer-events:auto;width:44px;height:44px;padding:0;margin:2px;border-radius:50%;background:#263d32d9;border-color:#ffffff80;color:white;font-size:15px}.dpad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:2px}.dpad button:nth-child(1){grid-column:2}.dpad button:nth-child(2){grid-column:1;grid-row:2}.dpad button:nth-child(3){grid-column:2;grid-row:2}.dpad button:nth-child(4){grid-column:3;grid-row:2}.touchActions{display:flex;flex-direction:column;align-items:end}.touchActions button{width:auto;min-width:88px;border-radius:12px;font-size:11px}@media(max-width:680px){#task{top:64px;left:10px;width:min(230px,65vw);padding:9px 10px}#task h3{font-size:13px}#task p{font-size:11px}#status{top:64px;right:10px;font-size:10px;max-width:110px;padding:8px}#prompt{display:none}.touch{display:flex}#modal{bottom:8px;padding:12px}#modal p{font-size:12px}header{top:10px;left:10px;right:10px}}@media(pointer:coarse){.touch{display:flex}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
@@ -29,16 +29,17 @@ return;
 }
 const THREEJS=window.THREE;
 const scene=new THREEJS.Scene();
-scene.background=new THREEJS.Color(0x9ccbd4);
-scene.fog=new THREEJS.Fog(0x9ccbd4,48,118);
-const camera=new THREEJS.PerspectiveCamera(72,innerWidth/innerHeight,.08,180);
+scene.background=new THREEJS.Color(0xb7dce0);
+scene.fog=new THREEJS.Fog(0xb7dce0,82,178);
+const camera=new THREEJS.PerspectiveCamera(70,innerWidth/innerHeight,.08,260);
 const renderer=new THREEJS.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
-renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.75));
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREEJS.PCFSoftShadowMap;renderer.shadowMap.autoUpdate=true;
-renderer.outputColorSpace=THREEJS.SRGBColorSpace;renderer.toneMapping=THREEJS.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
+renderer.outputColorSpace=THREEJS.SRGBColorSpace;renderer.toneMapping=THREEJS.ACESFilmicToneMapping;renderer.toneMappingExposure=1.12;
 document.body.appendChild(renderer.domElement);
-scene.add(new THREEJS.HemisphereLight(0xe6f8ff,0x6a7650,2.35));
-const sun=new THREEJS.DirectionalLight(0xffe0a3,2.6);sun.position.set(-18,30,16);sun.castShadow=true;sun.shadow.mapSize.set(1536,1536);sun.shadow.bias=-0.00025;sun.shadow.normalBias=.025;sun.shadow.camera.left=-45;sun.shadow.camera.right=45;sun.shadow.camera.top=45;sun.shadow.camera.bottom=-45;scene.add(sun);
+scene.add(new THREEJS.HemisphereLight(0xeafaff,0x566447,2.25));
+const fillLight=new THREEJS.DirectionalLight(0xfff1dc,.72);fillLight.position.set(24,14,-26);scene.add(fillLight);
+const sun=new THREEJS.DirectionalLight(0xffe0a3,2.6);sun.position.set(-18,30,16);sun.castShadow=true;sun.shadow.mapSize.set(1536,1536);sun.shadow.bias=-0.00025;sun.shadow.normalBias=.025;sun.shadow.camera.left=-72;sun.shadow.camera.right=72;sun.shadow.camera.top=72;sun.shadow.camera.bottom=-72;scene.add(sun);
 const mats={};
 function makePattern(bg,ink,kind){
  const cv=document.createElement('canvas');cv.width=256;cv.height=256;
@@ -95,17 +96,33 @@ function mesh(geo,material,parent,x,y,z,sx,sy,sz){const o=new THREEJS.Mesh(geo,m
 function box(parent,material,x,y,z,sx,sy,sz){return mesh(boxGeo,material,parent,x,y,z,sx,sy,sz);}
 function sphere(parent,material,x,y,z,sx,sy,sz){return mesh(sphereGeo,material,parent,x,y,z,sx,sy,sz);}
 function cylinder(parent,material,x,y,z,rt,rb,h,segments){return mesh(new THREEJS.CylinderGeometry(rt,rb,h,segments||10),material,parent,x,y,z);}
-function ground(){grass.map=texGrass;grass.bumpMap=texGrass;grass.bumpScale=.018;grass.map.repeat.set(42,42);grass.needsUpdate=true;const g=mesh(new THREEJS.PlaneGeometry(180,180),grass,scene,0,-.12,0);g.rotation.x=-Math.PI/2;}
+function ground(){grass.map=texGrass;grass.bumpMap=texGrass;grass.bumpScale=.018;grass.map.repeat.set(58,58);grass.needsUpdate=true;const g=mesh(new THREEJS.PlaneGeometry(260,260),grass,scene,0,-.12,0);g.rotation.x=-Math.PI/2;}
 // Stylized low-poly grassland and paths
 ground();
 function path(x,z,w,d){const pm=pathMat.clone();pm.map=texPath.clone();pm.bumpMap=pm.map;pm.bumpScale=.025;pm.map.repeat.set(Math.max(2,w/3),Math.max(2,d/3));pm.needsUpdate=true;const p=mesh(new THREEJS.PlaneGeometry(w,d),pm,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
-path(0,4,5,58);path(-4,0,34,4);path(0,-11,34,3.2);path(0,15,31,3.2);
-for(let i=0;i<46;i++){let a=i/46*Math.PI*2;let r=43+(i%4)*2.4;let x=Math.cos(a)*r,z=Math.sin(a)*r;let h=2.8+(i%5)*.48; cylinder(scene,wood,x,.65,z,.24,.35,1.3,7);mesh(new THREEJS.ConeGeometry(1.7,h,7),[leaf1,leaf2,leaf3][i%3],scene,x,1.4+h*.48,z,1,1,1);mesh(new THREEJS.ConeGeometry(1.25,h*.75,7),leaf2,scene,x,2+h*.6,z,1,1,1);worldObstacles.push({x,z,r:1.05});}
+const worldObstacles=[];const buildings=[];
+path(0,7,5.4,72);path(-4,0,38,4.2);path(0,-11,38,3.8);path(0,15,36,3.8);
+path(22,-15,30,3.8);path(22,15,30,3.8);path(29,-21,3.8,12);
+function makeTree(x,z,scale=1){
+ const h=(3.0+Math.random()*1.2)*scale;
+ cylinder(scene,wood,x,.72*scale,z,.22*scale,.31*scale,1.44*scale,7);
+ const canopy=[leaf1,leaf2,leaf3][Math.floor(Math.random()*3)];
+ const low=mesh(new THREEJS.ConeGeometry(1.75*scale,h*.62,7),canopy,scene,x,1.25*scale+h*.28,z,1,1,1);low.rotation.y=Math.random()*1.5;
+ const high=mesh(new THREEJS.ConeGeometry(1.28*scale,h*.55,7),leaf2,scene,x,1.8*scale+h*.55,z,1,1,1);high.rotation.y=Math.random()*1.5;
+ worldObstacles.push({x,z,r:.82*scale});
+}
+for(let i=0;i<68;i++){const a=i/68*Math.PI*2,r=65+(i%5)*2.3;makeTree(Math.cos(a)*r,Math.sin(a)*r,.9+(i%3)*.12);}
+for(let i=0;i<62;i++){
+ let x=0,z=0,tries=0;
+ do{x=(Math.random()-.5)*116;z=(Math.random()-.5)*116;tries++;}
+ while(tries<24&&((Math.abs(x)<19&&Math.abs(z)<29)||(x>19&&x<42&&z>-28&&z<-8)||(x>19&&x<40&&z>7&&z<26)));
+ if(Math.abs(x)>55||Math.abs(z)>55)continue;
+ makeTree(x,z,.65+Math.random()*.38);
+}
 function flower(x,z,color){cylinder(scene,leaf1,x,.12,z,.035,.05,.24,5);sphere(scene,mat('flower'+color,color),x,.28,z,.12,.09,.12);}
 for(let i=0;i<70;i++){let x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;if(Math.abs(x)<13&&Math.abs(z)<19)continue;flower(x,z,[0xf6d76f,0xf2a4ad,0xe7f0d1][i%3]);}
-for(let i=0;i<20;i++){const x=(Math.random()-.5)*34,z=(Math.random()-.5)*30;if(Math.abs(x)<14&&Math.abs(z)<17)continue;const r=.2+Math.random()*.35;mesh(new THREEJS.DodecahedronGeometry(r,0),stone,scene,x,.12,z,1,.65,1);}
+for(let i=0;i<34;i++){const x=(Math.random()-.5)*48,z=(Math.random()-.5)*46;if((Math.abs(x)<15&&Math.abs(z)<20)||(x>24&&x<38&&z>-27&&z<-10)||(x>22&&x<38&&z>8&&z<24))continue;const r=.2+Math.random()*.36;mesh(new THREEJS.DodecahedronGeometry(r,0),stone,scene,x,.12,z,1,.65,1);worldObstacles.push({x,z,r:r+.18});}
 // Building maker: five unique buildings around a central village green.
-const buildings=[];const worldObstacles=[];
 function makeBuilding(cfg){
  const g=new THREEJS.Group();g.position.set(cfg.x,0,cfg.z);scene.add(g);
  const w=(cfg.w||8)*1.22,d=(cfg.d||7)*1.20,h=4.25,doorW=1.85,doorX=-.78;
@@ -162,6 +179,33 @@ function addOutdoorDecor(){
  for(let i=0;i<8;i++){let a=i*Math.PI/4,x=Math.cos(a)*5,z=Math.sin(a)*5;const p=mesh(new THREEJS.ConeGeometry(.3,.7,6),leaf2,scene,x,.3,z);p.rotation.z=.15;}
 }
 addOutdoorDecor();
+function addLakeAndOrchard(){
+ const shoreMat=new THREEJS.MeshStandardMaterial({color:0x8cae8a,roughness:1,side:THREEJS.DoubleSide});
+ const waterMat=new THREEJS.MeshStandardMaterial({color:0x61b8c8,roughness:.23,metalness:.08,transparent:true,opacity:.9,side:THREEJS.DoubleSide});
+ const shore=mesh(new THREEJS.CircleGeometry(5.8,40),shoreMat,scene,31,.005,-20,1,.74,1);shore.rotation.x=-Math.PI/2;
+ const water=mesh(new THREEJS.CircleGeometry(4.9,40),waterMat,scene,31,.025,-20,1,.72,1);water.rotation.x=-Math.PI/2;
+ const sand=mat('lakeSand',0xc4b78b);
+ for(let i=0;i<22;i++){const a=i/22*Math.PI*2,r=5.15+(i%3)*.2,x=31+Math.cos(a)*r,z=-20+Math.sin(a)*r*.72;const peb=.15+(i%4)*.035;mesh(new THREEJS.DodecahedronGeometry(peb,0),i%3?sand:stone,scene,x,.12,z,1,.7,1);worldObstacles.push({x,z,r:.28});if(i%3===0)cylinder(scene,leaf2,x+.16,.35,z,.025,.035,.55,5);}
+ for(let i=0;i<7;i++)box(scene,wood,36.2,.19,-22.25+i*.72,1.8,.13,.58);
+ for(let x of [35.35,37.05])for(let z of [-22.55,-17.95])box(scene,darkWood,x,.37,z,.12,.45,.12);
+ for(let row=0;row<3;row++)for(let col=0;col<4;col++){
+  const x=25+col*2.8,z=11+row*2.7;cylinder(scene,wood,x,.65,z,.10,.15,1.3,7);
+  sphere(scene,[leaf1,leaf2,leaf3][(row+col)%3],x,1.48,z,.75,.8,.72);
+  for(let a=0;a<3;a++){const angle=a/3*Math.PI*2;sphere(scene,mat('orchardFruit'+(row+col+a)%3,[0xc95547,0xe3b54d,0x7caa55][(row+col+a)%3]),x+Math.cos(angle)*.48,1.45+(a%2)*.25,z+Math.sin(angle)*.38,.11,.12,.11);}
+  worldObstacles.push({x,z,r:.58});
+ }
+ for(let x=24;x<=36;x+=2){box(scene,darkWood,x,.48,9.5,.10,.8,.10);box(scene,darkWood,x,.48,20.0,.10,.8,.10);}
+ for(let z=10.5;z<=19.5;z+=2){box(scene,darkWood,23.8,.48,z,.10,.8,.10);box(scene,darkWood,36.2,.48,z,.10,.8,.10);}
+ for(let z of [9.5,20])box(scene,wood,30,.55,z,12.5,.11,.12);
+ const glow=new THREEJS.MeshStandardMaterial({color:0xffdf93,emissive:0xffb64d,emissiveIntensity:1.2,roughness:.35});
+ for(const [x,z] of [[-5,7],[5,7],[-5,-8],[5,-8],[0,18],[19,-15],[36,-17]]){
+  cylinder(scene,darkWood,x,1.12,z,.075,.09,2.2,8);box(scene,darkWood,x,2.18,z,.34,.10,.34);sphere(scene,glow,x,2.0,z,.15,.18,.15);
+ }
+ for(let i=0;i<15;i++){const a=i/15*Math.PI*2,r=96+(i%3)*6,x=Math.cos(a)*r,z=Math.sin(a)*r;const hill=mesh(new THREEJS.ConeGeometry(13+(i%4)*2,18+(i%5)*3,7),[leaf1,leaf2,leaf3][i%3],scene,x,5,z,1,1,.78);hill.rotation.y=a*.2;}
+ const cloudMat=new THREEJS.MeshStandardMaterial({color:0xf2f5e8,roughness:1,transparent:true,opacity:.82});
+ for(let i=0;i<7;i++){const g=new THREEJS.Group();g.position.set(-42+i*14,21+(i%3)*2,-34+(i%4)*23);scene.add(g);for(let j=0;j<4;j++){const c=mesh(sphereGeo,cloudMat,g,(j-1.5)*.75,(j%2)*.28,0,1.15,.42,.62);c.castShadow=false;c.receiveShadow=false;}}
+}
+addLakeAndOrchard();
 // Character rigs: soft colors, skin tones, hair, eyes, moving arms and legs.
 const characters=[];
 function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine'){
@@ -230,11 +274,11 @@ function makePerson(name,x,z,skinMat,shirtMat,hairMat,role,bodyType='masculine')
  const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,targetX:x+(Math.random()-.5)*4,targetZ:z+(Math.random()-.5)*4,nextAt:2+Math.random()*4,role,bodyType,skinMat,shirtMat,walking:false,activity:0};
  characters.push(person);return person;
 }
-const pip=makePerson('Pip the Merchant',9,11,skinB,shirt4,hair2,'shop','masculine');pip.root.rotation.y=Math.PI;
-const bram=makePerson('Bram the Maker',-9,-1,skinC,shirt2,hair3,'forge','masculine');bram.root.rotation.y=Math.PI;
-const mila=makePerson('Mila',9,-1,skinA,shirt1,hair1,'home','feminine');mila.root.rotation.y=Math.PI;
-const elder=makePerson('Mayor Alder',0,-13,skinB,shirt3,hair2,'hall','masculine');elder.root.rotation.y=Math.PI;
-const innkeeper=makePerson('Tansy the Innkeeper',-9,11,skinC,shirt1,hair1,'inn','feminine');innkeeper.root.rotation.y=0;
+const pip=makePerson('Pip the Merchant',8.22,13.0,skinB,shirt4,hair2,'shop','masculine');pip.root.rotation.y=Math.PI;
+const bram=makePerson('Bram the Maker',-9.78,1.0,skinC,shirt2,hair3,'forge','masculine');bram.root.rotation.y=Math.PI;
+const mila=makePerson('Mila',8.22,1.0,skinA,shirt1,hair1,'home','feminine');mila.root.rotation.y=Math.PI;
+const elder=makePerson('Mayor Alder',-.78,-10.6,skinB,shirt3,hair2,'hall','masculine');elder.root.rotation.y=0;
+const innkeeper=makePerson('Tansy the Innkeeper',-9.78,13.0,skinC,shirt1,hair1,'inn','feminine');innkeeper.root.rotation.y=Math.PI;
 const guide=makePerson('Juniper',0,4,skinA,shirt3,hair3,'guide','feminine');guide.root.rotation.y=Math.PI;
 function labelSprite(text){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='rgba(34,54,42,.85)';ctx.roundRect(5,5,502,118,22);ctx.fill();ctx.fillStyle='#fff1cb';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64);const t=new THREEJS.CanvasTexture(c);t.colorSpace=THREEJS.SRGBColorSpace;const s=new THREEJS.Sprite(new THREEJS.SpriteMaterial({map:t,transparent:true,depthTest:false}));s.scale.set(3.0,.75,1);return s;}
 for(const p of characters){const l=labelSprite(p.name);l.position.set(0,2.55,0);p.root.add(l);p.label=l;}
@@ -249,7 +293,7 @@ function showModal(tag,title,text,actions){modalOpen=true;$('modalTag').textCont
 function closeModal(){modalOpen=false;$('modal').hidden=true;}
 function updateStatus(){$('coins').textContent=player.coins;$('bag').textContent=player.bag.length?player.bag.join(', '):'Empty';}
 function setTask(title,text){$('taskTitle').textContent=title;$('taskText').textContent=text;}
-function enterBuilding(b){player.inside=b;player.pos.set(b.x-.78,0,b.z+b.d/2-1.15);player.yaw=0;player.pitch=0;updateCamera();closeModal();setTask(b.name,'Look around, use E near furniture or people, and choose the doorway to leave.');}
+function enterBuilding(b){player.inside=b;player.pos.set(b.x-.78,0,b.z);player.yaw=0;player.pitch=0;updateCamera();closeModal();setTask(b.name,'Look around, use E near furniture or people, and choose the doorway to leave.');}
 function exitBuilding(){const b=player.inside;if(!b)return;player.inside=null;player.pos.set(b.x-.78,0,b.z+b.d/2+2.2);player.yaw=Math.PI;updateCamera();setTask('A place to call home','Visit the five buildings and see what each neighbor is up to.');closeModal();}
 function useAction(target){
  if(target==='inn'){showModal('THE COZY ACORN INN','A warm place to rest','Tansy keeps the beds fluffy and the stew hot. A short rest makes the village feel like home.',[{label:'Rest for a while',run:()=>{closeModal();setTask('Well rested','You took a peaceful rest at the inn.');showModal('RESTED','Feeling refreshed!','The sun is shining and you are ready to explore again.',[{label:'Thanks!',run:closeModal}]);}},{label:'Ask about work',run:()=>{player.quest=Math.max(player.quest,1);setTask('A small favor','Tansy mentioned that Pip at the market could use a hand.');showModal('TANSY','Could you help Pip?','The market has been busy. Ask Pip if there is anything you can do.',[{label:'I will help',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
@@ -276,27 +320,66 @@ function interact(){if(modalOpen){closeModal();return;}const n=getNearest();if(!
  else if(n.type==='furniture'){if(n.item==='bed')useAction(n.obj.short==='INN'?'inn':'home');else if(n.item==='journal')useAction('home');else if(n.item==='notice board')useAction('hall');else if(n.item==='anvil')useAction('forge');else useAction('shop');}
 }
 function updatePrompt(){const n=getNearest();if(modalOpen){$('prompt').textContent='';return;}if(!n){$('prompt').textContent='WASD to move · Mouse to look · E to interact · Shift to jog';return;}if(n.type==='door')$('prompt').textContent='E · Enter '+n.obj.name;else if(n.type==='exit')$('prompt').textContent='E · Leave building';else if(n.type==='person')$('prompt').textContent='E · Talk to '+n.obj.name;else $('prompt').textContent='E · Use '+n.item;}
-function canMoveTo(x,z){if(Math.abs(x)>58||Math.abs(z)>58)return false;
- // Building solid collision, with a doorway gap at the front wall.
+function insideFurnitureBlocks(b,x,z){
+ const lx=x-b.x,lz=z-b.z;
+ const blocks={
+  INN:[[-1.55,-.8,.94,1.28],[1.45,-.8,.94,1.28],[0,1.15,1.0,.72]],
+  SHOP:[[0,.6,1.05,.72],[-1.75,-1.7,.82,.34],[1.75,-1.7,.82,.34]],
+  FORGE:[[0,-1.5,1.28,.68],[1.5,.7,.95,.65]],
+  HOME:[[-1.45,-.8,.92,1.24],[.9,.5,.95,.7],[1.55,-1.8,.9,.42]],
+  HALL:[[0,.4,1.05,.68],[-1.3,.3,.58,.55],[1.3,.3,.58,.55]]
+ }[b.short]||[];
+ return blocks.some(o=>Math.abs(lx-o[0])<o[2]&&Math.abs(lz-o[1])<o[3]);
+}
+function canMoveTo(x,z){
+ if(Math.abs(x)>82||Math.abs(z)>82)return false;
  for(const b of buildings){
-  if(player.inside===b)continue;
-  const inX=Math.abs(x-b.x)<b.w/2+.34,inZ=Math.abs(z-b.z)<b.d/2+.34;
-  if(inX&&inZ){
-   const doorGap=Math.abs(x-(b.x-.78))<1.0&&z>b.z+b.d/2-.7;
-   if(!doorGap)return false;
+  const lx=x-b.x,lz=z-b.z;
+  if(player.inside===b){
+   const withinRoom=Math.abs(lx)<b.w/2-.28&&Math.abs(lz)<b.d/2-.28;
+   const doorLane=Math.abs(x-(b.x-.78))<.88&&lz>=b.d/2-.32&&lz<=b.d/2+1.75;
+   if(withinRoom||doorLane){if(withinRoom&&insideFurnitureBlocks(b,x,z))return false;continue;}
+   return false;
   }
+  const inX=Math.abs(lx)<b.w/2+.34,inZ=Math.abs(lz)<b.d/2+.34;
+  if(inX&&inZ){const doorGap=Math.abs(x-(b.x-.78))<1.14&&lz>b.d/2-.82;if(!doorGap)return false;}
  }
- // Solid tree trunks, rocks, and villagers stop the player instead of letting them ghost through.
- for(const o of worldObstacles){if(Math.hypot(x-o.x,z-o.z)<o.r+.28)return false;}
- for(const p of characters){if(Math.hypot(x-p.root.position.x,z-p.root.position.z)<.62)return false;}
+ for(const o of worldObstacles){if(Math.hypot(x-o.x,z-o.z)<o.r+.34)return false;}
+ for(const p of characters){if(Math.hypot(x-p.root.position.x,z-p.root.position.z)<.68)return false;}
  return true;
 }
-function move(dt){if(modalOpen)return;let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const mag=Math.hypot(forward,side);if(mag>0){forward/=mag;side/=mag;}const speed=(keys.ShiftLeft||keys.ShiftRight||jog?7.1:4.5)*dt;const dx=(-Math.sin(player.yaw)*forward+Math.cos(player.yaw)*side)*speed;const dz=(-Math.cos(player.yaw)*forward-Math.sin(player.yaw)*side)*speed;
+function move(dt){if(modalOpen)return;let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const mag=Math.hypot(forward,side);if(mag>0){forward/=mag;side/=mag;}const speed=(keys.ShiftLeft||keys.ShiftRight||jog?6.4:3.9)*dt;const dx=(-Math.sin(player.yaw)*forward+Math.cos(player.yaw)*side)*speed;const dz=(-Math.cos(player.yaw)*forward-Math.sin(player.yaw)*side)*speed;
  const nx=player.pos.x+dx,nz=player.pos.z+dz;if(canMoveTo(nx,player.pos.z))player.pos.x=nx;if(canMoveTo(player.pos.x,nz))player.pos.z=nz;
  player.walkTime+=dt* (mag?9:2);
  if(mag){for(const p of characters){const d=Math.hypot(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);if(d<2.2){p.root.rotation.y=Math.atan2(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);}}}
 }
-function animatePeople(t,dt){for(let i=0;i<characters.length;i++){const p=characters[i];p.phase+=dt; if(!p.nextAt)p.nextAt=t+2+i*1.1; if(t>p.nextAt){p.nextAt=t+3+Math.random()*5;p.targetX=p.homeX+(Math.random()-.5)*7;p.targetZ=p.homeZ+(Math.random()-.5)*7;} let dx=(p.targetX??p.homeX)-p.root.position.x,dz=(p.targetZ??p.homeZ)-p.root.position.z; const d=Math.hypot(dx,dz);let walking=d>.22; if(walking){const step=Math.min(d,dt*.72);const nx=p.root.position.x+dx/d*step,nz=p.root.position.z+dz/d*step;let blocked=buildings.some(b=>Math.abs(nx-b.x)<b.w/2+.5&&Math.abs(nz-b.z)<b.d/2+.5);blocked=blocked||worldObstacles.some(o=>Math.hypot(nx-o.x,nz-o.z)<o.r+.35);if(!blocked){p.root.position.x=nx;p.root.position.z=nz;p.root.rotation.y=Math.atan2(dx,dz);}else{p.targetX=p.homeX+(Math.random()-.5)*4;p.targetZ=p.homeZ+(Math.random()-.5)*4;p.nextAt=t+1;}}const swing=walking?Math.sin(t*7+p.phase)*.42:Math.sin(t*2+p.phase)*.025;p.armL.rotation.x=swing;p.armR.rotation.x=-swing;p.legL.rotation.x=-swing*.75;p.legR.rotation.x=swing*.75;p.body.position.y=.035+(walking?Math.abs(Math.sin(t*7+p.phase))*.025:0);}}
+function npcCanMove(x,z,p){
+ if(Math.abs(x)>56||Math.abs(z)>56)return false;
+ for(const h of buildings){if(Math.abs(x-h.x)<h.w/2+.65&&Math.abs(z-h.z)<h.d/2+.65)return false;}
+ for(const o of worldObstacles){if(Math.hypot(x-o.x,z-o.z)<o.r+.42)return false;}
+ for(const q of characters){if(q!==p&&Math.hypot(x-q.root.position.x,z-q.root.position.z)<.78)return false;}
+ return true;
+}
+function chooseNpcTarget(p){
+ for(let i=0;i<18;i++){const x=p.homeX+(Math.random()-.5)*6.5,z=p.homeZ+(Math.random()-.5)*5.5;if(npcCanMove(x,z,p)){p.targetX=x;p.targetZ=z;p.nextAt=0;return;}}
+ p.targetX=p.homeX;p.targetZ=p.homeZ;p.nextAt=0;
+}
+function animatePeople(t,dt){
+ for(const p of characters){
+  if(!p.nextAt)chooseNpcTarget(p);
+  if(t>p.nextAt)chooseNpcTarget(p);
+  const dx=p.targetX-p.root.position.x,dz=p.targetZ-p.root.position.z,d=Math.hypot(dx,dz);
+  const walking=d>.16;let moved=false;
+  if(walking){
+   const step=Math.min(d,dt*.78),nx=p.root.position.x+dx/d*step,nz=p.root.position.z+dz/d*step;
+   if(npcCanMove(nx,nz,p)){p.root.position.x=nx;p.root.position.z=nz;p.root.rotation.y=Math.atan2(dx,dz);moved=true;}
+   else chooseNpcTarget(p);
+  }else if(!p.nextAt)p.nextAt=t+1+Math.random()*2;
+  const swing=moved?Math.sin(t*8+p.phase)*.42:Math.sin(t*1.6+p.phase)*.025;
+  p.phase+=dt;p.armL.rotation.x=swing;p.armR.rotation.x=-swing;p.legL.rotation.x=-swing*.82;p.legR.rotation.x=swing*.82;
+  p.body.position.y=.035+(moved?Math.abs(Math.sin(t*8+p.phase))*.018:0);
+ }
+}
 function look(dx,dy){player.yaw-=dx*.003;player.pitch-=dy*.0025;player.pitch=Math.max(-1.2,Math.min(1.2,player.pitch));updateCamera();}
 renderer.domElement.addEventListener('click',()=>{if(!modalOpen&&!('ontouchstart'in window)&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();});
 document.addEventListener('pointerlockchange',()=>{pointerLocked=document.pointerLockElement===renderer.domElement;});
