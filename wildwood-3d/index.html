@@ -1,47 +1,198 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#14271f"><title>Wildwood: The Last Ember — 3D Adventure</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#78a9b0">
+<title>Wildwood Village — First Person Adventure</title>
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#14271f;color:#f1efdd;font:14px system-ui,sans-serif}canvas{display:block}#ui{position:fixed;inset:0;pointer-events:none}header{position:absolute;top:16px;left:18px;right:18px;display:flex;justify-content:space-between;text-shadow:0 2px 8px #000}b{letter-spacing:.16em}small{display:block;color:#c1cbb9;font-size:10px;letter-spacing:.12em}.panel{background:#10251fdc;border:1px solid #e6cb8655;border-radius:12px;padding:13px;backdrop-filter:blur(8px)}#quest{position:absolute;top:75px;left:18px;width:245px}#quest h3{margin:7px 0;font-size:15px}#quest p{font-size:12px;line-height:1.6;color:#d4ddce;margin:6px 0}#count{color:#e6cb86}#hint{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);white-space:nowrap;font-size:11px}#toast{position:absolute;top:25%;left:50%;transform:translateX(-50%);background:#10251ff0;border:1px solid #e6cb86;border-radius:9px;padding:12px 16px;opacity:0;transition:opacity .2s;max-width:90vw;text-align:center}#toast.on{opacity:1}#dialog{position:absolute;bottom:70px;left:50%;transform:translateX(-50%);width:min(520px,calc(100vw - 24px));pointer-events:auto}#dialog[hidden],#ending[hidden]{display:none}#dialog p,#ending p{line-height:1.7;color:#d4ddce}button{border:1px solid #e6cb86aa;background:#e6cb861c;color:#fff5d8;padding:10px 12px;border-radius:8px;cursor:pointer;margin:4px;font:inherit}button:hover{background:#e6cb8644}#choices{display:flex;flex-wrap:wrap}#ending{position:absolute;inset:0;display:grid;place-items:center;background:#06150ec9;pointer-events:auto}#ending article{max-width:420px;margin:18px;padding:28px;background:#14271f;border:1px solid #e6cb86;border-radius:16px;text-align:center}.mobile{display:none;position:absolute;bottom:12px;left:10px;right:10px;justify-content:space-between;align-items:end;pointer-events:auto}.pad button{width:43px;height:42px}.pad>button{display:block;margin:auto}.pad div{display:flex}.mobile .actions{display:flex;flex-direction:column}@media(max-width:650px){#quest{top:66px;left:10px;width:calc(100vw - 20px);padding:10px}#quest h3{font-size:13px;margin:4px 0}#quest p{font-size:10px;margin:3px 0}#hint{display:none}.mobile{display:flex}#dialog{bottom:8px}#dialog p{font-size:12px}#choices button{flex:1;min-width:44%}}
+:root{color-scheme:dark}*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#9ac7d0;color:#fff8e9;font:14px system-ui,-apple-system,sans-serif}canvas{display:block;touch-action:none}#hud{position:fixed;inset:0;pointer-events:none;text-shadow:0 2px 5px #27352b}header{position:absolute;top:14px;left:16px;right:16px;display:flex;justify-content:space-between;align-items:start;gap:10px}header b{letter-spacing:.15em;font-size:14px}header small{display:block;color:#f1e5c5;font-size:10px;letter-spacing:.12em;margin-top:3px}.glass{background:#263d32d9;border:1px solid #fff0c45c;border-radius:12px;box-shadow:0 5px 22px #24362d30;backdrop-filter:blur(7px)}#task{position:absolute;top:68px;left:16px;width:255px;padding:12px 14px}#task .eyebrow,#modal .eyebrow{font-size:10px;letter-spacing:.14em;color:#f4d994}#task h3{font-size:15px;margin:6px 0}#task p{font-size:12px;line-height:1.5;margin:0;color:#f1eee0}#status{position:absolute;top:68px;right:16px;padding:10px 12px;font-size:11px;text-align:right;max-width:165px}#crosshair{position:absolute;left:50%;top:50%;width:10px;height:10px;transform:translate(-50%,-50%)}#crosshair:before,#crosshair:after{content:"";position:absolute;background:#fff5db;border-radius:2px;box-shadow:0 0 3px #17251c}#crosshair:before{width:2px;height:10px;left:4px}#crosshair:after{height:2px;width:10px;top:4px}#prompt{position:absolute;bottom:82px;left:50%;transform:translateX(-50%);padding:10px 14px;white-space:nowrap;font-size:12px;max-width:90vw;text-align:center}#modal{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);width:min(510px,calc(100vw - 24px));padding:16px;pointer-events:auto;text-shadow:none}#modal[hidden]{display:none}#modal h2{font-size:18px;margin:6px 0}#modal p{font-size:13px;line-height:1.55;color:#e5e8d8;margin:6px 0 12px}button{pointer-events:auto;border:1px solid #f0d38a;background:#f0d38a;color:#2a392e;padding:9px 12px;border-radius:9px;font-weight:700;font-size:12px;cursor:pointer;margin:3px}button.secondary{background:#ffffff12;color:#fff4d7;border-color:#ffffff65}#modalActions{display:flex;flex-wrap:wrap;gap:4px}#start{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(#31544799,#1e392bbd);z-index:5;padding:20px;text-align:center}#start[hidden]{display:none}#start article{max-width:470px;padding:25px;border-radius:18px;background:#263d32f2;border:1px solid #f0d38a88;box-shadow:0 15px 50px #15281e66}#start h1{font-size:clamp(25px,5vw,38px);margin:6px 0 8px}#start p{color:#e6e8d8;line-height:1.6}#start .sub{font-size:10px;letter-spacing:.16em;color:#f0d38a}.touch{display:none;position:absolute;bottom:12px;left:12px;right:12px;justify-content:space-between;align-items:end;pointer-events:none}.touch button{pointer-events:auto;width:44px;height:44px;padding:0;margin:2px;border-radius:50%;background:#263d32d9;border-color:#ffffff80;color:white;font-size:15px}.dpad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,44px);gap:2px}.dpad button:nth-child(1){grid-column:2}.dpad button:nth-child(2){grid-column:1;grid-row:2}.dpad button:nth-child(3){grid-column:2;grid-row:2}.dpad button:nth-child(4){grid-column:3;grid-row:2}.touchActions{display:flex;flex-direction:column;align-items:end}.touchActions button{width:auto;min-width:88px;border-radius:12px;font-size:11px}@media(max-width:680px){#task{top:64px;left:10px;width:min(230px,65vw);padding:9px 10px}#task h3{font-size:13px}#task p{font-size:11px}#status{top:64px;right:10px;font-size:10px;max-width:110px;padding:8px}#prompt{display:none}.touch{display:flex}#modal{bottom:8px;padding:12px}#modal p{font-size:12px}header{top:10px;left:10px;right:10px}}@media(pointer:coarse){.touch{display:flex}}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 </head>
-<body><div id="ui"><header><div>✦ <b>WILDWOOD</b><small>THE LAST EMBER</small></div><small>OPEN-WORLD STORY ADVENTURE</small></header><section id="quest" class="panel"><small>YOUR JOURNEY</small><h3 id="title">A Forest Without Song</h3><p id="desc">Find the three lost embers hidden in the forest.</p><p id="count">ANCIENT EMBERS: 0 / 3</p></section><div id="toast"></div><section id="dialog" class="panel" hidden><small id="speaker">ELDER ROWAN</small><p id="words"></p><div id="choices"></div></section><section id="ending" hidden><article><div style="font-size:36px;color:#e6cb86">✦</div><small>THE STORY CONTINUES</small><h2 id="endtitle">The Pact Renewed</h2><p id="endcopy"></p><button id="continue">Keep exploring</button></article></section><div id="hint" class="panel">WASD / ARROWS MOVE · SHIFT RUN · E TALK / COLLECT · SPACE JUMP</div><div class="mobile"><div class="pad"><button data-m="f">▲</button><div><button data-m="l">◀</button><button data-m="b">▼</button><button data-m="r">▶</button></div></div><div class="actions"><button id="run">RUN</button><button id="talk">TALK / COLLECT</button><button id="jump">JUMP</button></div></div></div>
+<body>
+<div id="hud">
+<header><div><b>✦ WILDWOOD VILLAGE</b><small>FIRST-PERSON STORY ADVENTURE</small></div><small>DAY 1 · THE MEADOW</small></header>
+<section id="task" class="glass"><div class="eyebrow">TODAY'S PLAN</div><h3 id="taskTitle">A place to call home</h3><p id="taskText">Explore the village. Visit the inn, market, workshop, cottage and town hall.</p></section>
+<div id="status" class="glass">VILLAGE EXPLORER<br>Coins: <span id="coins">8</span><br>Bag: <span id="bag">Empty</span></div>
+<div id="crosshair"></div><div id="prompt" class="glass">WASD to move · Mouse to look · E to interact · Shift to jog · Esc to unlock mouse</div>
+<section id="modal" class="glass" hidden><div class="eyebrow" id="modalTag">VILLAGE</div><h2 id="modalTitle"></h2><p id="modalText"></p><div id="modalActions"></div></section>
+</div>
+<div id="start"><article><div class="sub">A SMALL WORLD TO BEGIN</div><h1>Welcome to<br>Wildwood Village</h1><p>Wander a colorful little village, meet the locals, and explore five buildings with things to do inside.</p><p><b>Desktop:</b> click Start, move with WASD, look with your mouse, and press E to interact.<br><b>Phone:</b> use the on-screen movement pad and LOOK drag area.</p><button id="startBtn">Start exploring</button></article></div>
+<div class="touch"><div class="dpad"><button data-move="forward">▲</button><button data-move="left">◀</button><button data-move="back">▼</button><button data-move="right">▶</button></div><div class="touchActions"><button id="touchUse">TALK / USE · E</button><button id="touchRun" class="secondary">JOG · SHIFT</button></div></div>
 <script>
-(()=>{if(!window.THREE){document.getElementById('toast').textContent='3D engine could not load. Check your internet connection.';document.getElementById('toast').classList.add('on');return}
-const $=id=>document.getElementById(id),scene=new THREE.Scene();scene.background=new THREE.Color(0x9dbab0);scene.fog=new THREE.FogExp2(0x9dbab0,.008);
-const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,250),renderer=new THREE.WebGLRenderer({antialias:true});renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.5));renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;document.body.appendChild(renderer.domElement);
-scene.add(new THREE.HemisphereLight(0xe7f4dd,0x30412d,2));const sun=new THREE.DirectionalLight(0xffdfaa,3);sun.position.set(-25,35,18);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);scene.add(sun);
-const mat=(c)=>new THREE.MeshStandardMaterial({color:c,roughness:.9}),grass=mat(0x527b50),leaf=[mat(0x28563d),mat(0x356b48),mat(0x47774d)],bark=mat(0x60462f),stone=mat(0x89917d),gold=new THREE.MeshStandardMaterial({color:0xf3c95d,emissive:0x9e6510,emissiveIntensity:1.4}),skin=mat(0xd8b98a),cloth=mat(0x876d4c),blue=mat(0x658c85);
-function add(g,m,x,y,z,parent=scene){const o=new THREE.Mesh(g,m);o.position.set(x,y,z);o.castShadow=true;o.receiveShadow=true;parent.add(o);return o}
-const box=new THREE.BoxGeometry(1,1,1),cone=new THREE.ConeGeometry(1,1,7),sphere=new THREE.SphereGeometry(1,8,6);
-let floor=add(new THREE.PlaneGeometry(150,150),grass,0,-.3,0);floor.rotation.x=-Math.PI/2;
-for(let i=0;i<180;i++){let x=(Math.random()-.5)*130,z=(Math.random()-.5)*130;if(Math.hypot(x,z)<9)continue;let h=2.5+Math.random()*3;add(new THREE.CylinderGeometry(.18,.35,h*.5,6),bark,x,h*.25-.2,z);add(cone,leaf[i%3],x,h*.55+.2,z).scale.set(1.1+Math.random(),h*.55,1.1+Math.random());add(cone,leaf[(i+1)%3],x,h*.9+.1,z).scale.set(.75,h*.4,.75)}
-// A winding pale trail and a small village camp
-for(let i=0;i<28;i++){let z=16-i*1.65,x=Math.sin(i*.22)*3;let p=add(new THREE.CircleGeometry(1.25,6),mat(0xa99a70),x,-.14,z);p.rotation.x=-Math.PI/2}
-for(let i=0;i<3;i++){let a=i*Math.PI*2/3;let x=Math.cos(a)*4,z=16+Math.sin(a)*3;add(box,cloth,x,.5,z).scale.set(1,.8,.08);let roof=add(cone,stone,x,1.2,z);roof.rotation.z=Math.PI;roof.scale.set(1.1,.7,1.1)}
-const player=new THREE.Group();scene.add(player);add(box,blue,0,.85,0,player).scale.set(.62,.85,.4);add(sphere,skin,0,1.5,0,player).scale.set(.34,.34,.34);add(box,cloth,0,.3,0,player).scale.set(.72,.18,.45);
-const elder=new THREE.Group();scene.add(elder);elder.position.set(1,0,12);add(box,cloth,0,.85,0,elder).scale.set(.7,.85,.45);add(sphere,skin,0,1.5,0,elder).scale.set(.34,.34,.34);add(sphere,gold,0,2.4,0,elder).scale.set(.13,.13,.13);
-const spots=[{x:-18,z:-14,name:'Waystone'},{x:22,z:-25,name:'Watchtower'},{x:28,z:22,name:'Quiet Shrine'}],crystals=[],found=[false,false,false];
-spots.forEach((s,i)=>{let group=new THREE.Group();group.position.set(s.x,0,s.z);scene.add(group);add(new THREE.CylinderGeometry(.7,.9,.5,6),stone,0,.15,0,group);add(new THREE.OctahedronGeometry(.65),gold,0,1.2,0,group);add(new THREE.PointLight(0xffbf4c,1.4,8),gold,0,1.4,0,group);crystals.push(group)});
-const guardian=new THREE.Group();guardian.position.set(30,0,25);scene.add(guardian);add(box,leaf[0],0,1,0,guardian).scale.set(.8,1.4,.7);add(sphere,gold,0,2,0,guardian).scale.set(.4,.4,.4);
-const keys={},touch={f:false,b:false,l:false,r:false};let x=0,z=19,y=0,vy=0,grounded=true,shards=0,story=0,dialog=false,run=false,finished=false,last=0,clock=new THREE.Clock();
-function toast(t){$('toast').textContent=t;$('toast').classList.add('on');clearTimeout(toast.timer);toast.timer=setTimeout(()=>$('toast').classList.remove('on'),2400)}
-function quest(){ $('count').textContent='ANCIENT EMBERS: '+shards+' / 3';$('title').textContent=story===0?'A Forest Without Song':story===1?'The Three Embers':story===2?'A Voice Beneath the Roots':'Wildwood Remembers';$('desc').textContent=story===0?'Speak with Elder Rowan at the village camp.':story<3?'Find the three ancient embers, then visit the Quiet Shrine.':'Your choice has changed the forest. Explore at your own pace.'}
-function open(speaker,words,choices){dialog=true;$('dialog').hidden=false;$('speaker').textContent=speaker;$('words').textContent=words;$('choices').replaceChildren();choices.forEach(c=>{let b=document.createElement('button');b.textContent=c[0];b.onclick=c[1];$('choices').appendChild(b)})}
-function close(){dialog=false;$('dialog').hidden=true}
-function interact(){if(dialog){close();return}if(Math.hypot(x-elder.position.x,z-elder.position.z)<3.4&&story===0){open('ELDER ROWAN','The forest is losing its song. Three embers were scattered across Wildwood. Bring them to the Quiet Shrine, and choose whether to mend the old pact or let the forest begin again.',[['I will find the embers.',()=>{story=1;quest();close();toast('Journey begun: seek the golden lights.')}],['Tell me about the old pact.',()=>{open('ELDER ROWAN','Long ago, the forest held a grief too great to carry. The pact gave it roots, and those roots grew into every living thing.',[['I understand.',()=>{story=1;quest();close()}]])}]]);return}
-for(let i=0;i<spots.length;i++)if(!found[i]&&Math.hypot(x-spots[i].x,z-spots[i].z)<3.5){found[i]=true;shards++;scene.remove(crystals[i]);quest();toast('EMBER FOUND · '+spots[i].name);if(shards===3){story=2;quest();toast('All three embers glow. Visit the Quiet Shrine.')}return}
-if(shards===3&&Math.hypot(x-guardian.position.x,z-guardian.position.z)<5){open('THE ROOTKEEPER','Three lights in mortal hands. Will you mend the old pact and remember the past, or break the roots and let the forest begin again?', [['Mend the pact',()=>ending('The Pact Renewed','You chose to remember without being ruled by grief. The forest finds its song again, and a thousand mornings wait.')],['Break the roots',()=>ending('A Wild New Dawn','You release the forest from its oldest bond. There will be loss, but also wild new growth and a future unwritten.')]]);return}
-toast('Explore the forest. Look for golden light and the elder at camp.')}
-function ending(title,copy){close();finished=true;$('endtitle').textContent=title;$('endcopy').textContent=copy;$('ending').hidden=false;story=3;quest()}
-$('continue').onclick=()=>{$('ending').hidden=true;finished=false;toast('Your journey continues, Wanderer.')};
-addEventListener('keydown',e=>{let k=e.key.toLowerCase();keys[k]=true;if([' ','arrowup','arrowdown','arrowleft','arrowright'].includes(k))e.preventDefault();if(!e.repeat&&(k==='e'||k==='enter'))interact();if(!e.repeat&&k===' '&&grounded){vy=6;grounded=false}if(k==='escape')close()});addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);addEventListener('blur',()=>{Object.keys(keys).forEach(k=>keys[k]=false);run=false});
-document.querySelectorAll('[data-m]').forEach(b=>{let k=b.dataset.m;b.onpointerdown=e=>{e.preventDefault();touch[k]=true};['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,()=>touch[k]=false))});$('run').onpointerdown=()=>run=true;['pointerup','pointercancel','pointerleave'].forEach(ev=>$('run').addEventListener(ev,()=>run=false));$('talk').onclick=interact;$('jump').onclick=()=>{if(grounded){vy=6;grounded=false}};
-function animate(t){requestAnimationFrame(animate);let dt=Math.min(.04,(t-last)/1000||0);last=t;if(!dialog&&!finished){let f=(keys.w||keys.arrowup||touch.f?1:0)-(keys.s||keys.arrowdown||touch.b?1:0),r=(keys.d||keys.arrowright||touch.r?1:0)-(keys.a||keys.arrowleft||touch.l?1:0),len=Math.hypot(f,r);if(len){f/=len;r/=len;let speed=(keys.shift||run)?10:6;x=THREE.MathUtils.clamp(x+r*speed*dt,-65,65);z=THREE.MathUtils.clamp(z-f*speed*dt,-65,65);player.rotation.y=Math.atan2(r,-f)}vy-=14*dt;y+=vy*dt;if(y<=0){y=0;vy=0;grounded=true}player.position.set(x,y,z);player.children[0].position.y=.85+Math.sin(t*.01)*.025;crystals.forEach((c,i)=>{if(!found[i]){c.rotation.y+=dt*.7;c.children[1].position.y=1.2+Math.sin(t*.003+i)*.15}})}
-let desired=new THREE.Vector3(x-player.rotation.y*0- Math.sin(player.rotation.y)*7,player.position.y+4.7,z+Math.cos(player.rotation.y)*7);camera.position.lerp(desired,1-Math.exp(-dt*4));camera.lookAt(x,y+1,z);renderer.render(scene,camera)}
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});quest();toast('Find Elder Rowan at the village camp. Press E to speak.');requestAnimationFrame(animate);
+(function(){
+const $=id=>document.getElementById(id);
+if(!window.THREE){
+$('start').innerHTML='<article><h1>Almost there!</h1><p>The 3D engine could not load. Please check your internet connection and reload this page.</p><button onclick="location.reload()">Reload game</button></article>';
+return;
+}
+const THREEJS=window.THREE;
+const scene=new THREEJS.Scene();
+scene.background=new THREEJS.Color(0x9ccbd4);
+scene.fog=new THREEJS.Fog(0x9ccbd4,42,105);
+const camera=new THREEJS.PerspectiveCamera(72,innerWidth/innerHeight,.08,180);
+const renderer=new THREEJS.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio||1,1.6));
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREEJS.PCFSoftShadowMap;
+renderer.outputColorSpace=THREEJS.SRGBColorSpace;renderer.toneMapping=THREEJS.ACESFilmicToneMapping;renderer.toneMappingExposure=1.15;
+document.body.appendChild(renderer.domElement);
+scene.add(new THREEJS.HemisphereLight(0xe6f8ff,0x6a7650,2.1));
+const sun=new THREEJS.DirectionalLight(0xffe0a3,2.6);sun.position.set(-18,30,16);sun.castShadow=true;sun.shadow.mapSize.set(1024,1024);sun.shadow.camera.left=-45;sun.shadow.camera.right=45;sun.shadow.camera.top=45;sun.shadow.camera.bottom=-45;scene.add(sun);
+const mats={};
+function mat(name,color,rough){if(!mats[name])mats[name]=new THREEJS.MeshStandardMaterial({color:color,roughness:rough===undefined?.9:rough});return mats[name];}
+const grass=mat('grass',0x79a95e),pathMat=mat('path',0xd9c18b),wood=mat('wood',0x87583b),darkWood=mat('darkWood',0x543a2e),cream=mat('cream',0xf2dfb1),roofRed=mat('roofRed',0xc76e4d),roofBlue=mat('roofBlue',0x528b9a),roofGreen=mat('roofGreen',0x658c58),stone=mat('stone',0x929b8a),glass= new THREEJS.MeshStandardMaterial({color:0x92d9e8,roughness:.2,metalness:.1}),gold=mat('gold',0xf4c75f),leaf1=mat('leaf1',0x3f7d4b),leaf2=mat('leaf2',0x5b984e),leaf3=mat('leaf3',0x78a953),metal=mat('metal',0x5e7474),fabric=mat('fabric',0xe5a15c),skinA=mat('skinA',0xc9825e),skinB=mat('skinB',0xe5b58a),skinC=mat('skinC',0x8d563e),hair1=mat('hair1',0x4a3028),hair2=mat('hair2',0x8e5a32),hair3=mat('hair3',0x292a32),shirt1=mat('shirt1',0x4c9b8b),shirt2=mat('shirt2',0xd87555),shirt3=mat('shirt3',0x7d78bb),shirt4=mat('shirt4',0xe0b84d),pants=mat('pants',0x4a5960),white=mat('white',0xfff1d6);
+const boxGeo=new THREEJS.BoxGeometry(1,1,1),sphereGeo=new THREEJS.SphereGeometry(1,12,10),cylGeo=new THREEJS.CylinderGeometry(1,1,1,10);
+function mesh(geo,material,parent,x,y,z,sx,sy,sz){const o=new THREEJS.Mesh(geo,material);o.position.set(x,y,z);if(sx!==undefined)o.scale.set(sx,sy,sz);o.castShadow=true;o.receiveShadow=true;(parent||scene).add(o);return o;}
+function box(parent,material,x,y,z,sx,sy,sz){return mesh(boxGeo,material,parent,x,y,z,sx,sy,sz);}
+function sphere(parent,material,x,y,z,sx,sy,sz){return mesh(sphereGeo,material,parent,x,y,z,sx,sy,sz);}
+function cylinder(parent,material,x,y,z,rt,rb,h,segments){return mesh(new THREEJS.CylinderGeometry(rt,rb,h,segments||10),material,parent,x,y,z);}
+function ground(){const g=mesh(new THREEJS.PlaneGeometry(180,180),grass,scene,0,-.12,0);g.rotation.x=-Math.PI/2;}
+// Stylized low-poly grassland and paths
+ground();
+function path(x,z,w,d){const p=mesh(new THREEJS.PlaneGeometry(w,d),pathMat,scene,x,-.095,z);p.rotation.x=-Math.PI/2;return p;}
+path(0,4,5,58);path(-4,0,34,4);path(0,-11,34,3.2);path(0,15,31,3.2);
+for(let i=0;i<34;i++){let a=i/34*Math.PI*2;let r=31+(i%4)*2;let x=Math.cos(a)*r,z=Math.sin(a)*r;let h=2.6+(i%5)*.42; cylinder(scene,wood,x,.65,z,.24,.35,1.3,7);mesh(new THREEJS.ConeGeometry(1.7,h,7),[leaf1,leaf2,leaf3][i%3],scene,x,1.4+h*.48,z,1,1,1);mesh(new THREEJS.ConeGeometry(1.25,h*.75,7),leaf2,scene,x,2+h*.6,z,1,1,1);}
+function flower(x,z,color){cylinder(scene,leaf1,x,.12,z,.035,.05,.24,5);sphere(scene,mat('flower'+color,color),x,.28,z,.12,.09,.12);}
+for(let i=0;i<70;i++){let x=(Math.random()-.5)*42,z=(Math.random()-.5)*42;if(Math.abs(x)<13&&Math.abs(z)<19)continue;flower(x,z,[0xf6d76f,0xf2a4ad,0xe7f0d1][i%3]);}
+for(let i=0;i<20;i++){const x=(Math.random()-.5)*34,z=(Math.random()-.5)*30;if(Math.abs(x)<14&&Math.abs(z)<17)continue;const r=.2+Math.random()*.35;mesh(new THREEJS.DodecahedronGeometry(r,0),stone,scene,x,.12,z,1,.65,1);}
+// Building maker: five unique buildings around a central village green.
+const buildings=[];
+function makeBuilding(cfg){
+ const g=new THREEJS.Group();g.position.set(cfg.x,0,cfg.z);scene.add(g);
+ const w=cfg.w||6,d=cfg.d||5,h=3;
+ box(g,cfg.wall,0,h/2,0,w,h,d);
+ // front doorway faces toward the central square (+Z)
+ box(g,darkWood,-.78,1.03,d/2+.025,.9,2.06,.12);
+ box(g,wood,-.78,1.03,d/2+.105,.73,1.91,.07);
+ box(g,mat(cfg.name+'doorInside',0x3d3028),-.78,1.03,d/2+.15,.58,1.73,.04);
+ sphere(g,gold,-.52,1.02,d/2+.19,.07,.07,.07);
+ // front windows and sills
+ for(const wx of [-w*.31,w*.31]){box(g,darkWood,wx,1.95,d/2+.035,.95,.82,.12);box(g,glass,wx,1.97,d/2+.11,.75,.61,.06);box(g,wood,wx,1.96,d/2+.15,.08,.65,.06);box(g,wood,wx,1.96,d/2+.15,.75,.07,.06);box(g,cream,wx,1.5,d/2+.13,1.05,.12,.2);}
+ // sloping roof halves
+ const roofMat=cfg.roof;const r1=box(g,roofMat,-w*.25,h+.4,0,w*.62,.22,d+1.1);r1.rotation.z=-.43;
+ const r2=box(g,roofMat,w*.25,h+.4,0,w*.62,.22,d+1.1);r2.rotation.z=.43;
+ box(g,cream,0,3.02,d/2+.06,w*.35,.16,.13);
+ // chimney
+ box(g,stone,w*.28,4.0,-d*.18,.48,1.25,.48);
+ // signboard with icon/color
+ box(g,darkWood,0,2.25,d/2+.65,1.55,.62,.12);box(g,cfg.sign,0,2.25,d/2+.73,1.36,.43,.04);
+ const signText=makeText(cfg.short);signText.position.set(0,2.25,d/2+.77);g.add(signText);
+ // interior floor, back wall furniture is visible through door and can be entered
+ box(g,mat(cfg.name+'floor',0xc49b6a),0,.035,0,w-.18,.08,d-.18);
+ const b={...cfg,group:g,doorX:cfg.x-.78,doorZ:cfg.z+d/2+1.0,inside:false,interact:null};
+ cfg.furnish(g,w,d);
+ buildings.push(b);return b;
+}
+function makeText(str){const c=document.createElement('canvas');c.width=256;c.height=96;const ctx=c.getContext('2d');ctx.fillStyle='#fff1cb';ctx.font='bold 40px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(str,128,48);const tex=new THREEJS.CanvasTexture(c);tex.colorSpace=THREEJS.SRGBColorSpace;return new THREEJS.Mesh(new THREEJS.PlaneGeometry(1.3,.43),new THREEJS.MeshBasicMaterial({map:tex,transparent:true}));}
+function shelf(g,x,y,z){box(g,wood,x,y,z,1.5,.12,.45);for(let j=0;j<3;j++)box(g,[fabric,leaf2,gold][j],x-.45+j*.45,y+.2,z,.23,.32,.23);}
+function chair(g,x,z,material){box(g,material,x,.55,z,.7,.14,.7);box(g,wood,x,.9,z-.27,.7,.65,.12);for(let dx of [-.27,.27])for(let dz of [-.27,.27])box(g,wood,x+dx,.27,z+dz,.09,.5,.09);}
+function table(g,x,z){box(g,wood,x,.95,z,1.7,.16,1.05);for(let dx of [-.68,.68])for(let dz of [-.37,.37])box(g,darkWood,x+dx,.48,z+dz,.12,.85,.12);}
+function bed(g,x,z){box(g,darkWood,x,.42,z,1.65,.5,2.2);box(g,cream,x,.72,z,1.5,.18,2.02);box(g,fabric,x,.86,z-.57,1.52,.16,.62);box(g,white,x,.86,z+.62,1.42,.15,.42);box(g,wood,x,.88,z+1.08,1.8,.22,.14);}
+const inn=makeBuilding({name:'The Cozy Acorn Inn',short:'INN',x:-9,z:7,w:6.4,d:5.4,wall:mat('innwall',0xe4c28d),roof:roofRed,sign:mat('innsign',0x754638),furnish:(g,w,d)=>{bed(g,-1.55,-.8);bed(g,1.45,-.8);table(g,0,1.15);chair(g,-1.2,1.1,shirt2);chair(g,1.2,1.1,shirt2);box(g,cream,0,2.1,-2.2,2.1,.6,.25);}});
+const shop=makeBuilding({name:'Pip’s Market',short:'SHOP',x:9,z:7,w:6.1,d:5.4,wall:mat('shopwall',0xf0dcae),roof:roofBlue,sign:mat('shopsign',0x3d7880),furnish:(g,w,d)=>{table(g,0,.6);shelf(g,-1.75,1.05,-1.7);shelf(g,1.75,1.05,-1.7);for(let i=0;i<4;i++)sphere(g,[gold,fabric,leaf2,roofBlue][i],-.6+i*.4,1.18,.55,.14,.14,.14);}});
+const forge=makeBuilding({name:'Bramble & Bolt Workshop',short:'FORGE',x:-9,z:-5,w:6.4,d:5.4,wall:mat('forgewall',0xc8a47c),roof:roofGreen,sign:mat('forgesign',0x4b6444),furnish:(g,w,d)=>{box(g,stone,0,.65,-1.5,2.2,.9,.8);box(g,metal,0,1.17,-1.5,1.6,.18,.6);cylinder(g,metal,.3,1.48,-1.5,.22,.22,.5,8).rotation.z=Math.PI/2;table(g,1.5,.7);for(let i=0;i<3;i++)box(g,wood,-1.6+i*.55,.85,.6,.22,.5,.22);}});
+const cottage=makeBuilding({name:'Mossbell Cottage',short:'HOME',x:9,z:-5,w:6.1,d:5.4,wall:mat('homewall',0xb4d1a0),roof:mat('hroof',0x9b7565),sign:mat('homesign',0x52784b),furnish:(g,w,d)=>{bed(g,-1.45,-.8);table(g,.9,.5);chair(g,1.9,.4,shirt1);box(g,cream,-1.6,1.35,-2.1,1.4,.7,.2);shelf(g,1.55,1.25,-1.8);}});
+const hall=makeBuilding({name:'Town Hall & Notice Board',short:'HALL',x:0,z:-17,w:7.5,d:6.2,wall:mat('hallwall',0xe5d9b5),roof:mat('hallroof',0x7c8197),sign:mat('hallsign',0x4b6477),furnish:(g,w,d)=>{table(g,0,.4);chair(g,-1.3,.3,shirt4);chair(g,1.3,.3,shirt4);box(g,cream,0,1.6,-2.4,3.2,1,.16);box(g,gold,0,1.7,-2.28,.22,.75,.1);for(let i=0;i<3;i++)box(g,wood,-2+i*2,1.1,-1.6,.5,.9,.4);}});
+function addOutdoorDecor(){
+ // signpost and central well
+ cylinder(scene,wood,0,.9,1,.12,.17,1.8,8);
+ for(let i=0;i<3;i++){const s=box(scene,[roofRed,roofBlue,roofGreen][i],[-1,0,1][i],1.6,1,1.2,.35,.1);s.rotation.y=-.2;}
+ cylinder(scene,stone,0,.3,-1,1.1,1.25,.55,10);cylinder(scene,mat('wellwater',0x66b9cf),0,.59,-1,.86,.86,.08,10);for(let x of [-1.2,1.2])cylinder(scene,wood,x,1.3,-1,.1,.1,1.5,8);box(scene,wood,0,2.1,-1,2.6,.16,.2);
+ for(let i=0;i<8;i++){let a=i*Math.PI/4,x=Math.cos(a)*5,z=Math.sin(a)*5;const p=mesh(new THREEJS.ConeGeometry(.3,.7,6),leaf2,scene,x,.3,z);p.rotation.z=.15;}
+}
+addOutdoorDecor();
+// Character rigs: soft colors, skin tones, hair, eyes, moving arms and legs.
+const characters=[];
+function makePerson(name,x,z,skinMat,shirtMat,hairMat,role){
+ const root=new THREEJS.Group();root.position.set(x,0,z);scene.add(root);
+ const body=new THREEJS.Group();root.add(body);
+ cylinder(body,shirtMat,0,1.13,0,.31,.36,.7,8);
+ sphere(body,skinMat,0,1.72,0,.29,.34,.27);
+ sphere(body,hairMat,0,1.94,-.035,.3,.18,.29);
+ // side hair and ears
+ sphere(body,hairMat,-.25,1.75,0,.09,.19,.13);sphere(body,hairMat,.25,1.75,0,.09,.19,.13);
+ for(let ex of [-.105,.105]){sphere(body,white,ex,1.75,.24,.065,.07,.035);sphere(body,mat('eye'+name,0x2a2822),ex,1.75,.272,.027,.04,.02);}
+ box(body,skinMat,0,1.58,.245,.14,.045,.04);
+ const armL=new THREEJS.Group();armL.position.set(-.36,1.38,0);body.add(armL);cylinder(armL,skinMat,0,-.23,0,.105,.09,.48,7);armL.rotation.z=-.15;
+ const armR=new THREEJS.Group();armR.position.set(.36,1.38,0);body.add(armR);cylinder(armR,skinMat,0,-.23,0,.105,.09,.48,7);armR.rotation.z=.15;
+ const legL=new THREEJS.Group();legL.position.set(-.16,.78,0);body.add(legL);cylinder(legL,pants,0,-.28,0,.13,.1,.56,7);box(legL,darkWood,0,-.57,.08,.2,.12,.34);
+ const legR=new THREEJS.Group();legR.position.set(.16,.78,0);body.add(legR);cylinder(legR,pants,0,-.28,0,.13,.1,.56,7);box(legR,darkWood,0,-.57,.08,.2,.12,.34);
+ const person={name,root,body,armL,armR,legL,legR,phase:Math.random()*6,homeX:x,homeZ:z,role,skinMat,shirtMat,walking:false,activity:0};characters.push(person);return person;
+}
+const pip=makePerson('Pip the Merchant',9,11,skinB,shirt4,hair2,'shop');pip.root.rotation.y=Math.PI;
+const bram=makePerson('Bram the Maker',-9,-1,skinC,shirt2,hair3,'forge');bram.root.rotation.y=Math.PI;
+const mila=makePerson('Mila',9,-1,skinA,shirt1,hair1,'home');mila.root.rotation.y=Math.PI;
+const elder=makePerson('Mayor Alder',0,-13,skinB,shirt3,hair2,'hall');elder.root.rotation.y=Math.PI;
+const innkeeper=makePerson('Tansy the Innkeeper',-9,11,skinC,shirt1,hair1,'inn');innkeeper.root.rotation.y=0;
+const guide=makePerson('Juniper',0,4,skinA,shirt3,hair3,'guide');guide.root.rotation.y=Math.PI;
+function labelSprite(text){const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='rgba(34,54,42,.85)';ctx.roundRect(5,5,502,118,22);ctx.fill();ctx.fillStyle='#fff1cb';ctx.font='bold 38px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(text,256,64);const t=new THREEJS.CanvasTexture(c);t.colorSpace=THREEJS.SRGBColorSpace;const s=new THREEJS.Sprite(new THREEJS.SpriteMaterial({map:t,transparent:true,depthTest:false}));s.scale.set(3.0,.75,1);return s;}
+for(const p of characters){const l=labelSprite(p.name);l.position.set(0,2.55,0);p.root.add(l);p.label=l;}
+function makeBench(x,z){box(scene,wood,x,.55,z,2,.18,.55);for(let dx of [-.8,.8])box(scene,darkWood,x+dx,.27,z,.14,.5,.55);box(scene,wood,x,.92,z-.2,2,.65,.14);}
+makeBench(-3,10);makeBench(3,10);makeBench(-3,-7);makeBench(3,-7);
+// First-person controller; the camera is the player's eyes, not a chase camera.
+const player={pos:new THREEJS.Vector3(0,0,19),yaw:Math.PI,pitch:0,inside:null,coins:8,bag:[],quest:0,walkTime:0};
+camera.position.set(player.pos.x,1.68,player.pos.z);camera.rotation.order='YXZ';
+const keys={};const touch={forward:false,back:false,left:false,right:false};let pointerLocked=false,dragging=false,lastX=0,lastY=0,moveSpeed=4.6,jog=false,modalOpen=false,previousTime=0;
+function updateCamera(){camera.position.set(player.pos.x,player.pos.y+1.68,player.pos.z);camera.rotation.order='YXZ';camera.rotation.y=player.yaw;camera.rotation.x=player.pitch;}
+function showModal(tag,title,text,actions){modalOpen=true;$('modalTag').textContent=tag;$('modalTitle').textContent=title;$('modalText').textContent=text;$('modalActions').replaceChildren();for(const a of actions){const b=document.createElement('button');b.textContent=a.label;if(a.secondary)b.className='secondary';b.onclick=()=>a.run();$('modalActions').appendChild(b);}$('modal').hidden=false;}
+function closeModal(){modalOpen=false;$('modal').hidden=true;}
+function updateStatus(){$('coins').textContent=player.coins;$('bag').textContent=player.bag.length?player.bag.join(', '):'Empty';}
+function setTask(title,text){$('taskTitle').textContent=title;$('taskText').textContent=text;}
+function enterBuilding(b){player.inside=b;player.pos.set(b.x-.78,0,b.z+.65);player.yaw=Math.PI;player.pitch=0;updateCamera();closeModal();setTask(b.name,'Look around, use E near furniture or people, and choose the doorway to leave.');}
+function exitBuilding(){const b=player.inside;if(!b)return;player.inside=null;player.pos.set(b.x-.78,0,b.z+b.d/2+2.4);player.yaw=Math.PI;updateCamera();setTask('A place to call home','Visit the five buildings and see what each neighbor is up to.');closeModal();}
+function useAction(target){
+ if(target==='inn'){showModal('THE COZY ACORN INN','A warm place to rest','Tansy keeps the beds fluffy and the stew hot. A short rest makes the village feel like home.',[{label:'Rest for a while',run:()=>{closeModal();setTask('Well rested','You took a peaceful rest at the inn.');showModal('RESTED','Feeling refreshed!','The sun is shining and you are ready to explore again.',[{label:'Thanks!',run:closeModal}]);}},{label:'Ask about work',run:()=>{player.quest=Math.max(player.quest,1);setTask('A small favor','Tansy mentioned that Pip at the market could use a hand.');showModal('TANSY','Could you help Pip?','The market has been busy. Ask Pip if there is anything you can do.',[{label:'I will help',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='shop'){showModal('PIP’S MARKET','Bright little things for sale','Pip sells apples for a quick snack and a lucky charm to carry on your travels.',[{label:'Buy apple · 3 coins',run:()=>{if(player.coins>=3){player.coins-=3;player.bag.push('Apple');updateStatus();showModal('PURCHASED','A fresh red apple','Pip gives you a shiny apple. Nice and crisp!',[{label:'Thanks, Pip',run:closeModal}]);}else showModal('NOT ENOUGH COINS','Your purse is light','Come back after helping a neighbor.',[{label:'Okay',run:closeModal}]);}},{label:'Buy lucky charm · 5 coins',run:()=>{if(player.coins>=5){player.coins-=5;player.bag.push('Lucky charm');updateStatus();showModal('PURCHASED','A tiny lucky charm','It glimmers in the sunlight. Pip says it brings good luck.',[{label:'Lovely',run:closeModal}]);}else showModal('NOT ENOUGH COINS','Your purse is light','You need five coins for the charm.',[{label:'Okay',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='forge'){showModal('BRAMBLE & BOLT WORKSHOP','Tools, toys and tinkering','Bram can make you a simple wooden practice sword from scraps. It is more for fun than fighting.',[{label:'Craft wooden sword · 2 coins',run:()=>{if(player.coins>=2&&!player.bag.includes('Wooden sword')){player.coins-=2;player.bag.push('Wooden sword');updateStatus();showModal('CRAFTED','A wooden practice sword','Bram sands the handle smooth and hands it over. Try it outside!',[{label:'Thanks, Bram',run:closeModal}]);}else showModal('WORKSHOP','No crafting needed','Either you already have one or you need two coins.',[{label:'Okay',run:closeModal}]);}},{label:'Ask Bram to teach you',run:()=>{player.coins+=2;updateStatus();showModal('A LITTLE LESSON','You helped at the workbench','Bram shows you how to sand a plank and gives you two coins for the help.',[{label:'Nice!',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='home'){showModal('MOSSBELL COTTAGE','A cozy little home','Mila keeps a journal, a soft bed, and a shelf of curious things she has found around the meadow.',[{label:'Read the journal',run:()=>{showModal('MILA’S JOURNAL','Notes from the meadow','“The village is small, but every day something new happens. I saw blue butterflies by the creek and heard music near the old trees.”', [{label:'Close journal',run:closeModal}]);}},{label:'Ask Mila about the village',run:()=>{player.coins+=1;updateStatus();showModal('MILA','A welcome gift','Mila gives you one coin for helping water her garden. Thank you, she says!',[{label:'You’re welcome',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='hall'){showModal('TOWN HALL','The village notice board','Mayor Alder has pinned a simple first-day task: meet the neighbors and try one activity in each building.',[{label:'Accept village task',run:()=>{player.quest=2;setTask('Village helper','Try an activity at the inn, market, workshop, cottage and town hall. You have started already!');player.coins+=3;updateStatus();showModal('TASK ACCEPTED','Three coins for getting started','Mayor Alder gives you a few coins to help you settle in.',[{label:'Let’s do it',run:closeModal}]);}},{label:'Read the notice board',run:()=>{showModal('NOTICE BOARD','Today in Wildwood','• Fresh bread at the inn\n• New trinkets at the market\n• Workshop open until sundown\n• Lost cat spotted near the trees', [{label:'Close',run:closeModal}]);}},{label:'Leave',secondary:true,run:closeModal}]);}
+ else if(target==='guide'){showModal('JUNIPER','Welcome to Wildwood!','This is a little starter village. The colorful buildings each have an activity. Walk up to a door or neighbor and press E. The sign above a door tells you where it leads.',[{label:'How do I move?',run:()=>{showModal('CONTROLS','Easy as a stroll','Desktop: WASD to walk, mouse to look, E to use, Shift to jog. Phone: drag the open view to look, use the pad to walk, and tap Talk / Use.',[{label:'Got it',run:closeModal}]);}},{label:'Thanks!',run:closeModal}]);}
+}
+function getNearest(){
+ let best=null,bestD=2.5;
+ for(const b of buildings){let dx=player.pos.x-b.doorX,dz=player.pos.z-b.doorZ;let d=Math.hypot(dx,dz);if(d<bestD){best={type:'door',obj:b,d};bestD=d;}}
+ for(const p of characters){const d=Math.hypot(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);if(d<2.45&&d<bestD){best={type:'person',obj:p,d};bestD=d;}}
+ if(player.inside){const b=player.inside;const d=Math.hypot(player.pos.x-(b.x-.78),player.pos.z-(b.z+b.d/2+.7));if(d<2.6&&d<bestD){best={type:'exit',obj:b,d};bestD=d;}
+ const furniture={inn:[['bed',-1.55,-.8],['bed',1.45,-.8],['table',0,1.15]],shop:[['counter',0,.6]],forge:[['anvil',0,-1.5]],home:[['journal',-1.6,1.35],['bed',-1.45,-.8]],hall:[['notice board',0,1.6],['table',0,.4]]}[b.short.toLowerCase()]||[];
+ for(const f of furniture){const d=Math.hypot(player.pos.x-(b.x+f[1]),player.pos.z-(b.z+f[2]));if(d<1.7&&d<bestD){best={type:'furniture',obj:b,item:f[0],d};bestD=d;}}
+ }
+ return best;
+}
+function interact(){if(modalOpen){closeModal();return;}const n=getNearest();if(!n){showModal('WILDERNESS','Nothing nearby','Walk toward a villager, building entrance or useful object, then try again.',[{label:'Okay',run:closeModal}]);return;}
+ if(n.type==='person'){const p=n.obj;if(p.role==='shop')useAction('shop');else if(p.role==='forge')useAction('forge');else if(p.role==='home')useAction('home');else if(p.role==='hall')useAction('hall');else if(p.role==='inn')useAction('inn');else useAction('guide');}
+ else if(n.type==='door'){enterBuilding(n.obj);}
+ else if(n.type==='exit'){exitBuilding();}
+ else if(n.type==='furniture'){if(n.item==='bed')useAction(n.obj.short==='INN'?'inn':'home');else if(n.item==='journal')useAction('home');else if(n.item==='notice board')useAction('hall');else if(n.item==='anvil')useAction('forge');else useAction('shop');}
+}
+function updatePrompt(){const n=getNearest();if(modalOpen){$('prompt').textContent='';return;}if(!n){$('prompt').textContent='WASD to move · Mouse to look · E to interact · Shift to jog';return;}if(n.type==='door')$('prompt').textContent='E · Enter '+n.obj.name;else if(n.type==='exit')$('prompt').textContent='E · Leave building';else if(n.type==='person')$('prompt').textContent='E · Talk to '+n.obj.name;else $('prompt').textContent='E · Use '+n.item;}
+function canMoveTo(x,z){if(Math.abs(x)>43||Math.abs(z)>43)return false;
+ // Building solid collision, with a doorway gap at the front wall.
+ for(const b of buildings){if(player.inside===b)continue;const w=b.w||6,d=b.d||5.4;const inX=Math.abs(x-b.x)<w/2+.25,inZ=Math.abs(z-b.z)<d/2+.25;if(inX&&inZ){const doorGap=Math.abs(x-(b.x-.78))<.58&&z>b.z+d/2-.5;if(!doorGap)return false;}}
+ return true;
+}
+function move(dt){if(modalOpen)return;let forward=(keys.KeyW||keys.ArrowUp||touch.forward?1:0)-(keys.KeyS||keys.ArrowDown||touch.back?1:0);let side=(keys.KeyD||keys.ArrowRight||touch.right?1:0)-(keys.KeyA||keys.ArrowLeft||touch.left?1:0);const mag=Math.hypot(forward,side);if(mag>0){forward/=mag;side/=mag;}const speed=(keys.ShiftLeft||keys.ShiftRight||jog?7.1:4.5)*dt;const dx=(-Math.sin(player.yaw)*forward+Math.cos(player.yaw)*side)*speed;const dz=(-Math.cos(player.yaw)*forward-Math.sin(player.yaw)*side)*speed;
+ const nx=player.pos.x+dx,nz=player.pos.z+dz;if(canMoveTo(nx,player.pos.z))player.pos.x=nx;if(canMoveTo(player.pos.x,nz))player.pos.z=nz;
+ player.walkTime+=dt* (mag?9:2);
+ if(mag){for(const p of characters){const d=Math.hypot(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);if(d<2.2){p.root.rotation.y=Math.atan2(player.pos.x-p.root.position.x,player.pos.z-p.root.position.z);}}}
+}
+function animatePeople(t){for(const p of characters){const moving=Math.abs(p.root.position.x-p.homeX)>.02||Math.abs(p.root.position.z-p.homeZ)>.02;p.phase+=.018+(moving?.04:0);const swing=Math.sin(t*5+p.phase)*.06;p.armL.rotation.x=Math.sin(t*4+p.phase)*.16;p.armR.rotation.x=-Math.sin(t*4+p.phase)*.16;p.legL.rotation.x=Math.sin(t*5+p.phase)*.08;p.legR.rotation.x=-Math.sin(t*5+p.phase)*.08;p.body.position.y=Math.sin(t*2+p.phase)*.025;}}
+function look(dx,dy){player.yaw-=dx*.003;player.pitch-=dy*.0025;player.pitch=Math.max(-1.2,Math.min(1.2,player.pitch));updateCamera();}
+renderer.domElement.addEventListener('click',()=>{if(!modalOpen&&!('ontouchstart'in window)&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();});
+document.addEventListener('pointerlockchange',()=>{pointerLocked=document.pointerLockElement===renderer.domElement;});
+document.addEventListener('mousemove',e=>{if(pointerLocked&&!modalOpen)look(e.movementX,e.movementY);});
+let touchLook=false;renderer.domElement.addEventListener('touchstart',e=>{if(e.touches.length===1){touchLook=true;lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;}},{passive:true});
+renderer.domElement.addEventListener('touchmove',e=>{if(touchLook&&e.touches.length===1&&!modalOpen){const t=e.touches[0];look(t.clientX-lastX,t.clientY-lastY);lastX=t.clientX;lastY=t.clientY;}},{passive:true});
+renderer.domElement.addEventListener('touchend',()=>touchLook=false);
+document.addEventListener('keydown',e=>{keys[e.code]=true;if(e.code==='KeyE'&&!e.repeat){e.preventDefault();interact();}if(e.code==='Escape'&&modalOpen)closeModal();});
+document.addEventListener('keyup',e=>{keys[e.code]=false;});
+$('startBtn').onclick=()=>{$('start').hidden=true;if(innerWidth>680&&renderer.domElement.requestPointerLock)renderer.domElement.requestPointerLock();};
+$('touchUse').onclick=interact;$('touchRun').addEventListener('touchstart',e=>{e.preventDefault();jog=true;},{passive:false});$('touchRun').addEventListener('touchend',()=>jog=false);$('touchRun').addEventListener('click',()=>{jog=!jog;});
+document.querySelectorAll('[data-move]').forEach(btn=>{const k=btn.dataset.move;const down=e=>{e.preventDefault();touch[k]=true;};const up=e=>{e.preventDefault();touch[k]=false;};btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointerleave',up);btn.addEventListener('pointercancel',up);});
+window.addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight);});
+function loop(now){requestAnimationFrame(loop);const dt=Math.min(.045,(now-previousTime)/1000||0);previousTime=now;move(dt);updateCamera();animatePeople(now/1000);updatePrompt();renderer.render(scene,camera);}
+setTask('A place to call home','Explore the village. Visit the inn, market, workshop, cottage and town hall.');updateStatus();requestAnimationFrame(loop);
 })();
-</script></body></html>
+</script>
+</body>
+</html>
