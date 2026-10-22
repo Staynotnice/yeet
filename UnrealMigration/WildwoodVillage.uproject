@@ -1,0 +1,13 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.7",
+  "Category": "Games",
+  "Description": "Wildwood Village Unreal Engine migration starter project",
+  "Modules": [
+    {
+      "Name": "WildwoodVillage",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ]
+}
